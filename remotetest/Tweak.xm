@@ -516,7 +516,7 @@ static __attribute__((constructor)) void myHooksInit() {
     //[rmh startItUp];
 	NSLog(@"rmh: %@", rmh);
     
-    /*
+    
     clientCreatePointer clientCreate;
     void *handle = dlopen(0, 9);
     *(void**)(&clientCreate) = dlsym(handle,"IOHIDEventSystemClientCreate");
@@ -526,7 +526,7 @@ static __attribute__((constructor)) void myHooksInit() {
     ;
     fprintf(stdout, "\n\n### PRINTF TO STD OUT\n");
     fprintf(stderr, "\n\n### PRINTF TO STD ERR\n");
-     */
+     
   	//setMaximumRelativeLoggingDepth(5);
 	//watchClass([SSDownloadMetadata class]);
 	//watchClass(NSClassFromString(@"SSDownload"));

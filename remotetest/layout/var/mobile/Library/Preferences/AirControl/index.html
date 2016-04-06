@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width">
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="remote.js"></script>
+    <script type="application/x-javascript">
+        
+        addEventListener("load", function()
+                         {
+                         setTimeout(updateLayout, 0);
+                         }, false);
+                         
+                         var currentWidth = 0;
+                         
+                         function updateLayout()
+                         {
+                             if (window.innerWidth != currentWidth)
+                             {
+                                 currentWidth = window.innerWidth;
+                                 
+                                 var orient = currentWidth == 320 ? "profile" : "landscape";
+                                 document.body.setAttribute("orient", orient);
+                                 setTimeout(function()
+                                            {
+                                            window.scrollTo(0, 1);
+                                            }, 100);            
+                             }
+                         }
+    
+    setInterval(updateLayout, 400);
+    
+        </script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Nixie+One' rel='stylesheet' type='text/css'>
+    <link href='remote.css' rel='stylesheet' type='text/css'>
+    <title>Apple Control TV Web based HTML & Javascript Remote</title>
+  </head>
+  <body>
+ 
+    <div id="remote">
+      <div class="row">
+        <span id="menu" class="button" title="Menu" data-number="menu"><i class="fa fa-bars fa-3x"></i></span>
+        <span id="up" class="button" title="up"  data-number="up"><i class="fa fa-chevron-up fa-3x"></i></span>
+        <span id="selectTextEntry" class="button"  title="text entry" data-number="23"><i class="fa fa-font fa-3x"></i></span>
+      </div>
+      <div class="row">
+        <span id="left" class="button" title="left"  data-number="left"><i class="fa fa-chevron-left fa-3x"></i></span>
+        <span id="select" class="button" title="Select"  data-number="select"><i class="fa fa-dot-circle-o fa-3x"></i></span>
+        <span id="right" class="button" title="right"  data-number="right"><i class="fa fa-chevron-right fa-3x"></i></span>
+      </div>
+      <div class="row">
+        <span id="pause" class="button"  title="pause" data-number="play"><i class="fa fa-pause fa-3x"></i></span>
+        <span id="down" class="button" title="down"  data-number="down"><i class="fa fa-chevron-down fa-3x"></i></span>
+        <span id="play" class="button"  title="play" data-number="play"><i class="fa fa-play fa-3x"></i></span>
+      </div>
+   
+    </div>
+  </body>
+</html>

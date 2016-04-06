@@ -25,7 +25,18 @@
 
 - (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path
 {
-    NSLog(@"in here: %@ uri: %@", method, path);
+    NSString *pathFile = [path substringFromIndex:1];
+    
+    if ([pathFile isEqualToString:@""])
+    {
+        pathFile = @"index.html";
+    }
+    
+    if ([[self defaultReturnArray] containsObject:pathFile])
+    {
+        return [super httpResponseForMethod:method URI:path];
+    }
+    
     
     return [self processURL:path];
     
@@ -50,6 +61,10 @@
 }
 
 
+- (NSArray *)defaultReturnArray
+{
+    return [NSArray arrayWithObjects:@"coverart.png", @"index.html", @"remote.js", @"remote.css", nil];
+}
 
 - (id)processURL:(NSString *)path
 {

@@ -261,6 +261,10 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         else if ([event isEqualToString:@"down"]) usage = 67;
         else if ([event isEqualToString:@"up"]) usage = 66;
         else if ([event isEqualToString:@"select"]) usage = 65;
+        else if ([event isEqualToString:@"home"]) usage = 96;
+        else if ([event isEqualToString:@"vlup"]) usage = 233;
+        else if ([event isEqualToString:@"vldwn"]) usage = 234;
+        else if ([event isEqualToString:@"siri"]) usage = 4;
         else if ([event isEqualToString:@"play"]) usage = 205;
         else if ([event isEqualToString:@"menu"]){ usage = 134;  usagePage = 1; }
         

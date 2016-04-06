@@ -2367,6 +2367,9 @@
 		892981021CB1EF8D003D7473 /* UIScrollViewDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollViewDelegate-Protocol.h"; sourceTree = "<group>"; };
 		892981031CB1EF8D003D7473 /* UITextFieldDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextFieldDelegate-Protocol.h"; sourceTree = "<group>"; };
 		892981041CB1EF8D003D7473 /* UNSystemStateProviding-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UNSystemStateProviding-Protocol.h"; sourceTree = "<group>"; };
+		8929FCC11CB56ACA003D7473 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		8929FCC21CB56ACA003D7473 /* remote.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = remote.css; sourceTree = "<group>"; };
+		8929FCC31CB56ACA003D7473 /* remote.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = remote.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2483,6 +2486,7 @@
 		8929759C1CB1A5C0003D7473 /* ATVWebRemote */ = {
 			isa = PBXGroup;
 			children = (
+				8929FCC01CB56ACA003D7473 /* AirControl */,
 				8929806D1CB1EF8C003D7473 /* PrivateHeaders */,
 				892975C71CB1A689003D7473 /* remotetest */,
 				8929759D1CB1A5C0003D7473 /* ATVWebRemote.h */,
@@ -5188,6 +5192,17 @@
 			);
 			name = PrivateHeaders;
 			path = remotetest/PineBoard.app/PrivateHeaders;
+			sourceTree = SOURCE_ROOT;
+		};
+		8929FCC01CB56ACA003D7473 /* AirControl */ = {
+			isa = PBXGroup;
+			children = (
+				8929FCC11CB56ACA003D7473 /* index.html */,
+				8929FCC21CB56ACA003D7473 /* remote.css */,
+				8929FCC31CB56ACA003D7473 /* remote.js */,
+			);
+			name = AirControl;
+			path = remotetest/layout/var/mobile/Library/Preferences/AirControl;
 			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
