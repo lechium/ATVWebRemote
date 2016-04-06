@@ -290,7 +290,10 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
                                                                  0,
                                                                  0);
         
-        BOOL isUppercase = [[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:[item characterAtIndex:0]];
+        //
+        NSMutableCharacterSet *uppercaseSpecialSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"~!@#$%^&*()_+|}{<>:\"?"];
+        [uppercaseSpecialSet formUnionWithCharacterSet:[NSCharacterSet uppercaseLetterCharacterSet]];
+        BOOL isUppercase = [uppercaseSpecialSet characterIsMember:[item characterAtIndex:0]];
         if (isUppercase == YES)
         {
             IOHIDEventRef shiftDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
