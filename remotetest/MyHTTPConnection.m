@@ -66,9 +66,15 @@
     return [NSArray arrayWithObjects:@"coverart.png", @"index.html", @"remote.js", @"remote.css", nil];
 }
 
+- (NSString *)acHelpString
+{
+    return @"\nAircontrol Command Options:\n--------------------------\nenterText\t=\tsends text to a text entry view (ie enterText='my search')\nremoteCommand\t=\tsends a remote command to the AppleTV (menu, up, down, play, left, right, select)\n\n";
+    
+}
+
 - (id)processURL:(NSString *)path
 {
-    [self frontMostScience];
+    //[self frontMostScience];
     NSArray *pathCommands = [[path substringFromIndex:1] componentsSeparatedByString:@"="];
     NSString *pathCommand = [pathCommands objectAtIndex:0];
     NSString *pathValue = nil;
@@ -83,7 +89,11 @@
     } else if ([pathCommand isEqualToString:@"remoteCommand"])
     {
         [[RemoteTestHelper sharedInstance] handleRemoteEvent:pathValue];
+    } else if ([pathCommand isEqualToString:@"help"])
+    {
+        return [self failedWithMessage:[self acHelpString]];
     }
+    
     return [self blankSuccessResponse];
     
 }
