@@ -1,0 +1,11 @@
+{
+	Filter = {
+		Bundles = (
+			"com.apple.PineBoard",
+			"com.apple.UIKit",
+			"com.apple.BackBoardServices",
+			"com.apple.SpringBoardServices",
+			"com.apple.FrontBoard",
+		);
+	};
+}
