@@ -65,6 +65,9 @@
     if ([pathCommand isEqualToString:@"enterText"])
     {
         [[RemoteTestHelper sharedInstance] enterText:pathValue];
+    } else if ([pathCommand isEqualToString:@"remoteCommand"])
+    {
+        [[RemoteTestHelper sharedInstance] handleRemoteEvent:pathValue];
     }
     return [self blankSuccessResponse];
     

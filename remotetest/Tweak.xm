@@ -199,16 +199,14 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
     
     Method ourMessageHandler = class_getInstanceMethod(rth, @selector(handleMessageName:userInfo:));
     Method setTextHandler = class_getInstanceMethod(rth, @selector(handleTextName:userInfo:));
-    Method setCTFHandler = class_getInstanceMethod(rth, @selector(setCTF:));
-    Method getCTFHandler = class_getInstanceMethod(rth, @selector(ctf));
+
     Method ioTest = class_getInstanceMethod(rth, @selector(IOHIDTest:));
     
      class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
     
     class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
     class_addMethod(pbad, @selector(handleTextName:userInfo:), method_getImplementation(setTextHandler), method_getTypeEncoding(setTextHandler));
-    class_addMethod(pbad, @selector(ctf), method_getImplementation(getCTFHandler), method_getTypeEncoding(getCTFHandler));
-     class_addMethod(pbad, @selector(setCTF:), method_getImplementation(setCTFHandler), method_getTypeEncoding(setCTFHandler));
+
     class_addMethod(pbad, @selector(IOHIDTest:), method_getImplementation(ioTest), method_getTypeEncoding(ioTest));
                                                    
     [center registerForMessageName:@"org.nito.test.doThings" target:self selector:@selector(handleMessageName:userInfo:)];

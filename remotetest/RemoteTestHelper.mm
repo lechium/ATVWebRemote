@@ -227,6 +227,75 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 @synthesize httpServer, frontMostAppID, pbDelegateRef, ctfBackup;
 
 
+/*
+ 
+ #### touch event usagePage: 12 usage: 69 = right
+ #### touch event usagePage: 12 usage: 68 = left
+ #### touch event usagePage: 12 usage: 67 = down
+ #### touch event usagePage: 12 usage: 66 = up
+ #### touch event usagePage: 12 usage: 65 = (center button / select)
+ #### touch event usagePage: 12 usage: 205 = play/pause
+ #### touch event usagePage: 1 usage: 134 = menu
+ 
+ */
+
+- (void)handleMessageName:(NSString *)name userInfo:(NSDictionary *)userInfo
+{
+       NSLog(@"messageNAme: %@ userInfo: %@", name, userInfo);
+    if (userInfo != nil)
+    {
+        NSString *event = userInfo[@"event"];
+        if (!_ioSystemClient)
+            _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
+        
+        id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
+        uint64_t abTime = mach_absolute_time();
+        AbsoluteTime timeStamp;
+        timeStamp.hi = (UInt32)(abTime >> 32);
+        timeStamp.lo = (UInt32)(abTime);
+    
+        uint16_t usage = 0;
+        uint16_t usagePage = 12;
+        if ([event isEqualToString:@"right"]) usage = 69;
+        else if ([event isEqualToString:@"left"]) usage = 68;
+        else if ([event isEqualToString:@"down"]) usage = 67;
+        else if ([event isEqualToString:@"up"]) usage = 66;
+        else if ([event isEqualToString:@"select"]) usage = 65;
+        else if ([event isEqualToString:@"play"]) usage = 205;
+        else if ([event isEqualToString:@"menu"]){ usage = 134;  usagePage = 1; }
+        
+        IOHIDEventRef navDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                                 timeStamp,
+                                                                 usagePage,
+                                                        usage,
+                                                                 1,
+                                                                 0);
+        
+        IOHIDEventRef navUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                               timeStamp,
+                                                               usagePage,
+                                                    usage,
+                                                               0,
+                                                               0);
+        [processMan sendHIDEventToTopApplication:navDown];
+        [processMan sendHIDEventToTopApplication:navUp];
+        
+    }
+ 
+    
+    /*
+     id processMan = [objc_getClass("FBProcessManager") sharedInstance];
+     id fap = [processMan valueForKey:@"_foregroundAppProcess"];
+     //NSLog(@"processMan: %@ fap: %@", processMan, fap);
+     id lib = [objc_getClass("FBApplicationLibrary") sharedInstance];
+     
+     id tuyuapp = [lib installedApplicationWithBundleIdentifier:@"com.nito.tuyuTV"];
+     id allApps = [lib allInstalledApplications];
+     //NSLog(@"tuyutv: %@ allApps: %@", tuyuapp, allApps);
+     
+     */
+    
+}
 
 - (void)IOHIDTest:(NSString *)theText
 {
@@ -334,25 +403,6 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 
 }
 
-- (UITextField *)ctf
-{
-    return [self associatedValueForKey:(void*)kCurrentTextFieldID];
-}
-    
-- (void)setCTF:(id)value
-{
-    id _tempTextField = value;
-    if ([value isKindOfClass:[NSData class]])
-    {
-        NSLog(@"is data!! UNARCHIVE");
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:value];
-        _tempTextField = [unarchiver decodeObjectForKey:@"object"];
-        [unarchiver finishDecoding];
-        NSLog(@"tempTextField: %@", _tempTextField);
-    }
-    
-    [self associateValue:_tempTextField withKey:(void*)kCurrentTextFieldID];
-}
 
 - (void)startTextFieldNotifications
 {
@@ -380,9 +430,6 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 
 - (void)didBeginEditing:(NSNotification *)n
 {
-    NSLog(@"did begin editing: %@", n.object);
-    
-    watchObject(n.object);
     
    /* NSLog(@"did begin editing: %@", n.object);
     id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
@@ -393,48 +440,13 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     [archiver finishEncoding];
     [center sendMessageName:@"org.nito.test.doThings" userInfo:@{@"object": data}];
     */
-    /*
-     dispatch_async(dispatch_get_main_queue(), ^{
-       self.currentTextField = n.object;
-       [self setCTF:n.object];
-       NSLog(@"self.currentTextField: %@ ctf: %@", self.currentTextField, [self ctf]);
-   });
-    self.ctfBackup = [self currentTextField];
-    NSLog(@"ctf backup: %@", self.ctfBackup);
-     
-     */
-    
-    __block id field = nil;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // code below is executed synchronously
-        // access to UI is safe is its a main thread
-        field = [n object];
-        NSLog(@"field async: %@", field);
-
-        @synchronized(self) {
-        [self setCurrentTextField:field];
-        [self setCTF:field];
-        [self setCtfBackup:field];
-        
-        }
-    });
-    
-    NSLog(@"field: %@", field);
-    //@synchronized(self) {
-        [self setCurrentTextField:field];
-        [self setCTF:field];
-        [self setCtfBackup:field];
-        
-    //}
-
     
 }
 
 - (void)didEndEditing:(NSNotification *)n
 {
     NSLog(@"didEndEditing: %@", n);
-    self.currentTextField = nil;
+
 }
 
 - (void)doThings
@@ -444,110 +456,18 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 
 - (void)handleTextName:(NSString *)name userInfo:(NSDictionary *)userInfo
 {
-    
     [self IOHIDTest:userInfo[@"text"]];
-    /*
-    NSLog(@"text name: %@ info: %@", name, userInfo);
-    UITextField *ctf = [self ctf];
-    NSLog(@"ctf: %@", ctf);
-    NSString *text = userInfo[@"text"];
-      dispatch_async(dispatch_get_main_queue(), ^{
-         
-          if (ctf != nil)
-          {
-              [ctf setText:text];
-              [ctf endEditing:true];
-          }
-          
-      });
-     
-     */
 }
 
-- (void)handleMessageName:(NSString *)name userInfo:(NSDictionary *)userInfo
+
+
+- (void)handleRemoteEvent:(NSString *)remoteEvent
 {
-    if (userInfo != nil)
-    {
-        id object = userInfo[@"object"];
-        [self setCTF:object];
-      
-        return;
-    }
-    NSLog(@"messageNAme: %@ userInfo: %@", name, userInfo);
-    
-     // [self IOHIDTest];
-    /*
-   // id keyWindow = [UIWindow keyWindow];
-    id keyExWindow = [UIWindow _externalKeyWindow];
-    UIScreen *main = [UIScreen mainScreen];
-    id focused = [main focusedView];
-    NSLog(@"#### mainScreen focusedVIew: %@", focused);
-    NSArray *allScreens = [UIScreen screens];
-    NSLog(@"allScreens: %@", allScreens);
-    NSLog(@"keyExWindow: %@", keyExWindow);
-    NSArray *allWindows = [UIWindow allWindowsIncludingInternalWindows:true onlyVisibleWindows:false forScreen:main];
-    NSLog(@"all windows: %@", allWindows);
-    
-    
-    for (UIWindow *window in allWindows)
-    {
-        
-        //NSLog(@"window: %@ recurse: %@", window, rd);
-        if ([window respondsToSelector:@selector(sceneContainerView)])
-        {
-            id scv = [window performSelector:@selector(sceneContainerView)];
-            id window = [scv windowWithSceneID:@"com.nito.tuyuTV"];
-            NSLog(@"######## found window!!!: %@", window);
-            // NSString *rd = [scv performSelector:@selector(recursiveDescription)];
-            //NSLog(@"scv: %@ recurse: %@", scv, rd);
-          
-            
-        }
-    }
-     */
-    
-    id processMan = [objc_getClass("FBProcessManager") sharedInstance];
-    id fap = [processMan valueForKey:@"_foregroundAppProcess"];
-    NSLog(@"processMan: %@ fap: %@", processMan, fap);
-    //_foregroundAppProcess
-    
-    id lib = [objc_getClass("FBApplicationLibrary") sharedInstance];
-    
-    id tuyuapp = [lib installedApplicationWithBundleIdentifier:@"com.nito.tuyuTV"];
-    id allApps = [lib allInstalledApplications];
-    NSLog(@"tuyutv: %@ allApps: %@", tuyuapp, allApps);
-    
-    
-    id app = [objc_getClass("PBAppDelegate") sharedApplicationDelegate];
-    NSLog(@"appDel: %@", app);
-    app = [objc_getClass("PBApplication") sharedApplication];
-    NSLog(@"app: %@", app);
-    id focusedBind = [app FocusedProcessBinding];
-    NSLog(@"focused bind: %@", focusedBind);
-    /*id window = [app appSwitcherWindow];
-    id kwrvc = [[app keyWindow] rootViewController];
-    NSLog(@"window: %@ kwrvc: %@", window, kwrvc);
-    
-    id bl = [objc_getClass("PBBundleLoader") sharedInstance];
-    NSLog(@"bl: %@", bl);
-    id object = [bl pluginControllerForBundleIdentifier:userInfo[@"SBApplicationStateDisplayIDKey"]];
-    NSLog(@"object: %@", object);
-    
-    id hpw = [[objc_getClass("PBWindowManager") sharedInstance]_highestPriorityWindow];
-    id rvc = [hpw rootViewController];
-    NSString *recursiveDesc = [[rvc view] performSelector:@selector(recursiveDescription)];
-    NSLog(@"recurse: %@", recursiveDesc);
-    //
-  id foundView =  [[rvc view] recursiveSubviewWithClass:NSClassFromString(@"FBContextLayerHostView") ];
-    NSLog(@"###### FOUND VIEW: %@", foundView);
-    if (foundView != nil)
-    {
-        NSString *recursiveDesc = [foundView performSelector:@selector(recursiveDescription)];
-        NSLog(@"foundView recurse: %@", recursiveDesc);
-    }
-    */
-    
+    id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+    rocketbootstrap_distributedmessagingcenter_apply(center);
+    [center sendMessageName:@"org.nito.test.doThings" userInfo:@{@"event": remoteEvent}];
 }
+
 
 - (void)appWentFrontMost:(NSNotification *)n
 {
@@ -616,37 +536,10 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 - (void)enterText:(NSString *)enterText
 {
-
-    
     id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
     rocketbootstrap_distributedmessagingcenter_apply(center);
     [center sendMessageName:@"org.nito.test.setText" userInfo:@{@"text": enterText}];
 
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-    id tf = [self ctf];
-
-    NSLog(@"#### TF: %@ ctf: %@ ctfb: %@", tf, [self currentTextField], [self ctfBackup]);
-    
-    NSLog(@"enterText: %@ currentTextField: %@ fmai: %@", enterText, self.currentTextField, self.frontMostAppID);
-    
-    if (self.frontMostAppID.length > 0)
-    {
-        NSLog(@"app bundle: %@", [NSBundle bundleWithIdentifier:self.frontMostAppID]);
-    }
-    
-
-    if (self.currentTextField != nil)
-    {
-       
-            
-            NSLog(@"attempting to enter text: %@", enterText);
-            [self.currentTextField setText:enterText];
-            [self.currentTextField endEditing:true];
-            
-        
-    }
-        });
 }
 
 
@@ -709,15 +602,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     }
 }
 
-- (void)setCurrentTextField:(UITextField *)ctf
-{
-    _currentTextField = ctf;
-}
 
-- (UITextField *)currentTextField
-{
-    return _currentTextField;
-}
 
 + (id)sharedInstance {
     

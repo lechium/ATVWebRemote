@@ -22,5 +22,6 @@
 - (void)startMonitoringNotifications;
 - (void)startItUp;
 - (void)enterText:(NSString *)enterText;
+- (void)handleRemoteEvent:(NSString *)remoteEvent;
 @end
 
