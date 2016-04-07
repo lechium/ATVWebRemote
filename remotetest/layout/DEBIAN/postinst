@@ -1,0 +1,6 @@
+#!/bin/bash
+
+/usr/sbin/chown mobile:mobile /private/var/mobile
+/usr/sbin/chown mobile:mobile /private/var/mobile/Library
+/usr/sbin/chown -R mobile:mobile /private/var/mobile/Library/Preferences
+echo 'finish:restart'
