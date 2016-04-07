@@ -1,9 +1,9 @@
-Package: com.nito.remotetest
-Name: remoteTest
-Depends: mobilesubstrate
+Package: com.nito.airmagic
+Name: AirMagic
+Depends: mobilesubstrate, com.rpetrich.rocketbootstrap
 Version: 0.0.1
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Description: A powerful webserver that accepts commands to control on screen navigation and text entry
 Maintainer: Kevin Bradley
 Author: Kevin Bradley
 Section: Tweaks

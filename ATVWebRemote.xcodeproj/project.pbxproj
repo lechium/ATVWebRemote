@@ -64,7 +64,6 @@
 		89297BBA1CB1A68E003D7473 /* remoteTest.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 892976051CB1A68A003D7473 /* remoteTest.dylib */; };
 		89297BBB1CB1A68E003D7473 /* com.nito.remotetest-0.0.1 in Resources */ = {isa = PBXBuildFile; fileRef = 892976071CB1A68A003D7473 /* com.nito.remotetest-0.0.1 */; };
 		89297BBC1CB1A68E003D7473 /* ATVHIDSystemClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 892976081CB1A68A003D7473 /* ATVHIDSystemClient.h */; };
-		89297C391CB1A68F003D7473 /* control in Resources */ = {isa = PBXBuildFile; fileRef = 892976CA1CB1A68B003D7473 /* control */; };
 		89297C3A1CB1A68F003D7473 /* ContextFilterLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 892976CC1CB1A68B003D7473 /* ContextFilterLogFormatter.h */; };
 		89297C3B1CB1A68F003D7473 /* ContextFilterLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 892976CD1CB1A68B003D7473 /* ContextFilterLogFormatter.m */; };
 		89297C3C1CB1A68F003D7473 /* DDAbstractDatabaseLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 892976CE1CB1A68B003D7473 /* DDAbstractDatabaseLogger.h */; };
@@ -1109,6 +1108,7 @@
 		892980681CB1A811003D7473 /* MyHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 892980661CB1A811003D7473 /* MyHTTPConnection.m */; };
 		8929806B1CB1DF09003D7473 /* NSObject+AssociatedObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 892980691CB1DF08003D7473 /* NSObject+AssociatedObjects.h */; };
 		8929806C1CB1DF09003D7473 /* NSObject+AssociatedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 8929806A1CB1DF08003D7473 /* NSObject+AssociatedObjects.m */; };
+		8929FCC51CB571B8003D7473 /* control in Resources */ = {isa = PBXBuildFile; fileRef = 8929FCC41CB571B8003D7473 /* control */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1171,7 +1171,6 @@
 		892976051CB1A68A003D7473 /* remoteTest.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = remoteTest.dylib; sourceTree = "<group>"; };
 		892976071CB1A68A003D7473 /* com.nito.remotetest-0.0.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = "com.nito.remotetest-0.0.1"; sourceTree = "<group>"; };
 		892976081CB1A68A003D7473 /* ATVHIDSystemClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATVHIDSystemClient.h; sourceTree = "<group>"; };
-		892976CA1CB1A68B003D7473 /* control */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = control; sourceTree = "<group>"; };
 		892976CC1CB1A68B003D7473 /* ContextFilterLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextFilterLogFormatter.h; sourceTree = "<group>"; };
 		892976CD1CB1A68B003D7473 /* ContextFilterLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextFilterLogFormatter.m; sourceTree = "<group>"; };
 		892976CE1CB1A68B003D7473 /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
@@ -2370,6 +2369,7 @@
 		8929FCC11CB56ACA003D7473 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		8929FCC21CB56ACA003D7473 /* remote.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = remote.css; sourceTree = "<group>"; };
 		8929FCC31CB56ACA003D7473 /* remote.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = remote.js; sourceTree = "<group>"; };
+		8929FCC41CB571B8003D7473 /* control */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = control; path = remotetest/layout/DEBIAN/control; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2486,6 +2486,7 @@
 		8929759C1CB1A5C0003D7473 /* ATVWebRemote */ = {
 			isa = PBXGroup;
 			children = (
+				8929FCC41CB571B8003D7473 /* control */,
 				8929FCC01CB56ACA003D7473 /* AirControl */,
 				8929806D1CB1EF8C003D7473 /* PrivateHeaders */,
 				892975C71CB1A689003D7473 /* remotetest */,
@@ -2500,7 +2501,6 @@
 			children = (
 				892975C81CB1A689003D7473 /* .theos */,
 				892976081CB1A68A003D7473 /* ATVHIDSystemClient.h */,
-				892976CA1CB1A68B003D7473 /* control */,
 				892976CB1CB1A68B003D7473 /* Core */,
 				892976F81CB1A68B003D7473 /* debs */,
 				892977131CB1A68B003D7473 /* IOHIDEvent.cpp */,
@@ -6087,7 +6087,6 @@
 				89297F6F1CB1A690003D7473 /* framework in Resources */,
 				89297CBC1CB1A68F003D7473 /* Symlink.pm in Resources */,
 				89297E561CB1A690003D7473 /* .keep in Resources */,
-				89297C391CB1A68F003D7473 /* control in Resources */,
 				89297CB01CB1A68F003D7473 /* Patch.pm in Resources */,
 				89297E4C1CB1A690003D7473 /* iphone.mk in Resources */,
 				89297CD51CB1A68F003D7473 /* logos.vim in Resources */,
@@ -6142,6 +6141,7 @@
 				89297CC81CB1A68F003D7473 /* NICType.pm in Resources */,
 				89297E591CB1A690003D7473 /* .keep in Resources */,
 				89297E601CB1A690003D7473 /* preference_bundle.nic.tar in Resources */,
+				8929FCC51CB571B8003D7473 /* control in Resources */,
 				89297E491CB1A690003D7473 /* simulator.mk in Resources */,
 				89297C841CB1A68F003D7473 /* Makefile.new in Resources */,
 				89297E351CB1A68F003D7473 /* Darwin.mk in Resources */,
