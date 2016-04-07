@@ -1,7 +1,7 @@
 TARGET = iphone:8.4
 export GO_EASY_ON_ME=1
 export SDKVERSION=8.4
-THEOS_DEVICE_IP=jbatv.local
+THEOS_DEVICE_IP=atvjb.local
 
 include theos/makefiles/common.mk
 

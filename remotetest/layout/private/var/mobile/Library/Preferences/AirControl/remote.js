@@ -30,6 +30,9 @@ $(document).ready(function() {
         case 27:
             $('#menu').mousedown();
             return false;
+		case 84:
+			$('#selectTextEntry').mousedown();
+			return false;
         }
     });
 });
