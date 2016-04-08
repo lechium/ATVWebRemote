@@ -12,6 +12,8 @@
 #import "SpringBoardServices.h"
 #import "AppSupport/CPDistributedMessagingCenter.h"
 
+
+
 @implementation MyHTTPConnection
 
 + (NSString *)airControlRoot
@@ -21,6 +23,27 @@
         [[NSFileManager defaultManager] createDirectoryAtPath:airControlPath withIntermediateDirectories:TRUE attributes:nil error:nil];
     
     return airControlPath;
+}
+
++ (NSString *)properVersion
+{
+    if (ATV_VINFO != nil)
+    { return [[ATV_VINFO sharedInstance] osVersion]; }
+    
+    return nil;
+}
+
++ (NSString *)osBuild
+{
+    if (ATV_VINFO != nil)
+    { return [[ATV_VINFO sharedInstance] osBuildVersion]; }
+    
+    return nil;
+}
+
+- (float)currentVersion
+{
+    return 1.0f;
 }
 
 - (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path
@@ -45,6 +68,8 @@
 
 - (void)frontMostScience
 {
+    id fmSysInfo = [ATV_VINFO sharedInstance];
+    NSLog(@"#### FMSYSINFO: %@", fmSysInfo);
     mach_port_t *p = (mach_port_t *)SBSSpringBoardServerPort();
     char frontmostAppS[256];
     memset(frontmostAppS,sizeof(frontmostAppS),0);
@@ -74,7 +99,7 @@
 
 - (id)processURL:(NSString *)path
 {
-    //[self frontMostScience];
+    [self frontMostScience];
     NSArray *pathCommands = [[path substringFromIndex:1] componentsSeparatedByString:@"="];
     NSString *pathCommand = [pathCommands objectAtIndex:0];
     NSString *pathValue = nil;

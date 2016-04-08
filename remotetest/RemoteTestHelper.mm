@@ -14,6 +14,12 @@
 
 IOHIDEventSystemClientRef IOHIDEventSystemClientCreate(CFAllocatorRef);
 
+@interface UIDevice (science)
+
+- (NSString *)buildVersion;
+
+@end
+
 @interface NSString (SplitString)
 
 - (NSArray *)splitString;
@@ -241,9 +247,11 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 
 - (void)handleMessageName:(NSString *)name userInfo:(NSDictionary *)userInfo
 {
-       NSLog(@"messageNAme: %@ userInfo: %@", name, userInfo);
+   
+    //   NSLog(@"messageNAme: %@ userInfo: %@", name, userInfo);
     if (userInfo != nil)
     {
+        BOOL holdTouch = false;
         NSString *event = userInfo[@"event"];
         if (!_ioSystemClient)
             _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
@@ -261,12 +269,14 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         else if ([event isEqualToString:@"down"]) usage = 67;
         else if ([event isEqualToString:@"up"]) usage = 66;
         else if ([event isEqualToString:@"tap"]) usage = 65;
-        else if ([event isEqualToString:@"home"]) usage = 96;
-        else if ([event isEqualToString:@"vlup"]) usage = 233;
-        else if ([event isEqualToString:@"vldwn"]) usage = 234;
+        else if ([event isEqualToString:@"home"]) { usage = 134; holdTouch = true; usagePage = 1; }
+        //else if ([event isEqualToString:@"home"]) { usage = 96; holdTouch = true; }
+        else if ([event isEqualToString:@"vlup"]) { usage = 233; holdTouch = true; }
+        else if ([event isEqualToString:@"vldwn"]){ usage = 234; holdTouch = true; }
         else if ([event isEqualToString:@"siri"]) usage = 4;
         else if ([event isEqualToString:@"play"]) usage = 205;
         else if ([event isEqualToString:@"select"]) usage = 128;
+        else if ([event isEqualToString:@"selecth"]){ usage = 128; holdTouch = true; }
          else if ([event isEqualToString:@"menu"]){ usage = 134;  usagePage = 1; }
         
         IOHIDEventRef navDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
@@ -282,8 +292,38 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
                                                     usage,
                                                                0,
                                                                0);
-        [processMan sendHIDEventToTopApplication:navDown];
-        [processMan sendHIDEventToTopApplication:navUp];
+        
+        if (holdTouch == true) {
+            
+            if (usage == 134)
+            {
+                [processMan sendHIDEventToTopApplication:navDown];
+                [processMan sendHIDEventToTopApplication:navDown];
+                [processMan sendHIDEventToTopApplication:navDown];
+                [processMan sendHIDEventToTopApplication:navDown];
+                [processMan sendHIDEventToTopApplication:navDown];
+                [processMan sendHIDEventToTopApplication:navDown];
+                [processMan sendHIDEventToTopApplication:navDown];
+                [processMan sendHIDEventToTopApplication:navDown];
+            } else {
+                [processMan sendHIDEventToTopApplication:navDown];
+                [processMan sendHIDEventToTopApplication:navDown];
+            }
+     
+          
+            if ([self respondsToSelector:@selector(delayedRelease:)])
+            {
+                [self performSelector:@selector(delayedRelease:) withObject:event afterDelay:1.0];
+                // [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(delayedRelease:) userInfo:@{@"event": event} repeats:false];
+                
+            }
+            
+        } else {
+            [processMan sendHIDEventToTopApplication:navDown];
+            [processMan sendHIDEventToTopApplication:navUp];
+        }
+        
+     
         
     }
  
@@ -300,6 +340,56 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
      
      */
     
+}
+
+- (void)delayedRelease:(NSString *)event
+{
+
+    if (!_ioSystemClient)
+        _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
+    
+    id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
+    uint64_t abTime = mach_absolute_time();
+    AbsoluteTime timeStamp;
+    timeStamp.hi = (UInt32)(abTime >> 32);
+    timeStamp.lo = (UInt32)(abTime);
+    
+    uint16_t usage = 0;
+    uint16_t usagePage = 12;
+    if ([event isEqualToString:@"right"]) usage = 69;
+    else if ([event isEqualToString:@"left"]) usage = 68;
+    else if ([event isEqualToString:@"down"]) usage = 67;
+    else if ([event isEqualToString:@"up"]) usage = 66;
+    else if ([event isEqualToString:@"tap"]) usage = 65;
+    //else if ([event isEqualToString:@"home"]) usage = 96;
+     else if ([event isEqualToString:@"home"]) { usage = 134; usagePage = 1; }
+    else if ([event isEqualToString:@"vlup"]) usage = 233;
+    else if ([event isEqualToString:@"vldwn"]) usage = 234;
+    else if ([event isEqualToString:@"siri"]) usage = 4;
+    else if ([event isEqualToString:@"play"]) usage = 205;
+    else if ([event isEqualToString:@"select"]) usage = 128;
+    else if ([event isEqualToString:@"selecth"]) usage = 128;
+    else if ([event isEqualToString:@"menu"]){ usage = 134;  usagePage = 1; }
+    
+    IOHIDEventRef navUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                          timeStamp,
+                                                          usagePage,
+                                                          usage,
+                                                          0,
+                                                          0);
+    if (usage == 134) {
+        [processMan sendHIDEventToTopApplication:navUp];
+        [processMan sendHIDEventToTopApplication:navUp];
+        [processMan sendHIDEventToTopApplication:navUp];
+        [processMan sendHIDEventToTopApplication:navUp];
+        [processMan sendHIDEventToTopApplication:navUp];
+        [processMan sendHIDEventToTopApplication:navUp];
+        [processMan sendHIDEventToTopApplication:navUp];
+        [processMan sendHIDEventToTopApplication:navUp];
+    } else {
+        [processMan sendHIDEventToTopApplication:navUp];
+        [processMan sendHIDEventToTopApplication:navUp];
+    }
 }
 
 - (void)IOHIDTest:(NSString *)theText
@@ -498,7 +588,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 - (void)startItUp
 {
-    NSLog(@"pbdelegateref: %@", self.pbDelegateRef);
+   // NSLog(@"#### _getSystemDetails: %@", [self _getSystemDetails]);
     // Configure our logging framework.
     // To keep things simple and fast, we're just going to log to the Xcode console.
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
@@ -511,13 +601,13 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     
     // Tell the server to broadcast its presence via Bonjour.
     // This allows browsers such as Safari to automatically discover our service.
-    [httpServer setType:@"_aircontrol._tcp."];
+    [httpServer setType:@"_airmagic._tcp."];
     
     // Normally there's no need to run our server on any specific port.
     // Technologies like Bonjour allow clients to dynamically discover the server's port at runtime.
     // However, for easy testing you may want force a certain port so you can just hit the refresh button.
     [httpServer setPort:80];
-//    [httpServer setTXTRecordDictionary:[self txtRecordDictionary]];
+    [httpServer setTXTRecordDictionary:[self txtRecordDictionary]];
     // Serve files from our embedded Web folder
     //	NSString *webPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Web"];
     //	DDLogVerbose(@"Setting document root: %@", webPath);
@@ -537,6 +627,40 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
   //  [self startTextFieldNotifications];
 }
 
+
+- (NSDictionary *)systemDetails
+{
+    NSString *osversion = [[UIDevice currentDevice] systemVersion];
+    NSString *osBuild = [[UIDevice currentDevice] buildVersion];
+    //NSLog(@"osv: %@ osb: %@", osversion, osBuild);
+    if (osBuild != nil && osversion != nil)
+    {
+        return @{@"osVersion": osversion, @"osBuild": osBuild};
+    }
+    return nil;
+}
+
+- (NSDictionary *)_getSystemDetails
+{
+    id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+    rocketbootstrap_distributedmessagingcenter_apply(center);
+    return [center sendMessageAndReceiveReplyName:@"org.nito.test.systemDetails" userInfo:nil];
+}
+
+- (float)currentVersion
+{
+    return 1.0f;
+}
+
+- (NSDictionary *)txtRecordDictionary
+{
+    NSString *osversion = [[UIDevice currentDevice] systemVersion];
+    NSString *osBuild = [[UIDevice currentDevice] buildVersion];
+    NSString *currentVersionNumber = [NSString stringWithFormat:@"%.01f", [self currentVersion]];
+    return [NSDictionary dictionaryWithObjectsAndKeys:currentVersionNumber, @"apiversion", osversion, @"osversion" , osBuild, @"osbuild", nil];
+    
+    
+}
 
 
 - (void)enterText:(NSString *)enterText

@@ -166,6 +166,7 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
 }
 
 %end
+/*
 
 %hook PBApplication
 
@@ -180,7 +181,7 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
 
 %end
 
-
+*/
 %hook PBAppDelegate
 
 
@@ -199,8 +200,9 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
     
     Method ourMessageHandler = class_getInstanceMethod(rth, @selector(handleMessageName:userInfo:));
     Method setTextHandler = class_getInstanceMethod(rth, @selector(handleTextName:userInfo:));
-
+    Method delayedRelease = class_getInstanceMethod(rth, @selector(delayedRelease:));
     Method ioTest = class_getInstanceMethod(rth, @selector(IOHIDTest:));
+    Method details = class_getInstanceMethod(rth, @selector(systemDetails));
     
      class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
     
@@ -208,9 +210,14 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
     class_addMethod(pbad, @selector(handleTextName:userInfo:), method_getImplementation(setTextHandler), method_getTypeEncoding(setTextHandler));
 
     class_addMethod(pbad, @selector(IOHIDTest:), method_getImplementation(ioTest), method_getTypeEncoding(ioTest));
+    
+    class_addMethod(pbad, @selector(delayedRelease:), method_getImplementation(delayedRelease), method_getTypeEncoding(delayedRelease));
+    
+    class_addMethod(pbad, @selector(systemDetails), method_getImplementation(details), method_getTypeEncoding(details));
                                                    
     [center registerForMessageName:@"org.nito.test.doThings" target:self selector:@selector(handleMessageName:userInfo:)];
     [center registerForMessageName:@"org.nito.test.setText" target:self selector:@selector(handleTextName:userInfo:)];
+    [center registerForMessageName:@"org.nito.test.systemDetails" target:self selector:@selector(systemDetails)];
     
     //id app = [objc_getClass("PBApplication") sharedApplication];
     
@@ -220,29 +227,13 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
 
 - (_Bool)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2
 {
-	NSLog(@"#### we up in here???");
 	%log;
-    
-   
     RemoteTestHelper *rmh = [RemoteTestHelper sharedInstance];
-       [rmh setPbDelegateRef:self];
     [rmh startItUp];
-    
 	return %orig;
 }
 
-- (void)_sendMediaRemoteCommand:(unsigned int)arg1 {
-	%log;
-	%orig;
-}
-- (void)_sendMediaRemoteCommand:(unsigned int)arg1 withOptions:(id)arg2 {
-	%log;
-	%orig;
-}
-- (_Bool)_shouldSendMediaRemoteCommand:(unsigned int)arg1{
-	%log;
-	return %orig;
-}
+
 
 %end
 /*
@@ -514,9 +505,9 @@ static __attribute__((constructor)) void myHooksInit() {
 	RemoteTestHelper *rmh = [RemoteTestHelper sharedInstance];
 	[rmh startMonitoringNotifications];
     //[rmh startItUp];
-	NSLog(@"rmh: %@", rmh);
-    
-    
+
+    /*
+    NSLog(@"rmh: %@", rmh);
     clientCreatePointer clientCreate;
     void *handle = dlopen(0, 9);
     *(void**)(&clientCreate) = dlsym(handle,"IOHIDEventSystemClientCreate");
@@ -526,7 +517,7 @@ static __attribute__((constructor)) void myHooksInit() {
     ;
     fprintf(stdout, "\n\n### PRINTF TO STD OUT\n");
     fprintf(stderr, "\n\n### PRINTF TO STD ERR\n");
-     
+     */
   	//setMaximumRelativeLoggingDepth(5);
 	//watchClass([SSDownloadMetadata class]);
 	//watchClass(NSClassFromString(@"SSDownload"));
@@ -538,6 +529,69 @@ static __attribute__((constructor)) void myHooksInit() {
 - (id)addItemWithIdentifier:(id)arg1
 
  { %log; id r = %orig; HBLogDebug(@" = %@", r); return r; }
+
+%end
+
+%hook PBCoreControlManager
+- (void)coreControlManagerDidRequestAlternateRouteVolumeDecrease:(id)arg1
+{
+    %log;
+    %orig;
+}
+
+- (void)coreControlManagerDidRequestAlternateRouteVolumeIncrease:(id)arg1
+{
+    %log;
+    %orig;
+}
+
+- (void)coreControlManagerDidUpdatePolicy:(id)arg1
+{
+    %log;
+    %orig;
+}
+
+- (void)coreControlManager:(id)arg1 didReceiveRequest:(long long)arg2
+{
+    %log;
+    %orig;
+}
+
+%end
+
+@interface TVSCoreControlManager : NSObject
+
+- (id)delegate;
+
+@end
+
+%hook TVSCoreControlManager
+
+- (void)_setVolumeIRCommandsAllowed:(_Bool)arg1
+{
+ 
+    NSLog(@"delegate: %@", [self delegate]);
+    %log;
+    %orig;
+}
+
+- (void)_decreaseRouteVolume
+{
+    %log;
+    %orig;
+}
+
+- (void)_increaseRouteVolume
+{
+    %log;
+    %orig;
+}
+
+- (void)_sendVolumeAction:(long long)arg1
+{
+    %log;
+    %orig;
+}
 
 %end
 /*

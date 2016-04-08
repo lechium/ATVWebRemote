@@ -20,6 +20,17 @@ body {
   -o-transition: text-shadow ease-in 150ms, color ease-in 150ms, background ease-in 300ms;
   transition: text-shadow ease-in 150ms, color ease-in 150ms, background ease-in 300ms;
 }
+
+.padding {
+    display: block;
+    float: left;
+    margin: 1em 1%;
+    padding: 1em 0;
+    width: 30%;
+    
+}
+
+
 .button:hover {
   background: #111;
   color: #FFF;

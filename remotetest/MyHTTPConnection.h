@@ -11,5 +11,7 @@
 @interface MyHTTPConnection : HTTPConnection
 
 + (NSString *)airControlRoot;
-
++ (NSString *)properVersion;
++ (NSString *)osBuild;
+- (float)currentVersion;
 @end

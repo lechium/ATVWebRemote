@@ -33,8 +33,8 @@ remoteTest_FILES += Core/HTTPRedirectResponse.m
 remoteTest_FILES += Core/HTTPServer.m
 remoteTest_FILES += Core/WebSocket.m
 remoteTest_LDFLAGS += -Wl,-segalign,4000
-remoteTest_Frameworks += WebCore ImageIO Foundation CFNetwork AppSupport
-remoteTest__PRIVATE_FRAMEWORKS = GraphicsServices IOKit
+remoteTest_Frameworks += WebCore ImageIO Foundation CFNetwork AppSupport UIKit
+remoteTest__PRIVATE_FRAMEWORKS = GraphicsServices IOKit FMCore
 remoteTest_LIBRARIES += rocketbootstrap
 include $(THEOS_MAKE_PATH)/tweak.mk
 

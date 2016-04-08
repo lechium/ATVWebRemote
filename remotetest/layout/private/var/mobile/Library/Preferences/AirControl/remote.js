@@ -9,6 +9,10 @@ $(document).ready(function() {
     });
     $(document).keydown(function(e) {
         switch (e.keyCode) {
+        
+        case 83:
+            $('#selecth').mousedown();
+            return false;
         case 37:
             $('#left').mousedown();
             return false;

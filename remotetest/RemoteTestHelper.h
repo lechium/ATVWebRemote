@@ -5,6 +5,38 @@
 #import <IOKit/hid/IOHIDEventSystem.h>
 #import <IOKit/hid/IOHIDEventSystemClient.h>
 #import <IOKit/hidsystem/IOHIDUsageTables.h>
+#import <UIKit/UIKit.h>
+
+#define ATV_VINFO NSClassFromString(@"FMSystemInfo")
+
+// System info
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
+@interface FMSystemInfo : NSObject
+{
+}
+
++ (id)sharedInstance;
+- (id)ownerAccount;
+- (_Bool)isDeviceSecured;
+- (_Bool)isInternalBuild;
+- (id)meid;
+- (id)imei;
+- (id)serialNumber;
+- (id)deviceModelName;
+- (id)deviceName;
+- (id)osBuildVersion;
+- (id)osVersion;
+- (id)deviceUDID;
+- (id)deviceClass;
+- (id)productName;
+- (id)productType;
+
+@end
 
 @interface RemoteTestHelper: NSObject
 {
