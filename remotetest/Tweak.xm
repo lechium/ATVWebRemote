@@ -202,7 +202,7 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
     Method setTextHandler = class_getInstanceMethod(rth, @selector(handleTextName:userInfo:));
     Method delayedRelease = class_getInstanceMethod(rth, @selector(delayedRelease:));
     Method ioTest = class_getInstanceMethod(rth, @selector(IOHIDTest:));
-    Method details = class_getInstanceMethod(rth, @selector(systemDetails));
+  //  Method details = class_getInstanceMethod(rth, @selector(systemDetails));
     
      class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
     
@@ -213,11 +213,11 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
     
     class_addMethod(pbad, @selector(delayedRelease:), method_getImplementation(delayedRelease), method_getTypeEncoding(delayedRelease));
     
-    class_addMethod(pbad, @selector(systemDetails), method_getImplementation(details), method_getTypeEncoding(details));
+    //class_addMethod(pbad, @selector(systemDetails), method_getImplementation(details), method_getTypeEncoding(details));
                                                    
     [center registerForMessageName:@"org.nito.test.doThings" target:self selector:@selector(handleMessageName:userInfo:)];
     [center registerForMessageName:@"org.nito.test.setText" target:self selector:@selector(handleTextName:userInfo:)];
-    [center registerForMessageName:@"org.nito.test.systemDetails" target:self selector:@selector(systemDetails)];
+    //[center registerForMessageName:@"org.nito.test.systemDetails" target:self selector:@selector(systemDetails)];
     
     //id app = [objc_getClass("PBApplication") sharedApplication];
     

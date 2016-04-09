@@ -122,7 +122,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         // Handle alphanumeric characters and basic symbols.
         int keyCode = [key characterAtIndex:0];
         
-        NSLog(@"keyCode: %i", keyCode);
+        //NSLog(@"keyCode: %i", keyCode);
         
         if (97 <= keyCode && keyCode <= 122) // Handle a-z.
             return keyCode - lowercaseAlphabeticOffset;
@@ -405,7 +405,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
    
     
     NSString *stripped = [theText stringByRemovingPercentEncoding];
-    NSLog(@"original string: %@ stripped: %@", theText, stripped);
+  //  NSLog(@"original string: %@ stripped: %@", theText, stripped);
     
     
  //   if ([theText isEqualToString:@"DELETE_ALL_TEXT_NAOW"])
@@ -437,7 +437,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     
     for (NSString *item in split)
     {
-        NSLog(@"item: %@", item);
+        //NSLog(@"item: %@", item);
         uint32_t usage = hidUsageCodeForCharacter(item);
         
         IOHIDEventRef eventRefDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
@@ -501,7 +501,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 
 - (void)startTextFieldNotifications
 {
-    NSLog(@"start text field notes");
+    //NSLog(@"start text field notes");
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginEditing:) name:@"UITextFieldTextDidBeginEditingNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEndEditing:) name:@"UITextFieldTextDidEndEditingNotification" object:nil];
 }
@@ -569,7 +569,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     UIScreen *main = [UIScreen mainScreen];
 
     id focused = [main focusedView];
-    NSLog(@"#### appWentFrontMost mainScreen focusedVIew: %@", focused);
+    //NSLog(@"#### appWentFrontMost mainScreen focusedVIew: %@", focused);
   //  NSLog(@"frontmost: %@", n.userInfo);
     self.frontMostAppID = [n.userInfo[@"SBApplicationStateDisplayIDKey"] copy];
    // NSLog(@"fmai: %@", self.frontMostAppID);
@@ -642,6 +642,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 - (NSDictionary *)_getSystemDetails
 {
+    return nil;
     id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
     rocketbootstrap_distributedmessagingcenter_apply(center);
     return [center sendMessageAndReceiveReplyName:@"org.nito.test.systemDetails" userInfo:nil];

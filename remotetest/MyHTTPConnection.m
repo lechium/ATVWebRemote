@@ -69,13 +69,13 @@
 - (void)frontMostScience
 {
     id fmSysInfo = [ATV_VINFO sharedInstance];
-    NSLog(@"#### FMSYSINFO: %@", fmSysInfo);
+//    NSLog(@"#### FMSYSINFO: %@", fmSysInfo);
     mach_port_t *p = (mach_port_t *)SBSSpringBoardServerPort();
     char frontmostAppS[256];
     memset(frontmostAppS,sizeof(frontmostAppS),0);
     SBFrontmostApplicationDisplayIdentifier(p,frontmostAppS);
     NSString * frontmostApp=[NSString stringWithFormat:@"%s",frontmostAppS];
-    NSLog(@"Frontmost app is %@",frontmostApp);
+  //  NSLog(@"Frontmost app is %@",frontmostApp);
     //get list of running apps from SpringBoard
    // NSArray *allApplications = SBSCopyApplicationDisplayIdentifiers(p,NO, NO);
     //for(NSString *identifier in allApplications)
@@ -99,7 +99,7 @@
 
 - (id)processURL:(NSString *)path
 {
-    [self frontMostScience];
+   // [self frontMostScience];
     NSArray *pathCommands = [[path substringFromIndex:1] componentsSeparatedByString:@"="];
     NSString *pathCommand = [pathCommands objectAtIndex:0];
     NSString *pathValue = nil;
@@ -107,7 +107,7 @@
     {
         pathValue = [pathCommands objectAtIndex:1];
     }
-    NSLog(@"processURL path command: %@ pathValue: %@", pathCommand, pathValue);
+    //NSLog(@"processURL path command: %@ pathValue: %@", pathCommand, pathValue);
     if ([pathCommand isEqualToString:@"enterText"])
     {
         [[RemoteTestHelper sharedInstance] enterText:pathValue];
