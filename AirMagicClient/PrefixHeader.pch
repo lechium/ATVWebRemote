@@ -1,0 +1,18 @@
+//
+//  PrefixHeader.pch
+//  ATVWebRemote
+//
+//  Created by Kevin Bradley on 4/11/16.
+//  Copyright © 2016 nito. All rights reserved.
+//
+
+#define LOG_SELF NSLog(@"%@ %s", self, _cmd)
+#define DEFAULTS [NSUserDefaults standardUserDefaults]
+#define ATV_HOST @"appleTVHost"
+#define ATV_API  @"atvAPIVersion"
+#define ATV_OS	 @"atvOSVersion"
+#define OSV      @"atvShortVersion"
+#define APPLE_TV_ADDRESS [DEFAULTS stringForKey:ATV_HOST]
+#define APPLE_TV_API [DEFAULTS stringForKey:ATV_API]
+#define APPLE_TV_OS [DEFAULTS stringForKey:ATV_OS]
+#define SELECTED_VALUE [DEFAULTS stringForKey:@"selectedValue"]
