@@ -776,6 +776,9 @@ DQ
 IA
 </string>
                         </buttonCell>
+                        <connections>
+                            <action selector="playAction:" target="Voe-Tx-rLC" id="gwC-of-yGx"/>
+                        </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1VD-ez-cRi">
                         <rect key="frame" x="25" y="95" width="46" height="55"/>
