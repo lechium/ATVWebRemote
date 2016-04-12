@@ -6,7 +6,9 @@
 //  Copyright © 2016 nito. All rights reserved.
 //
 
-#define LOG_SELF NSLog(@"%@ %s", self, _cmd)
+#define TARGET_OS_OSX (!(TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH))
+
+#define LOG_SELF NSLog(@"%@ %@", self, NSStringFromSelector(_cmd))
 #define DEFAULTS [NSUserDefaults standardUserDefaults]
 #define ATV_HOST @"appleTVHost"
 #define ATV_API  @"atvAPIVersion"

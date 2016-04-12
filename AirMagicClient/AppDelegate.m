@@ -117,7 +117,7 @@ static NSString *appleTVAddress = nil;
 
 - (IBAction)playAction:(id)sender
 {
-    NSString *httpCommand = [NSString stringWithFormat:@"http://%@/remoteAction=play", APPLE_TV_ADDRESS];
+    NSString *httpCommand = [NSString stringWithFormat:@"http://%@/remoteCommand=play", APPLE_TV_ADDRESS];
     [NSTask launchedTaskWithLaunchPath:@"/usr/bin/curl" arguments:[NSArray arrayWithObject:httpCommand]];
 }
 
@@ -139,7 +139,6 @@ static NSString *appleTVAddress = nil;
 
 - (BOOL)hostAvailable
 {
-    
     NSMutableURLRequest *request = [self hostAvailableRequest];
     NSHTTPURLResponse * theResponse = nil;
     NSError *theError = nil;
@@ -156,7 +155,6 @@ static NSString *appleTVAddress = nil;
 
 - (NSMutableURLRequest *)hostAvailableRequest // theres gotta be a more elegant way to do this
 {
-    
     NSString *httpCommand = [NSString stringWithFormat:@"http://%@/ap", APPLE_TV_ADDRESS];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setTimeoutInterval:2];
@@ -165,8 +163,6 @@ static NSString *appleTVAddress = nil;
     [request setValue:@"text/xml" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"X-User-Agent" forHTTPHeaderField:@"User-Agent"];
     [request setValue:nil forHTTPHeaderField:@"X-User-Agent"];
-    
-    
     return request;
 }
 

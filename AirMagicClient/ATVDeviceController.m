@@ -8,8 +8,9 @@
 
 @implementation ATVDeviceController
 
+#if TARGET_OS_OSX
 @synthesize deviceController, theComboBox;
-
+#endif
 
 
 - (NSString *)convertedName:(NSString *)inputName
@@ -18,7 +19,7 @@
 	
     NSMutableString	*fixedNetLabel = [NSMutableString stringWithString:[inputName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@".#,<>/?\'\\\[]{}+=-~`\";:"]]];
 	//NSLog(@"fixedNetLabel: %@", fixedNetLabel);
-    [fixedNetLabel replaceOccurrencesOfString:@" " withString:@"-" options:nil range:NSMakeRange(0, [fixedNetLabel length])];
+    [fixedNetLabel replaceOccurrencesOfString:@" " withString:@"-" options:0 range:NSMakeRange(0, [fixedNetLabel length])];
 	//int nameLength = [fixedNetLabel length];
 	//fixedNetLabel = [fixedNetLabel substringToIndex:(nameLength-1)];
     return [NSString stringWithString:fixedNetLabel];
@@ -26,7 +27,7 @@
 
 - (NSString *)fixedName:(NSString *)inputName
 {
-	int nameLength = [inputName length];
+	NSInteger nameLength = [inputName length];
 	NSString *newName = [inputName substringToIndex:(nameLength-1)];
 	return newName;
 }
@@ -45,10 +46,24 @@
 		NSString *currentString = [[NSString alloc] initWithData:[theDict valueForKey:theKey] encoding:NSUTF8StringEncoding];
 		[finalDict setObject:currentString forKey:theKey];
 	}
-	
+    NSString *ip;
+    int port;
+    struct sockaddr_in *addr;
+    
+    addr = (struct sockaddr_in *) [[[theService addresses] objectAtIndex:0]
+                                   bytes];
+    ip = [NSString stringWithUTF8String:(char *) inet_ntoa(addr->sin_addr)];
+    port = ntohs(((struct sockaddr_in *)addr)->sin_port);
+    //NSLog(@"ipaddress: %@", ip);
+    //NSLog(@"port: %i", port);
+    
+    NSString *fullIP = [NSString stringWithFormat:@"%@:%i", ip, port];
+    finalDict[@"fullIP"] = fullIP;
+    finalDict[@"hostname"] = theService.hostName;
 	return finalDict;
 }
 
+#if TARGET_OS_OSX
 - (IBAction)menuItemSelected:(id)sender
 {
 	if (sender == nil)
@@ -125,7 +140,7 @@
 	
 }
 
-
+#endif
 
 
 
@@ -138,14 +153,17 @@
     //NSLog(@"awake from nib");
     // Passing in "" for the domain causes us to browse in the default browse domain
 
+    
    [browser searchForServicesOfType:@"_airmagic._tcp." inDomain:@""];
 	// [hostNameField setStringValue:@""];
 	self = [super init];
+    
+#if TARGET_OS_OSX
 	NSDictionary *catv = [NSDictionary dictionaryWithObject:@"Choose Apple TV" forKey:@"name"];
 	NSDictionary *theDict = [NSDictionary dictionaryWithObject:@"Other..." forKey:@"name"];
 	[services addObject:catv];
 	[services addObject:theDict];
-	
+#endif
 	return self;
 }
 
@@ -217,9 +235,15 @@
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
 	//NSLog(@"didFindService: %@", aNetService);
 
+    
+    #if TARGET_OS_OSX
 	int servicesCount = [services count]-1;
 	
 	[services insertObject:aNetService atIndex:servicesCount];
+#else
+    [services addObject:aNetService];
+    [aNetService setDelegate:self];
+#endif
     //[services addObject:aNetService];
 	//[aNetService setDelegate:self];
     [aNetService resolveWithTimeout:5.0];
@@ -227,13 +251,15 @@
     if(!moreComing) {
         //[deviceList reloadData];
 		
+#if TARGET_OS_OSX
 		[deviceController setContent:services];
-		
+#endif
 		 
 		//[self menuItemSelected:theComboBox];
 	}
 }
 
+#if TARGET_OS_OSX
 
 - (NSString *)input: (NSString *)prompt defaultValue: (NSString *)defaultValue {
 	NSAlert *alert = [NSAlert alertWithMessageText: prompt
@@ -260,6 +286,7 @@
 		return nil;
 	}
 }
+#endif
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didRemoveService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
     [services removeObject:aNetService];
@@ -288,9 +315,20 @@
 		   forServiceType:(NSString *)serviceType
 
 {
-	//NSLog(@"%@ %s", self, _cmd);
+    LOG_SELF;
     // Perform appropriate logic to ensure that [netService addresses]
 	
+    if ([self.delegate respondsToSelector:@selector(servicesFound:)])
+    {
+        NSMutableArray *fullServices = [NSMutableArray new];
+        for (NSNetService *service in services)
+        {
+            NSDictionary *fullDict = [self stringDictionaryFromService:service];
+            [fullServices addObject:fullDict];
+        }
+        
+          [self.delegate servicesFound:fullServices];
+    }
     // contains the appropriate information to connect to the service
 	
     return YES;
@@ -328,6 +366,8 @@
 	
 }
 
+#if TARGET_OS_OSX
+
 // This object is the data source of its NSTableView. servicesList is the NSArray containing all those services that have been discovered.
 - (int)numberOfRowsInTableView:(NSTableView *)theTableView {
     return [services count];
@@ -348,5 +388,6 @@
 	// return [[services objectAtIndex:rowIndex] name];
 }
 
+#endif
 
 @end
