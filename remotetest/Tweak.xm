@@ -202,6 +202,7 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
     Method setTextHandler = class_getInstanceMethod(rth, @selector(handleTextName:userInfo:));
     Method delayedRelease = class_getInstanceMethod(rth, @selector(delayedRelease:));
     Method ioTest = class_getInstanceMethod(rth, @selector(IOHIDTest:));
+    Method helperCommand = class_getInstanceMethod(rth, @selector(helperCommand:withInfo:));
   //  Method details = class_getInstanceMethod(rth, @selector(systemDetails));
     
      class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
@@ -213,10 +214,14 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
     
     class_addMethod(pbad, @selector(delayedRelease:), method_getImplementation(delayedRelease), method_getTypeEncoding(delayedRelease));
     
+    class_addMethod(pbad, @selector(helperCommand:withInfo:), method_getImplementation(helperCommand), method_getTypeEncoding(helperCommand));
+    
+    
     //class_addMethod(pbad, @selector(systemDetails), method_getImplementation(details), method_getTypeEncoding(details));
                                                    
     [center registerForMessageName:@"org.nito.test.doThings" target:self selector:@selector(handleMessageName:userInfo:)];
     [center registerForMessageName:@"org.nito.test.setText" target:self selector:@selector(handleTextName:userInfo:)];
+    [center registerForMessageName:@"org.nito.test.helperCommand" target:self selector:@selector(helperCommand:withInfo:)];
     //[center registerForMessageName:@"org.nito.test.systemDetails" target:self selector:@selector(systemDetails)];
     
     //id app = [objc_getClass("PBApplication") sharedApplication];
@@ -557,6 +562,28 @@ static __attribute__((constructor)) void myHooksInit() {
     %orig;
 }
 
+%end
+
+%hook TVSProcessManager
+
+- (void)_openApp:(id)arg1 options:(id)arg2 origin:(id)arg3 withResult:(id)arg4 {
+    %log;
+    %orig;
+}
+- (void)killApplication:(id)arg1 removeFromRecents:(_Bool)arg2
+{
+    %log;
+    %orig;
+}
+- (void)activateApplication:(id)arg1 openURL:(id)arg2 options:(id)arg3 suspended:(_Bool)arg4 completion:(id)arg5 {
+    %log;
+    %orig;
+}
+- (void)activateApplication:(id)arg1 openURL:(id)arg2 suspended:(_Bool)arg3 completion:(id)arg4
+{
+    %log;
+    %orig;
+}
 %end
 
 @interface TVSCoreControlManager : NSObject

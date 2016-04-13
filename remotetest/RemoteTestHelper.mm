@@ -51,6 +51,12 @@ IOHIDEventSystemClientRef IOHIDEventSystemClientCreate(CFAllocatorRef);
 + (id)sharedInstance;
 - (id)_foregroundScene;
 - (void)sendHIDEventToTopApplication:(struct __IOHIDEvent *)arg1;
+- (void)_openApp:(id)arg1 options:(id)arg2 origin:(id)arg3 withResult:(id)arg4;
+- (void)reboot;	// IMP=0x0000000100093144
+- (void)relaunch;	// IMP=0x0000000100093128
+- (void)killApplication:(id)arg1 removeFromRecents:(_Bool)arg2;	// IMP=0x0000000100092fe4
+- (void)activateApplication:(id)arg1 openURL:(id)arg2 options:(id)arg3 suspended:(_Bool)arg4 completion:(id)arg5;	// IMP=0x0000000100092c18
+- (void)activateApplication:(id)arg1 openURL:(id)arg2 suspended:(_Bool)arg3 completion:(id)arg4;
 @end
 
 @interface UIApplication (Private)
@@ -554,7 +560,35 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     [self IOHIDTest:userInfo[@"text"]];
 }
 
+- (void)sendRebootCommand
+{
+    id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+    rocketbootstrap_distributedmessagingcenter_apply(center);
+    [center sendMessageName:@"org.nito.test.helperCommand" userInfo:@{@"command": @"reboot"}];
+}
 
+- (void)sendRespringCommand
+{
+     id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
+    NSLog(@"#### processMan: %@", processMan);
+    id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+    rocketbootstrap_distributedmessagingcenter_apply(center);
+    [center sendMessageName:@"org.nito.test.helperCommand" userInfo:@{@"command": @"relaunch"}];
+}
+
+
+- (void)helperCommand:(NSString *)command withInfo:(NSDictionary *)info
+{
+    id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
+    NSString *theCommand = info[@"command"];
+    if ([theCommand isEqualToString:@"reboot"])
+    {
+        [processMan reboot];
+    } else if ([theCommand isEqualToString:@"relaunch"])
+    {
+        [processMan relaunch];
+    }
+}
 
 - (void)handleRemoteEvent:(NSString *)remoteEvent
 {

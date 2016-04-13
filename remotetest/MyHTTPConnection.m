@@ -97,6 +97,8 @@
     
 }
 
+
+
 - (id)processURL:(NSString *)path
 {
    // [self frontMostScience];
@@ -117,6 +119,12 @@
     } else if ([pathCommand isEqualToString:@"help"])
     {
         return [self failedWithMessage:[self acHelpString]];
+    } else if ([pathCommand isEqualToString:@"reboot"])
+    {
+        [[RemoteTestHelper sharedInstance] sendRebootCommand];
+    } else if ([pathCommand isEqualToString:@"relaunch"])
+    {
+        [[RemoteTestHelper sharedInstance] sendRespringCommand];
     }
     
     return [self blankSuccessResponse];
