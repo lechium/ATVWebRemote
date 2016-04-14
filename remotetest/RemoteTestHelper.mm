@@ -119,6 +119,8 @@ static char const * const kCurrentTextFieldID = "CurrentTextField";
 - (id)appSwitcherWindow;
 @end
 
+//use this method to figure out which characters are being sent for text entry in HIDEvents
+
 static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 {
     const int uppercaseAlphabeticOffset = 'A' - kHIDUsage_KeyboardA;
@@ -251,6 +253,9 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
  
  */
 
+//all the navigation events go through here, when this method is called its inside
+//PineBoard.app and not the tweak itself.
+
 - (void)handleMessageName:(NSString *)name userInfo:(NSDictionary *)userInfo
 {
     
@@ -348,6 +353,8 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     
 }
 
+//also called from Pineboard, this is to do press and hold events
+
 - (void)delayedRelease:(NSString *)event
 {
     
@@ -397,6 +404,8 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         [processMan sendHIDEventToTopApplication:navUp];
     }
 }
+
+//text entry all goes through here, also being called from within PineBoard.app
 
 - (void)IOHIDTest:(NSString *)theText
 {
@@ -496,6 +505,8 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         
     }
 }
+
+//old relics when i was hooking notifications to try and figure out how to do text entry without HIDEvents
 
 - (NSArray *)otherBlackList
 {
@@ -623,7 +634,6 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 - (void)startItUp
 {
-    // NSLog(@"#### _getSystemDetails: %@", [self _getSystemDetails]);
     // Configure our logging framework.
     // To keep things simple and fast, we're just going to log to the Xcode console.
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
@@ -675,13 +685,6 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     return nil;
 }
 
-- (NSDictionary *)_getSystemDetails
-{
-    return nil;
-    id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
-    rocketbootstrap_distributedmessagingcenter_apply(center);
-    return [center sendMessageAndReceiveReplyName:@"org.nito.test.systemDetails" userInfo:nil];
-}
 
 - (float)currentVersion
 {

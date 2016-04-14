@@ -8,6 +8,28 @@
 #import <IOKit/hidsystem/IOHIDUsageTables.h>
 #include <dlfcn.h>
 
+/**
+ 
+ There is a lot of cruft in this file from when i was investigating how to get everything working.
+ 
+ That being said, this is file is where I spin up the main server and hooks into PineBoard and add
+ in a bunch of new methods that are all declared and managed in the RemoteTestHelper class.
+ 
+ Long story short, messages are routed through the tweak into PineBoard to send HIDEvents through
+ TVSProcessManager, apparently it isnt necessary to route through PineBoard for this, but without
+ routing through PineBoard i get some missing symbols errors and havent figured out what frameworks i
+ need to link to fix that issue.
+ 
+ so CPDistributedMessagingCenter is used to route messages from MyHTTPConnection.m through methods i've 
+ added to PineBoard.
+ 
+ There are likely too many methods added and things could likely be consoldiated into one or two methods,
+ or if i find the proper stuff to link to, can take out any routing that isnt 100% necessary.
+ 
+ 
+ */
+
+
 //#include "InspCWrapper.m"
 
 int IOHIDEventSystemClientSetMatching(IOHIDEventSystemClientRef client, CFDictionaryRef match);
@@ -29,112 +51,7 @@ struct rawTouch {
 
 NSUserDefaults *defaults;
 
-/* How to Hook with Logos
-Hooks are written with syntax similar to that of an Objective-C @implementation.
-You don't need to #include <substrate.h>, it will be done automatically, as will
-the generation of a class list and an automatic constructor.
 
-%hook ClassName
-
-// Hooking a class method
-+ (id)sharedInstance {
-	return %orig;
-}
-
-// Hooking an instance method with an argument.
-- (void)messageName:(int)argument {
-	%log; // Write a message about this call, including its class, name and arguments, to the system log.
-
-	%orig; // Call through to the original function with its original arguments.
-	%orig(nil); // Call through to the original function with a custom argument.
-
-	// If you use %orig(), you MUST supply all arguments (except for self and _cmd, the automatically generated ones.)
-}
-
-// Hooking an instance method with no arguments.
-- (id)noArguments {
-	%log;
-	id awesome = %orig;
-	[awesome doSomethingElse];
-
-	return awesome;
-}
-
-
-
-// Always make sure you clean up after yourself; Not doing so could have grave consequences!
-%end
-*/
-
-/* IOKit Private Headers */
-/*
-#ifdef __LP64__
-typedef double IOHIDFloat;
-#else
-typedef float IOHIDFloat;
-#endif
-typedef struct __IOHIDEvent * IOHIDEventRef;
-typedef UInt32 IOOptionBits;
-typedef uint32_t IOHIDDigitizerTransducerType;
-void IOHIDEventAppendEvent(IOHIDEventRef event, IOHIDEventRef childEvent);
-enum {
-    kIOHIDDigitizerTransducerTypeStylus  = 0x20,
-    kIOHIDDigitizerTransducerTypePuck,
-    kIOHIDDigitizerTransducerTypeFinger,
-    kIOHIDDigitizerTransducerTypeHand
-};
-enum {
-    kIOHIDDigitizerEventRange                               = 0x00000001,
-    kIOHIDDigitizerEventTouch                               = 0x00000002,
-    kIOHIDDigitizerEventPosition                            = 0x00000004,
-    kIOHIDDigitizerEventStop                                = 0x00000008,
-    kIOHIDDigitizerEventPeak                                = 0x00000010,
-    kIOHIDDigitizerEventIdentity                            = 0x00000020,
-    kIOHIDDigitizerEventAttribute                           = 0x00000040,
-    kIOHIDDigitizerEventCancel                              = 0x00000080,
-    kIOHIDDigitizerEventStart                               = 0x00000100,
-    kIOHIDDigitizerEventResting                             = 0x00000200,
-    kIOHIDDigitizerEventSwipeUp                             = 0x01000000,
-    kIOHIDDigitizerEventSwipeDown                           = 0x02000000,
-    kIOHIDDigitizerEventSwipeLeft                           = 0x04000000,
-    kIOHIDDigitizerEventSwipeRight                          = 0x08000000,
-    kIOHIDDigitizerEventSwipeMask                           = 0xFF000000,
-};
-IOHIDEventRef IOHIDEventCreateDigitizerEvent(CFAllocatorRef allocator, AbsoluteTime timeStamp, IOHIDDigitizerTransducerType type,
-                                             uint32_t index, uint32_t identity, uint32_t eventMask, uint32_t buttonMask,
-                                             IOHIDFloat x, IOHIDFloat y, IOHIDFloat z, IOHIDFloat tipPressure, IOHIDFloat barrelPressure,
-                                             Boolean range, Boolean touch, IOOptionBits options);
-IOHIDEventRef IOHIDEventCreateDigitizerFingerEventWithQuality(CFAllocatorRef allocator, AbsoluteTime timeStamp,
-                                                              uint32_t index, uint32_t identity, uint32_t eventMask,
-                                                              IOHIDFloat x, IOHIDFloat y, IOHIDFloat z, IOHIDFloat tipPressure, IOHIDFloat twist,
-                                                              IOHIDFloat minorRadius, IOHIDFloat majorRadius, IOHIDFloat quality, IOHIDFloat density, IOHIDFloat irregularity,
-                                                              Boolean range, Boolean touch, IOOptionBits options);
-
-
-typedef struct __IOHIDEvent * IOHIDEventRef;
-
-/*
-	MSHook(IOHIDEventRef, IOHIDEventCreateDigitizerEvent, CFAllocatorRef allocator, AbsoluteTime timeStamp, IOHIDDigitizerTransducerType type,
-	       uint32_t index, uint32_t identity, uint32_t eventMask, uint32_t buttonMask,
-	       IOHIDFloat x, IOHIDFloat y, IOHIDFloat z, IOHIDFloat tipPressure, IOHIDFloat barrelPressure,
-	       Boolean range, Boolean touch, IOOptionBits options) {
-
-	    //NSLog(@"##### Event %d", type);
-	    //NSLog(@"##### Event %d %d %d %d %d (%f, %f, %f) %f %f %d %d %d", type, index, identity, eventMask, buttonMask, x, y, z, tipPressure, barrelPressure, range, touch, (unsigned int)options);
-	    return _IOHIDEventCreateDigitizerEvent(allocator, timeStamp, type, index, identity, eventMask, buttonMask, x, y, z, tipPressure, barrelPressure, range, touch, options);
-	}
-	MSHook(IOHIDEventRef, IOHIDEventCreateDigitizerFingerEventWithQuality, CFAllocatorRef allocator, AbsoluteTime timeStamp,
-	       uint32_t index, uint32_t identity, uint32_t eventMask,
-	       IOHIDFloat x, IOHIDFloat y, IOHIDFloat z, IOHIDFloat tipPressure, IOHIDFloat twist,
-	       IOHIDFloat minorRadius, IOHIDFloat majorRadius, IOHIDFloat quality, IOHIDFloat density, IOHIDFloat irregularity,
-	       Boolean range, Boolean touch, IOOptionBits options) {
-
-	    //NSLog(@"##### Quality %d %d %d %f %f", index, identity, eventMask, x, y);
-
-	    return _IOHIDEventCreateDigitizerFingerEventWithQuality(allocator, timeStamp, index, identity, eventMask, x, y, z, tipPressure, twist, minorRadius, majorRadius, quality, density, irregularity, range, touch, options);
-	}
-	*/
-/*
 %hook AXBackBoardServer
 
 - (void)postEvent:(id)arg1 systemEvent:(_Bool)arg2
@@ -192,7 +109,7 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
      Class pbad = NSClassFromString(@"PBAppDelegate");
     Class rth = NSClassFromString(@"RemoteTestHelper");
     RemoteTestHelper *rmh = [RemoteTestHelper sharedInstance];
-    [rmh setPbDelegateRef:self];
+    //[rmh setPbDelegateRef:self];
     
     id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
     rocketbootstrap_distributedmessagingcenter_apply(center);
@@ -216,14 +133,10 @@ typedef struct __IOHIDEvent * IOHIDEventRef;
     
     class_addMethod(pbad, @selector(helperCommand:withInfo:), method_getImplementation(helperCommand), method_getTypeEncoding(helperCommand));
     
-    
-    //class_addMethod(pbad, @selector(systemDetails), method_getImplementation(details), method_getTypeEncoding(details));
-                                                   
     [center registerForMessageName:@"org.nito.test.doThings" target:self selector:@selector(handleMessageName:userInfo:)];
     [center registerForMessageName:@"org.nito.test.setText" target:self selector:@selector(handleTextName:userInfo:)];
     [center registerForMessageName:@"org.nito.test.helperCommand" target:self selector:@selector(helperCommand:withInfo:)];
-    //[center registerForMessageName:@"org.nito.test.systemDetails" target:self selector:@selector(systemDetails)];
-    
+
     //id app = [objc_getClass("PBApplication") sharedApplication];
     
     //  watchObject(app);

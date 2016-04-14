@@ -7,6 +7,14 @@
 #import <IOKit/hidsystem/IOHIDUsageTables.h>
 #import <UIKit/UIKit.h>
 
+/**
+ 
+ Main helper method for creating HID events and routing them through the necessary channels.
+ 
+ 
+ 
+ */
+
 #define ATV_VINFO NSClassFromString(@"FMSystemInfo")
 
 // System info
