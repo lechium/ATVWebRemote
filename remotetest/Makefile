@@ -1,8 +1,8 @@
-TARGET = iphone:8.4
+TARGET = iphone:9.0
 export GO_EASY_ON_ME=1
-export SDKVERSION=8.4
-#THEOS_DEVICE_IP=atvjb.local
-THEOS_DEVICE_IP=jbatv.local
+export SDKVERSION=9.0
+THEOS_DEVICE_IP=atvjb.local
+#THEOS_DEVICE_IP=jbatv.local
 
 include theos/makefiles/common.mk
 
@@ -34,8 +34,8 @@ remoteTest_FILES += Core/HTTPRedirectResponse.m
 remoteTest_FILES += Core/HTTPServer.m
 remoteTest_FILES += Core/WebSocket.m
 remoteTest_LDFLAGS += -Wl,-segalign,4000
-remoteTest_Frameworks += WebCore ImageIO Foundation CFNetwork AppSupport UIKit
-remoteTest__PRIVATE_FRAMEWORKS = GraphicsServices IOKit FMCore
+remoteTest_Frameworks += WebCore ImageIO Foundation CFNetwork AppSupport UIKit IOKit
+remoteTest_PRIVATE_FRAMEWORKS = GraphicsServices FMCore
 remoteTest_LIBRARIES += rocketbootstrap
 include $(THEOS_MAKE_PATH)/tweak.mk
 

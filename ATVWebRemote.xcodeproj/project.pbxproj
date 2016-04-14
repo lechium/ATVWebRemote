@@ -138,7 +138,6 @@
 		89297C811CB1A68F003D7473 /* IOHIDEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 892977141CB1A68B003D7473 /* IOHIDEvent.h */; };
 		89297C821CB1A68F003D7473 /* IOHIDEventData.h in Headers */ = {isa = PBXBuildFile; fileRef = 892977151CB1A68B003D7473 /* IOHIDEventData.h */; };
 		89297C831CB1A68F003D7473 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 892977161CB1A68B003D7473 /* Makefile */; };
-		89297C841CB1A68F003D7473 /* Makefile.new in Resources */ = {isa = PBXBuildFile; fileRef = 892977171CB1A68B003D7473 /* Makefile.new */; };
 		89297C871CB1A68F003D7473 /* IOHIDEvent7.h in Headers */ = {isa = PBXBuildFile; fileRef = 8929771F1CB1A68B003D7473 /* IOHIDEvent7.h */; };
 		89297C881CB1A68F003D7473 /* IOHIDEventSystemConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 892977201CB1A68B003D7473 /* IOHIDEventSystemConnection.h */; };
 		89297C891CB1A68F003D7473 /* IOHIDEventTypes7.h in Headers */ = {isa = PBXBuildFile; fileRef = 892977211CB1A68B003D7473 /* IOHIDEventTypes7.h */; };
@@ -1355,7 +1354,6 @@
 		892977141CB1A68B003D7473 /* IOHIDEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHIDEvent.h; sourceTree = "<group>"; };
 		892977151CB1A68B003D7473 /* IOHIDEventData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHIDEventData.h; sourceTree = "<group>"; };
 		892977161CB1A68B003D7473 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		892977171CB1A68B003D7473 /* Makefile.new */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.new; sourceTree = "<group>"; };
 		8929771F1CB1A68B003D7473 /* IOHIDEvent7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHIDEvent7.h; sourceTree = "<group>"; };
 		892977201CB1A68B003D7473 /* IOHIDEventSystemConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHIDEventSystemConnection.h; sourceTree = "<group>"; };
 		892977211CB1A68B003D7473 /* IOHIDEventTypes7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHIDEventTypes7.h; sourceTree = "<group>"; };
@@ -2707,7 +2705,6 @@
 				892977141CB1A68B003D7473 /* IOHIDEvent.h */,
 				892977151CB1A68B003D7473 /* IOHIDEventData.h */,
 				892977161CB1A68B003D7473 /* Makefile */,
-				892977171CB1A68B003D7473 /* Makefile.new */,
 				892977181CB1A68B003D7473 /* obj */,
 				8929771C1CB1A68B003D7473 /* private-headers */,
 				892977241CB1A68B003D7473 /* RemoteTestHelper.h */,
@@ -6492,7 +6489,6 @@
 				89297E601CB1A690003D7473 /* preference_bundle.nic.tar in Resources */,
 				8929FCC51CB571B8003D7473 /* control in Resources */,
 				89297E491CB1A690003D7473 /* simulator.mk in Resources */,
-				89297C841CB1A68F003D7473 /* Makefile.new in Resources */,
 				89297E351CB1A68F003D7473 /* Darwin.mk in Resources */,
 				89297DF81CB1A68F003D7473 /* OSAtomic.h.save in Resources */,
 				89297C9F1CB1A68F003D7473 /* Subclass.pm in Resources */,
