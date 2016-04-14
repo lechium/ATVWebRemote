@@ -139,8 +139,6 @@
 		89297C821CB1A68F003D7473 /* IOHIDEventData.h in Headers */ = {isa = PBXBuildFile; fileRef = 892977151CB1A68B003D7473 /* IOHIDEventData.h */; };
 		89297C831CB1A68F003D7473 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 892977161CB1A68B003D7473 /* Makefile */; };
 		89297C841CB1A68F003D7473 /* Makefile.new in Resources */ = {isa = PBXBuildFile; fileRef = 892977171CB1A68B003D7473 /* Makefile.new */; };
-		89297C851CB1A68F003D7473 /* pb.tgz in Resources */ = {isa = PBXBuildFile; fileRef = 8929771A1CB1A68B003D7473 /* pb.tgz */; };
-		89297C861CB1A68F003D7473 /* PineBoard.app in Resources */ = {isa = PBXBuildFile; fileRef = 8929771B1CB1A68B003D7473 /* PineBoard.app */; };
 		89297C871CB1A68F003D7473 /* IOHIDEvent7.h in Headers */ = {isa = PBXBuildFile; fileRef = 8929771F1CB1A68B003D7473 /* IOHIDEvent7.h */; };
 		89297C881CB1A68F003D7473 /* IOHIDEventSystemConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 892977201CB1A68B003D7473 /* IOHIDEventSystemConnection.h */; };
 		89297C891CB1A68F003D7473 /* IOHIDEventTypes7.h in Headers */ = {isa = PBXBuildFile; fileRef = 892977211CB1A68B003D7473 /* IOHIDEventTypes7.h */; };
@@ -1358,8 +1356,6 @@
 		892977151CB1A68B003D7473 /* IOHIDEventData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHIDEventData.h; sourceTree = "<group>"; };
 		892977161CB1A68B003D7473 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		892977171CB1A68B003D7473 /* Makefile.new */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.new; sourceTree = "<group>"; };
-		8929771A1CB1A68B003D7473 /* pb.tgz */ = {isa = PBXFileReference; lastKnownFileType = file; path = pb.tgz; sourceTree = "<group>"; };
-		8929771B1CB1A68B003D7473 /* PineBoard.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = PineBoard.app; sourceTree = "<group>"; };
 		8929771F1CB1A68B003D7473 /* IOHIDEvent7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHIDEvent7.h; sourceTree = "<group>"; };
 		892977201CB1A68B003D7473 /* IOHIDEventSystemConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHIDEventSystemConnection.h; sourceTree = "<group>"; };
 		892977211CB1A68B003D7473 /* IOHIDEventTypes7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOHIDEventTypes7.h; sourceTree = "<group>"; };
@@ -2327,157 +2323,6 @@
 		892980661CB1A811003D7473 /* MyHTTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyHTTPConnection.m; sourceTree = "<group>"; };
 		892980691CB1DF08003D7473 /* NSObject+AssociatedObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+AssociatedObjects.h"; sourceTree = "<group>"; };
 		8929806A1CB1DF08003D7473 /* NSObject+AssociatedObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AssociatedObjects.m"; sourceTree = "<group>"; };
-		8929806E1CB1EF8C003D7473 /* _AppActivateInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _AppActivateInfo.h; sourceTree = "<group>"; };
-		8929806F1CB1EF8C003D7473 /* _PBAppSwitcherCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBAppSwitcherCollectionView.h; sourceTree = "<group>"; };
-		892980701CB1EF8C003D7473 /* _PBAppSwitcherContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBAppSwitcherContentView.h; sourceTree = "<group>"; };
-		892980711CB1EF8C003D7473 /* _PBAXMenuAlertController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBAXMenuAlertController.h; sourceTree = "<group>"; };
-		892980721CB1EF8C003D7473 /* _PBTermsAndConditionsContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBTermsAndConditionsContentView.h; sourceTree = "<group>"; };
-		892980731CB1EF8C003D7473 /* _PBUnavailableBundleListLoaderCancellableToken.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBUnavailableBundleListLoaderCancellableToken.h; sourceTree = "<group>"; };
-		892980741CB1EF8C003D7473 /* _PBWindowManagerAppTransitionHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBWindowManagerAppTransitionHelper.h; sourceTree = "<group>"; };
-		892980751CB1EF8C003D7473 /* _SplashView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _SplashView.h; sourceTree = "<group>"; };
-		892980761CB1EF8C003D7473 /* _TVSPMApplicationUpdateScenesTransactionOberver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _TVSPMApplicationUpdateScenesTransactionOberver.h; sourceTree = "<group>"; };
-		892980771CB1EF8C003D7473 /* AFContextProvider-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AFContextProvider-Protocol.h"; sourceTree = "<group>"; };
-		892980781CB1EF8C003D7473 /* ATVHIDSystemClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ATVHIDSystemClient.h; sourceTree = "<group>"; };
-		892980791CB1EF8C003D7473 /* AXBackBoardServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AXBackBoardServer.h; sourceTree = "<group>"; };
-		8929807A1CB1EF8C003D7473 /* BSTransactionObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BSTransactionObserver-Protocol.h"; sourceTree = "<group>"; };
-		8929807B1CB1EF8C003D7473 /* CDStructures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDStructures.h; sourceTree = "<group>"; };
-		8929807C1CB1EF8C003D7473 /* FBApplicationTerminationAssertionServiceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBApplicationTerminationAssertionServiceDelegate-Protocol.h"; sourceTree = "<group>"; };
-		8929807D1CB1EF8C003D7473 /* FBApplicationUpdateScenesTransactionObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBApplicationUpdateScenesTransactionObserver-Protocol.h"; sourceTree = "<group>"; };
-		8929807E1CB1EF8C003D7473 /* FBProcessManagerObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBProcessManagerObserver-Protocol.h"; sourceTree = "<group>"; };
-		8929807F1CB1EF8C003D7473 /* FBSceneManagerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBSceneManagerDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980801CB1EF8C003D7473 /* FBSceneManagerObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBSceneManagerObserver-Protocol.h"; sourceTree = "<group>"; };
-		892980811CB1EF8C003D7473 /* FBSystemServiceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBSystemServiceDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980821CB1EF8C003D7473 /* FBUIApplicationServiceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBUIApplicationServiceDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980831CB1EF8C003D7473 /* FBWorkspaceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBWorkspaceDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980841CB1EF8C003D7473 /* LSApplicationWorkspaceObserverProtocol-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LSApplicationWorkspaceObserverProtocol-Protocol.h"; sourceTree = "<group>"; };
-		892980851CB1EF8C003D7473 /* MobileAccessoryUpdaterDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MobileAccessoryUpdaterDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980861CB1EF8C003D7473 /* NSCopying-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCopying-Protocol.h"; sourceTree = "<group>"; };
-		892980871CB1EF8C003D7473 /* NSObject-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject-Protocol.h"; sourceTree = "<group>"; };
-		892980881CB1EF8C003D7473 /* NSOperationQueue-PBSoftwareUpdateServiceQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSOperationQueue-PBSoftwareUpdateServiceQueue.h"; sourceTree = "<group>"; };
-		892980891CB1EF8C003D7473 /* NSXPCListenerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSXPCListenerDelegate-Protocol.h"; sourceTree = "<group>"; };
-		8929808A1CB1EF8C003D7473 /* PB2SVerificationOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PB2SVerificationOperation.h; sourceTree = "<group>"; };
-		8929808B1CB1EF8C003D7473 /* PBAccessoryUpdateOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAccessoryUpdateOperation.h; sourceTree = "<group>"; };
-		8929808C1CB1EF8C003D7473 /* PBAccessoryUpdateService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAccessoryUpdateService.h; sourceTree = "<group>"; };
-		8929808D1CB1EF8C003D7473 /* PBAirPlayService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAirPlayService.h; sourceTree = "<group>"; };
-		8929808E1CB1EF8C003D7473 /* PBAppContextHostView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppContextHostView.h; sourceTree = "<group>"; };
-		8929808F1CB1EF8C003D7473 /* PBAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppDelegate.h; sourceTree = "<group>"; };
-		892980901CB1EF8C003D7473 /* PBAppDepot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppDepot.h; sourceTree = "<group>"; };
-		892980911CB1EF8C003D7473 /* PBApplication-PBApplicationTesting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBApplication-PBApplicationTesting.h"; sourceTree = "<group>"; };
-		892980921CB1EF8C003D7473 /* PBApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBApplication.h; sourceTree = "<group>"; };
-		892980931CB1EF8C003D7473 /* PBAppSoftwareUpdateOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSoftwareUpdateOperation.h; sourceTree = "<group>"; };
-		892980941CB1EF8C003D7473 /* PBAppSwitcherCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherCollectionViewCell.h; sourceTree = "<group>"; };
-		892980951CB1EF8C003D7473 /* PBAppSwitcherCollectionViewCellDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBAppSwitcherCollectionViewCellDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980961CB1EF8C003D7473 /* PBAppSwitcherCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherCollectionViewController.h; sourceTree = "<group>"; };
-		892980971CB1EF8C003D7473 /* PBAppSwitcherCollectionViewControllerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBAppSwitcherCollectionViewControllerDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980981CB1EF8C003D7473 /* PBAppSwitcherFullscreenLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherFullscreenLayout.h; sourceTree = "<group>"; };
-		892980991CB1EF8C003D7473 /* PBAppSwitcherIconView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherIconView.h; sourceTree = "<group>"; };
-		8929809A1CB1EF8C003D7473 /* PBAppSwitcherItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherItem.h; sourceTree = "<group>"; };
-		8929809B1CB1EF8C003D7473 /* PBAppSwitcherItemObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBAppSwitcherItemObserver-Protocol.h"; sourceTree = "<group>"; };
-		8929809C1CB1EF8C003D7473 /* PBAppSwitcherLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherLayout.h; sourceTree = "<group>"; };
-		8929809D1CB1EF8C003D7473 /* PBAppSwitcherManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherManager.h; sourceTree = "<group>"; };
-		8929809E1CB1EF8C003D7473 /* PBAppSwitcherSnapshotLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherSnapshotLoader.h; sourceTree = "<group>"; };
-		8929809F1CB1EF8C003D7473 /* PBAppSwitcherSnapshotUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherSnapshotUtilities.h; sourceTree = "<group>"; };
-		892980A01CB1EF8C003D7473 /* PBAppSwitcherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherViewController.h; sourceTree = "<group>"; };
-		892980A11CB1EF8C003D7473 /* PBAppTransitionContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppTransitionContext.h; sourceTree = "<group>"; };
-		892980A21CB1EF8C003D7473 /* PBAppTransitionContextDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBAppTransitionContextDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980A31CB1EF8C003D7473 /* PBAppTransitionTransaction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppTransitionTransaction.h; sourceTree = "<group>"; };
-		892980A41CB1EF8C003D7473 /* PBAppTransitionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppTransitionViewController.h; sourceTree = "<group>"; };
-		892980A51CB1EF8C003D7473 /* PBAppUpdateOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppUpdateOperation.h; sourceTree = "<group>"; };
-		892980A61CB1EF8C003D7473 /* PBAXShortcutHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAXShortcutHandler.h; sourceTree = "<group>"; };
-		892980A71CB1EF8C003D7473 /* PBBackgroundWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBBackgroundWindow.h; sourceTree = "<group>"; };
-		892980A81CB1EF8C003D7473 /* PBBulletinService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBBulletinService.h; sourceTree = "<group>"; };
-		892980A91CB1EF8C003D7473 /* PBBundleLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBBundleLoader.h; sourceTree = "<group>"; };
-		892980AA1CB1EF8C003D7473 /* PBCancellable-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBCancellable-Protocol.h"; sourceTree = "<group>"; };
-		892980AB1CB1EF8C003D7473 /* PBCoreControlManager-Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBCoreControlManager-Private.h"; sourceTree = "<group>"; };
-		892980AC1CB1EF8C003D7473 /* PBCoreControlManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBCoreControlManager.h; sourceTree = "<group>"; };
-		892980AD1CB1EF8C003D7473 /* PBCVVVerificationOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBCVVVerificationOperation.h; sourceTree = "<group>"; };
-		892980AE1CB1EF8C003D7473 /* PBDataReportingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBDataReportingService.h; sourceTree = "<group>"; };
-		892980AF1CB1EF8C003D7473 /* PBDiagnosticLogsService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBDiagnosticLogsService.h; sourceTree = "<group>"; };
-		892980B01CB1EF8C003D7473 /* PBHUDWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBHUDWindow.h; sourceTree = "<group>"; };
-		892980B11CB1EF8C003D7473 /* PBLanguageChangeObserverDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBLanguageChangeObserverDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980B21CB1EF8C003D7473 /* PBMediaRemoteObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBMediaRemoteObserver.h; sourceTree = "<group>"; };
-		892980B31CB1EF8C003D7473 /* PBMediaRemoteObserverDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBMediaRemoteObserverDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980B41CB1EF8C003D7473 /* PBNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBNavigationController.h; sourceTree = "<group>"; };
-		892980B51CB1EF8C003D7473 /* PBOSSoftwareUpdateMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBOSSoftwareUpdateMonitor.h; sourceTree = "<group>"; };
-		892980B61CB1EF8C003D7473 /* PBOSSoftwareUpdateProcess.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBOSSoftwareUpdateProcess.h; sourceTree = "<group>"; };
-		892980B71CB1EF8C003D7473 /* PBOSSoftwareUpdateProcessDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBOSSoftwareUpdateProcessDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980B81CB1EF8C003D7473 /* PBOSUpdateService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBOSUpdateService.h; sourceTree = "<group>"; };
-		892980B91CB1EF8C003D7473 /* PBOSUpdateWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBOSUpdateWindow.h; sourceTree = "<group>"; };
-		892980BA1CB1EF8C003D7473 /* PBProgrammingGuide.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBProgrammingGuide.h; sourceTree = "<group>"; };
-		892980BB1CB1EF8C003D7473 /* PBRemoteBulletinViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBRemoteBulletinViewController.h; sourceTree = "<group>"; };
-		892980BC1CB1EF8C003D7473 /* PBRemoteViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBRemoteViewController.h; sourceTree = "<group>"; };
-		892980BD1CB1EF8C003D7473 /* PBSafeAreaWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSafeAreaWindow.h; sourceTree = "<group>"; };
-		892980BE1CB1EF8C003D7473 /* PBSAirPlayServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSAirPlayServiceInterface-Protocol.h"; sourceTree = "<group>"; };
-		892980BF1CB1EF8C003D7473 /* PBSAppDepotProxyProtocol-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSAppDepotProxyProtocol-Protocol.h"; sourceTree = "<group>"; };
-		892980C01CB1EF8C003D7473 /* PBSBulletinPresenter-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSBulletinPresenter-Protocol.h"; sourceTree = "<group>"; };
-		892980C11CB1EF8C003D7473 /* PBSBulletinServiceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSBulletinServiceDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980C21CB1EF8C003D7473 /* PBSBulletinServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSBulletinServiceInterface-Protocol.h"; sourceTree = "<group>"; };
-		892980C31CB1EF8C003D7473 /* PBScreenSaverManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBScreenSaverManager.h; sourceTree = "<group>"; };
-		892980C41CB1EF8C003D7473 /* PBSDiagnosticLogsServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSDiagnosticLogsServiceInterface-Protocol.h"; sourceTree = "<group>"; };
-		892980C51CB1EF8C003D7473 /* PBSerialNumberWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSerialNumberWindow.h; sourceTree = "<group>"; };
-		892980C61CB1EF8C003D7473 /* PBServiceProviderRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBServiceProviderRegistry.h; sourceTree = "<group>"; };
-		892980C71CB1EF8C003D7473 /* PBServiceProviderRegistryKeyPair.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBServiceProviderRegistryKeyPair.h; sourceTree = "<group>"; };
-		892980C81CB1EF8C003D7473 /* PBSimplePluginHost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSimplePluginHost.h; sourceTree = "<group>"; };
-		892980C91CB1EF8C003D7473 /* PBSiriManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSiriManager.h; sourceTree = "<group>"; };
-		892980CA1CB1EF8C003D7473 /* PBSiriScreenActionApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSiriScreenActionApplication.h; sourceTree = "<group>"; };
-		892980CB1CB1EF8C003D7473 /* PBSiriScreenActionContextProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSiriScreenActionContextProvider.h; sourceTree = "<group>"; };
-		892980CC1CB1EF8C003D7473 /* PBSiriScreenActionItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSiriScreenActionItem.h; sourceTree = "<group>"; };
-		892980CD1CB1EF8C003D7473 /* PBSiriScreenActionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSiriScreenActionManager.h; sourceTree = "<group>"; };
-		892980CE1CB1EF8D003D7473 /* PBSoftwareUpdateService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSoftwareUpdateService.h; sourceTree = "<group>"; };
-		892980CF1CB1EF8D003D7473 /* PBSOSUpdateServiceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSOSUpdateServiceDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980D01CB1EF8D003D7473 /* PBSOSUpdateServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSOSUpdateServiceInterface-Protocol.h"; sourceTree = "<group>"; };
-		892980D11CB1EF8D003D7473 /* PBSViewServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSViewServiceInterface-Protocol.h"; sourceTree = "<group>"; };
-		892980D21CB1EF8D003D7473 /* PBSViewServicePresenter-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSViewServicePresenter-Protocol.h"; sourceTree = "<group>"; };
-		892980D31CB1EF8D003D7473 /* PBSystemMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSystemMenuViewController.h; sourceTree = "<group>"; };
-		892980D41CB1EF8D003D7473 /* PBSystemService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSystemService.h; sourceTree = "<group>"; };
-		892980D51CB1EF8D003D7473 /* PBSystemServiceClientInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSystemServiceClientInterface-Protocol.h"; sourceTree = "<group>"; };
-		892980D61CB1EF8D003D7473 /* PBSystemServiceConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSystemServiceConnection.h; sourceTree = "<group>"; };
-		892980D71CB1EF8D003D7473 /* PBSystemServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSystemServiceInterface-Protocol.h"; sourceTree = "<group>"; };
-		892980D81CB1EF8D003D7473 /* PBSystemServiceNowPlayingDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSystemServiceNowPlayingDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980D91CB1EF8D003D7473 /* PBTextEntryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBTextEntryViewController.h; sourceTree = "<group>"; };
-		892980DA1CB1EF8D003D7473 /* PBTextEntryViewControllerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBTextEntryViewControllerDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980DB1CB1EF8D003D7473 /* PBThermalNoticeWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBThermalNoticeWindow.h; sourceTree = "<group>"; };
-		892980DC1CB1EF8D003D7473 /* PBUIPluginHost-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBUIPluginHost-Protocol.h"; sourceTree = "<group>"; };
-		892980DD1CB1EF8D003D7473 /* PBUnavailableBundleListLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUnavailableBundleListLoader.h; sourceTree = "<group>"; };
-		892980DE1CB1EF8D003D7473 /* PBUserNotificationBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationBaseViewController.h; sourceTree = "<group>"; };
-		892980DF1CB1EF8D003D7473 /* PBUserNotificationHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationHandler.h; sourceTree = "<group>"; };
-		892980E01CB1EF8D003D7473 /* PBUserNotificationSystemStateProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationSystemStateProvider.h; sourceTree = "<group>"; };
-		892980E11CB1EF8D003D7473 /* PBUserNotificationTextEntryButtonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationTextEntryButtonView.h; sourceTree = "<group>"; };
-		892980E21CB1EF8D003D7473 /* PBUserNotificationTextEntryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationTextEntryViewController.h; sourceTree = "<group>"; };
-		892980E31CB1EF8D003D7473 /* PBUserNotificationViewController-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBUserNotificationViewController-Protocol.h"; sourceTree = "<group>"; };
-		892980E41CB1EF8D003D7473 /* PBUserNotificationViewControllerAlert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationViewControllerAlert.h; sourceTree = "<group>"; };
-		892980E51CB1EF8D003D7473 /* PBUserNotificationViewControllerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBUserNotificationViewControllerDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980E61CB1EF8D003D7473 /* PBUserNotificationViewControllerTermsAndConditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationViewControllerTermsAndConditions.h; sourceTree = "<group>"; };
-		892980E71CB1EF8D003D7473 /* PBUserNotificationViewControllerTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationViewControllerTextField.h; sourceTree = "<group>"; };
-		892980E81CB1EF8D003D7473 /* PBViewControllerPresentationRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBViewControllerPresentationRequest.h; sourceTree = "<group>"; };
-		892980E91CB1EF8D003D7473 /* PBVolumeChangeObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBVolumeChangeObserver.h; sourceTree = "<group>"; };
-		892980EA1CB1EF8D003D7473 /* PBVPNConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBVPNConnection.h; sourceTree = "<group>"; };
-		892980EB1CB1EF8D003D7473 /* PBWallpaperView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBWallpaperView.h; sourceTree = "<group>"; };
-		892980EC1CB1EF8D003D7473 /* PBWallpaperWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBWallpaperWindow.h; sourceTree = "<group>"; };
-		892980ED1CB1EF8D003D7473 /* PBWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBWindow.h; sourceTree = "<group>"; };
-		892980EE1CB1EF8D003D7473 /* PBWindowManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBWindowManager.h; sourceTree = "<group>"; };
-		892980EF1CB1EF8D003D7473 /* PineBoard-Structs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PineBoard-Structs.h"; sourceTree = "<group>"; };
-		892980F01CB1EF8D003D7473 /* PineBoard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PineBoard.h; sourceTree = "<group>"; };
-		892980F11CB1EF8D003D7473 /* SBIconProgressViewDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SBIconProgressViewDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980F21CB1EF8D003D7473 /* SSDownloadManagerObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SSDownloadManagerObserver-Protocol.h"; sourceTree = "<group>"; };
-		892980F31CB1EF8D003D7473 /* SSPurchaseManagerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SSPurchaseManagerDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980F41CB1EF8D003D7473 /* TextEntryButtonViewDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TextEntryButtonViewDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980F51CB1EF8D003D7473 /* TVSCoreControlManagerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVSCoreControlManagerDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980F61CB1EF8D003D7473 /* TVSImageLoader-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVSImageLoader-Protocol.h"; sourceTree = "<group>"; };
-		892980F71CB1EF8D003D7473 /* TVSPeripheralManager-B239.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVSPeripheralManager-B239.h"; sourceTree = "<group>"; };
-		892980F81CB1EF8D003D7473 /* TVSPreferences-PineBoardAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVSPreferences-PineBoardAdditions.h"; sourceTree = "<group>"; };
-		892980F91CB1EF8D003D7473 /* TVSProcessManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TVSProcessManager.h; sourceTree = "<group>"; };
-		892980FA1CB1EF8D003D7473 /* TVSUserNotificationDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVSUserNotificationDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980FB1CB1EF8D003D7473 /* TVTermsAndConditionsViewDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVTermsAndConditionsViewDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980FC1CB1EF8D003D7473 /* UIApplicationDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplicationDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892980FD1CB1EF8D003D7473 /* UIApplicationSceneClientSettings-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplicationSceneClientSettings-Protocol.h"; sourceTree = "<group>"; };
-		892980FE1CB1EF8D003D7473 /* UICollectionViewDataSource-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionViewDataSource-Protocol.h"; sourceTree = "<group>"; };
-		892980FF1CB1EF8D003D7473 /* UICollectionViewDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionViewDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892981001CB1EF8D003D7473 /* UIGestureRecognizerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizerDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892981011CB1EF8D003D7473 /* UINavigationController-PineBoardAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController-PineBoardAdditions.h"; sourceTree = "<group>"; };
-		892981021CB1EF8D003D7473 /* UIScrollViewDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollViewDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892981031CB1EF8D003D7473 /* UITextFieldDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextFieldDelegate-Protocol.h"; sourceTree = "<group>"; };
-		892981041CB1EF8D003D7473 /* UNSystemStateProviding-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UNSystemStateProviding-Protocol.h"; sourceTree = "<group>"; };
 		8929FCC41CB571B8003D7473 /* control */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = control; path = remotetest/layout/DEBIAN/control; sourceTree = SOURCE_ROOT; };
 		8929FCCE1CB70EA2003D7473 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		8929FCCF1CB70EA2003D7473 /* remote.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = remote.css; sourceTree = "<group>"; };
@@ -2556,6 +2401,157 @@
 		89DE27901CBC955600C8B715 /* iu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iu.png; sourceTree = SOURCE_ROOT; };
 		89DE27921CBC95A200C8B715 /* icon120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon120.png; sourceTree = "<group>"; };
 		89DE27941CBC95E000C8B715 /* icon180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon180.png; sourceTree = "<group>"; };
+		89DE27961CC00E2C00C8B715 /* _AppActivateInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _AppActivateInfo.h; sourceTree = "<group>"; };
+		89DE27971CC00E2C00C8B715 /* _PBAppSwitcherCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBAppSwitcherCollectionView.h; sourceTree = "<group>"; };
+		89DE27981CC00E2C00C8B715 /* _PBAppSwitcherContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBAppSwitcherContentView.h; sourceTree = "<group>"; };
+		89DE27991CC00E2C00C8B715 /* _PBAXMenuAlertController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBAXMenuAlertController.h; sourceTree = "<group>"; };
+		89DE279A1CC00E2C00C8B715 /* _PBTermsAndConditionsContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBTermsAndConditionsContentView.h; sourceTree = "<group>"; };
+		89DE279B1CC00E2C00C8B715 /* _PBUnavailableBundleListLoaderCancellableToken.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBUnavailableBundleListLoaderCancellableToken.h; sourceTree = "<group>"; };
+		89DE279C1CC00E2C00C8B715 /* _PBWindowManagerAppTransitionHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PBWindowManagerAppTransitionHelper.h; sourceTree = "<group>"; };
+		89DE279D1CC00E2C00C8B715 /* _SplashView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _SplashView.h; sourceTree = "<group>"; };
+		89DE279E1CC00E2C00C8B715 /* _TVSPMApplicationUpdateScenesTransactionOberver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _TVSPMApplicationUpdateScenesTransactionOberver.h; sourceTree = "<group>"; };
+		89DE279F1CC00E2C00C8B715 /* AFContextProvider-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AFContextProvider-Protocol.h"; sourceTree = "<group>"; };
+		89DE27A01CC00E2C00C8B715 /* ATVHIDSystemClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ATVHIDSystemClient.h; sourceTree = "<group>"; };
+		89DE27A11CC00E2C00C8B715 /* AXBackBoardServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AXBackBoardServer.h; sourceTree = "<group>"; };
+		89DE27A21CC00E2C00C8B715 /* BSTransactionObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BSTransactionObserver-Protocol.h"; sourceTree = "<group>"; };
+		89DE27A31CC00E2C00C8B715 /* CDStructures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDStructures.h; sourceTree = "<group>"; };
+		89DE27A41CC00E2C00C8B715 /* FBApplicationTerminationAssertionServiceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBApplicationTerminationAssertionServiceDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27A51CC00E2C00C8B715 /* FBApplicationUpdateScenesTransactionObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBApplicationUpdateScenesTransactionObserver-Protocol.h"; sourceTree = "<group>"; };
+		89DE27A61CC00E2C00C8B715 /* FBProcessManagerObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBProcessManagerObserver-Protocol.h"; sourceTree = "<group>"; };
+		89DE27A71CC00E2C00C8B715 /* FBSceneManagerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBSceneManagerDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27A81CC00E2C00C8B715 /* FBSceneManagerObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBSceneManagerObserver-Protocol.h"; sourceTree = "<group>"; };
+		89DE27A91CC00E2C00C8B715 /* FBSystemServiceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBSystemServiceDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27AA1CC00E2C00C8B715 /* FBUIApplicationServiceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBUIApplicationServiceDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27AB1CC00E2C00C8B715 /* FBWorkspaceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBWorkspaceDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27AC1CC00E2C00C8B715 /* LSApplicationWorkspaceObserverProtocol-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LSApplicationWorkspaceObserverProtocol-Protocol.h"; sourceTree = "<group>"; };
+		89DE27AD1CC00E2C00C8B715 /* MobileAccessoryUpdaterDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MobileAccessoryUpdaterDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27AE1CC00E2C00C8B715 /* NSCopying-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCopying-Protocol.h"; sourceTree = "<group>"; };
+		89DE27AF1CC00E2C00C8B715 /* NSObject-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject-Protocol.h"; sourceTree = "<group>"; };
+		89DE27B01CC00E2C00C8B715 /* NSOperationQueue-PBSoftwareUpdateServiceQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSOperationQueue-PBSoftwareUpdateServiceQueue.h"; sourceTree = "<group>"; };
+		89DE27B11CC00E2C00C8B715 /* NSXPCListenerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSXPCListenerDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27B21CC00E2C00C8B715 /* PB2SVerificationOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PB2SVerificationOperation.h; sourceTree = "<group>"; };
+		89DE27B31CC00E2C00C8B715 /* PBAccessoryUpdateOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAccessoryUpdateOperation.h; sourceTree = "<group>"; };
+		89DE27B41CC00E2C00C8B715 /* PBAccessoryUpdateService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAccessoryUpdateService.h; sourceTree = "<group>"; };
+		89DE27B51CC00E2C00C8B715 /* PBAirPlayService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAirPlayService.h; sourceTree = "<group>"; };
+		89DE27B61CC00E2C00C8B715 /* PBAppContextHostView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppContextHostView.h; sourceTree = "<group>"; };
+		89DE27B71CC00E2C00C8B715 /* PBAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppDelegate.h; sourceTree = "<group>"; };
+		89DE27B81CC00E2C00C8B715 /* PBAppDepot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppDepot.h; sourceTree = "<group>"; };
+		89DE27B91CC00E2C00C8B715 /* PBApplication-PBApplicationTesting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBApplication-PBApplicationTesting.h"; sourceTree = "<group>"; };
+		89DE27BA1CC00E2C00C8B715 /* PBApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBApplication.h; sourceTree = "<group>"; };
+		89DE27BB1CC00E2C00C8B715 /* PBAppSoftwareUpdateOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSoftwareUpdateOperation.h; sourceTree = "<group>"; };
+		89DE27BC1CC00E2C00C8B715 /* PBAppSwitcherCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherCollectionViewCell.h; sourceTree = "<group>"; };
+		89DE27BD1CC00E2C00C8B715 /* PBAppSwitcherCollectionViewCellDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBAppSwitcherCollectionViewCellDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27BE1CC00E2C00C8B715 /* PBAppSwitcherCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherCollectionViewController.h; sourceTree = "<group>"; };
+		89DE27BF1CC00E2C00C8B715 /* PBAppSwitcherCollectionViewControllerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBAppSwitcherCollectionViewControllerDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27C01CC00E2C00C8B715 /* PBAppSwitcherFullscreenLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherFullscreenLayout.h; sourceTree = "<group>"; };
+		89DE27C11CC00E2C00C8B715 /* PBAppSwitcherIconView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherIconView.h; sourceTree = "<group>"; };
+		89DE27C21CC00E2C00C8B715 /* PBAppSwitcherItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherItem.h; sourceTree = "<group>"; };
+		89DE27C31CC00E2C00C8B715 /* PBAppSwitcherItemObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBAppSwitcherItemObserver-Protocol.h"; sourceTree = "<group>"; };
+		89DE27C41CC00E2C00C8B715 /* PBAppSwitcherLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherLayout.h; sourceTree = "<group>"; };
+		89DE27C51CC00E2C00C8B715 /* PBAppSwitcherManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherManager.h; sourceTree = "<group>"; };
+		89DE27C61CC00E2C00C8B715 /* PBAppSwitcherSnapshotLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherSnapshotLoader.h; sourceTree = "<group>"; };
+		89DE27C71CC00E2C00C8B715 /* PBAppSwitcherSnapshotUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherSnapshotUtilities.h; sourceTree = "<group>"; };
+		89DE27C81CC00E2C00C8B715 /* PBAppSwitcherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppSwitcherViewController.h; sourceTree = "<group>"; };
+		89DE27C91CC00E2C00C8B715 /* PBAppTransitionContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppTransitionContext.h; sourceTree = "<group>"; };
+		89DE27CA1CC00E2C00C8B715 /* PBAppTransitionContextDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBAppTransitionContextDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27CB1CC00E2C00C8B715 /* PBAppTransitionTransaction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppTransitionTransaction.h; sourceTree = "<group>"; };
+		89DE27CC1CC00E2C00C8B715 /* PBAppTransitionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppTransitionViewController.h; sourceTree = "<group>"; };
+		89DE27CD1CC00E2C00C8B715 /* PBAppUpdateOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAppUpdateOperation.h; sourceTree = "<group>"; };
+		89DE27CE1CC00E2C00C8B715 /* PBAXShortcutHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBAXShortcutHandler.h; sourceTree = "<group>"; };
+		89DE27CF1CC00E2C00C8B715 /* PBBackgroundWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBBackgroundWindow.h; sourceTree = "<group>"; };
+		89DE27D01CC00E2C00C8B715 /* PBBulletinService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBBulletinService.h; sourceTree = "<group>"; };
+		89DE27D11CC00E2C00C8B715 /* PBBundleLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBBundleLoader.h; sourceTree = "<group>"; };
+		89DE27D21CC00E2C00C8B715 /* PBCancellable-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBCancellable-Protocol.h"; sourceTree = "<group>"; };
+		89DE27D31CC00E2C00C8B715 /* PBCoreControlManager-Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBCoreControlManager-Private.h"; sourceTree = "<group>"; };
+		89DE27D41CC00E2C00C8B715 /* PBCoreControlManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBCoreControlManager.h; sourceTree = "<group>"; };
+		89DE27D51CC00E2C00C8B715 /* PBCVVVerificationOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBCVVVerificationOperation.h; sourceTree = "<group>"; };
+		89DE27D61CC00E2C00C8B715 /* PBDataReportingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBDataReportingService.h; sourceTree = "<group>"; };
+		89DE27D71CC00E2C00C8B715 /* PBDiagnosticLogsService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBDiagnosticLogsService.h; sourceTree = "<group>"; };
+		89DE27D81CC00E2C00C8B715 /* PBHUDWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBHUDWindow.h; sourceTree = "<group>"; };
+		89DE27D91CC00E2C00C8B715 /* PBLanguageChangeObserverDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBLanguageChangeObserverDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27DA1CC00E2C00C8B715 /* PBMediaRemoteObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBMediaRemoteObserver.h; sourceTree = "<group>"; };
+		89DE27DB1CC00E2C00C8B715 /* PBMediaRemoteObserverDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBMediaRemoteObserverDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27DC1CC00E2C00C8B715 /* PBNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBNavigationController.h; sourceTree = "<group>"; };
+		89DE27DD1CC00E2C00C8B715 /* PBOSSoftwareUpdateMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBOSSoftwareUpdateMonitor.h; sourceTree = "<group>"; };
+		89DE27DE1CC00E2C00C8B715 /* PBOSSoftwareUpdateProcess.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBOSSoftwareUpdateProcess.h; sourceTree = "<group>"; };
+		89DE27DF1CC00E2C00C8B715 /* PBOSSoftwareUpdateProcessDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBOSSoftwareUpdateProcessDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27E01CC00E2C00C8B715 /* PBOSUpdateService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBOSUpdateService.h; sourceTree = "<group>"; };
+		89DE27E11CC00E2C00C8B715 /* PBOSUpdateWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBOSUpdateWindow.h; sourceTree = "<group>"; };
+		89DE27E21CC00E2C00C8B715 /* PBProgrammingGuide.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBProgrammingGuide.h; sourceTree = "<group>"; };
+		89DE27E31CC00E2C00C8B715 /* PBRemoteBulletinViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBRemoteBulletinViewController.h; sourceTree = "<group>"; };
+		89DE27E41CC00E2C00C8B715 /* PBRemoteViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBRemoteViewController.h; sourceTree = "<group>"; };
+		89DE27E51CC00E2C00C8B715 /* PBSafeAreaWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSafeAreaWindow.h; sourceTree = "<group>"; };
+		89DE27E61CC00E2C00C8B715 /* PBSAirPlayServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSAirPlayServiceInterface-Protocol.h"; sourceTree = "<group>"; };
+		89DE27E71CC00E2C00C8B715 /* PBSAppDepotProxyProtocol-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSAppDepotProxyProtocol-Protocol.h"; sourceTree = "<group>"; };
+		89DE27E81CC00E2C00C8B715 /* PBSBulletinPresenter-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSBulletinPresenter-Protocol.h"; sourceTree = "<group>"; };
+		89DE27E91CC00E2C00C8B715 /* PBSBulletinServiceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSBulletinServiceDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27EA1CC00E2C00C8B715 /* PBSBulletinServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSBulletinServiceInterface-Protocol.h"; sourceTree = "<group>"; };
+		89DE27EB1CC00E2C00C8B715 /* PBScreenSaverManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBScreenSaverManager.h; sourceTree = "<group>"; };
+		89DE27EC1CC00E2C00C8B715 /* PBSDiagnosticLogsServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSDiagnosticLogsServiceInterface-Protocol.h"; sourceTree = "<group>"; };
+		89DE27ED1CC00E2C00C8B715 /* PBSerialNumberWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSerialNumberWindow.h; sourceTree = "<group>"; };
+		89DE27EE1CC00E2C00C8B715 /* PBServiceProviderRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBServiceProviderRegistry.h; sourceTree = "<group>"; };
+		89DE27EF1CC00E2C00C8B715 /* PBServiceProviderRegistryKeyPair.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBServiceProviderRegistryKeyPair.h; sourceTree = "<group>"; };
+		89DE27F01CC00E2C00C8B715 /* PBSimplePluginHost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSimplePluginHost.h; sourceTree = "<group>"; };
+		89DE27F11CC00E2C00C8B715 /* PBSiriManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSiriManager.h; sourceTree = "<group>"; };
+		89DE27F21CC00E2C00C8B715 /* PBSiriScreenActionApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSiriScreenActionApplication.h; sourceTree = "<group>"; };
+		89DE27F31CC00E2C00C8B715 /* PBSiriScreenActionContextProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSiriScreenActionContextProvider.h; sourceTree = "<group>"; };
+		89DE27F41CC00E2C00C8B715 /* PBSiriScreenActionItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSiriScreenActionItem.h; sourceTree = "<group>"; };
+		89DE27F51CC00E2C00C8B715 /* PBSiriScreenActionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSiriScreenActionManager.h; sourceTree = "<group>"; };
+		89DE27F61CC00E2C00C8B715 /* PBSoftwareUpdateService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSoftwareUpdateService.h; sourceTree = "<group>"; };
+		89DE27F71CC00E2C00C8B715 /* PBSOSUpdateServiceDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSOSUpdateServiceDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE27F81CC00E2C00C8B715 /* PBSOSUpdateServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSOSUpdateServiceInterface-Protocol.h"; sourceTree = "<group>"; };
+		89DE27F91CC00E2C00C8B715 /* PBSViewServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSViewServiceInterface-Protocol.h"; sourceTree = "<group>"; };
+		89DE27FA1CC00E2C00C8B715 /* PBSViewServicePresenter-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSViewServicePresenter-Protocol.h"; sourceTree = "<group>"; };
+		89DE27FB1CC00E2C00C8B715 /* PBSystemMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSystemMenuViewController.h; sourceTree = "<group>"; };
+		89DE27FC1CC00E2C00C8B715 /* PBSystemService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSystemService.h; sourceTree = "<group>"; };
+		89DE27FD1CC00E2C00C8B715 /* PBSystemServiceClientInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSystemServiceClientInterface-Protocol.h"; sourceTree = "<group>"; };
+		89DE27FE1CC00E2C00C8B715 /* PBSystemServiceConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBSystemServiceConnection.h; sourceTree = "<group>"; };
+		89DE27FF1CC00E2C00C8B715 /* PBSystemServiceInterface-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSystemServiceInterface-Protocol.h"; sourceTree = "<group>"; };
+		89DE28001CC00E2C00C8B715 /* PBSystemServiceNowPlayingDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBSystemServiceNowPlayingDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE28011CC00E2C00C8B715 /* PBTextEntryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBTextEntryViewController.h; sourceTree = "<group>"; };
+		89DE28021CC00E2C00C8B715 /* PBTextEntryViewControllerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBTextEntryViewControllerDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE28031CC00E2C00C8B715 /* PBThermalNoticeWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBThermalNoticeWindow.h; sourceTree = "<group>"; };
+		89DE28041CC00E2C00C8B715 /* PBUIPluginHost-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBUIPluginHost-Protocol.h"; sourceTree = "<group>"; };
+		89DE28051CC00E2C00C8B715 /* PBUnavailableBundleListLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUnavailableBundleListLoader.h; sourceTree = "<group>"; };
+		89DE28061CC00E2C00C8B715 /* PBUserNotificationBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationBaseViewController.h; sourceTree = "<group>"; };
+		89DE28071CC00E2C00C8B715 /* PBUserNotificationHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationHandler.h; sourceTree = "<group>"; };
+		89DE28081CC00E2C00C8B715 /* PBUserNotificationSystemStateProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationSystemStateProvider.h; sourceTree = "<group>"; };
+		89DE28091CC00E2C00C8B715 /* PBUserNotificationTextEntryButtonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationTextEntryButtonView.h; sourceTree = "<group>"; };
+		89DE280A1CC00E2C00C8B715 /* PBUserNotificationTextEntryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationTextEntryViewController.h; sourceTree = "<group>"; };
+		89DE280B1CC00E2C00C8B715 /* PBUserNotificationViewController-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBUserNotificationViewController-Protocol.h"; sourceTree = "<group>"; };
+		89DE280C1CC00E2C00C8B715 /* PBUserNotificationViewControllerAlert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationViewControllerAlert.h; sourceTree = "<group>"; };
+		89DE280D1CC00E2C00C8B715 /* PBUserNotificationViewControllerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PBUserNotificationViewControllerDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE280E1CC00E2C00C8B715 /* PBUserNotificationViewControllerTermsAndConditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationViewControllerTermsAndConditions.h; sourceTree = "<group>"; };
+		89DE280F1CC00E2C00C8B715 /* PBUserNotificationViewControllerTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBUserNotificationViewControllerTextField.h; sourceTree = "<group>"; };
+		89DE28101CC00E2C00C8B715 /* PBViewControllerPresentationRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBViewControllerPresentationRequest.h; sourceTree = "<group>"; };
+		89DE28111CC00E2C00C8B715 /* PBVolumeChangeObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBVolumeChangeObserver.h; sourceTree = "<group>"; };
+		89DE28121CC00E2C00C8B715 /* PBVPNConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBVPNConnection.h; sourceTree = "<group>"; };
+		89DE28131CC00E2C00C8B715 /* PBWallpaperView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBWallpaperView.h; sourceTree = "<group>"; };
+		89DE28141CC00E2C00C8B715 /* PBWallpaperWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBWallpaperWindow.h; sourceTree = "<group>"; };
+		89DE28151CC00E2C00C8B715 /* PBWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBWindow.h; sourceTree = "<group>"; };
+		89DE28161CC00E2C00C8B715 /* PBWindowManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PBWindowManager.h; sourceTree = "<group>"; };
+		89DE28171CC00E2C00C8B715 /* PineBoard-Structs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PineBoard-Structs.h"; sourceTree = "<group>"; };
+		89DE28181CC00E2C00C8B715 /* PineBoard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PineBoard.h; sourceTree = "<group>"; };
+		89DE28191CC00E2C00C8B715 /* SBIconProgressViewDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SBIconProgressViewDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE281A1CC00E2C00C8B715 /* SSDownloadManagerObserver-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SSDownloadManagerObserver-Protocol.h"; sourceTree = "<group>"; };
+		89DE281B1CC00E2C00C8B715 /* SSPurchaseManagerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SSPurchaseManagerDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE281C1CC00E2C00C8B715 /* TextEntryButtonViewDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TextEntryButtonViewDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE281D1CC00E2C00C8B715 /* TVSCoreControlManagerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVSCoreControlManagerDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE281E1CC00E2C00C8B715 /* TVSImageLoader-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVSImageLoader-Protocol.h"; sourceTree = "<group>"; };
+		89DE281F1CC00E2C00C8B715 /* TVSPeripheralManager-B239.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVSPeripheralManager-B239.h"; sourceTree = "<group>"; };
+		89DE28201CC00E2C00C8B715 /* TVSPreferences-PineBoardAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVSPreferences-PineBoardAdditions.h"; sourceTree = "<group>"; };
+		89DE28211CC00E2C00C8B715 /* TVSProcessManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TVSProcessManager.h; sourceTree = "<group>"; };
+		89DE28221CC00E2C00C8B715 /* TVSUserNotificationDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVSUserNotificationDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE28231CC00E2C00C8B715 /* TVTermsAndConditionsViewDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TVTermsAndConditionsViewDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE28241CC00E2C00C8B715 /* UIApplicationDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplicationDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE28251CC00E2C00C8B715 /* UIApplicationSceneClientSettings-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplicationSceneClientSettings-Protocol.h"; sourceTree = "<group>"; };
+		89DE28261CC00E2C00C8B715 /* UICollectionViewDataSource-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionViewDataSource-Protocol.h"; sourceTree = "<group>"; };
+		89DE28271CC00E2C00C8B715 /* UICollectionViewDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionViewDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE28281CC00E2C00C8B715 /* UIGestureRecognizerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizerDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE28291CC00E2C00C8B715 /* UINavigationController-PineBoardAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController-PineBoardAdditions.h"; sourceTree = "<group>"; };
+		89DE282A1CC00E2C00C8B715 /* UIScrollViewDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollViewDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE282B1CC00E2C00C8B715 /* UITextFieldDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextFieldDelegate-Protocol.h"; sourceTree = "<group>"; };
+		89DE282C1CC00E2C00C8B715 /* UNSystemStateProviding-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UNSystemStateProviding-Protocol.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2692,7 +2688,6 @@
 			children = (
 				8929FCCD1CB70EA2003D7473 /* AirControl */,
 				8929FCC41CB571B8003D7473 /* control */,
-				8929806D1CB1EF8C003D7473 /* PrivateHeaders */,
 				892975C71CB1A689003D7473 /* remotetest */,
 				8929759D1CB1A5C0003D7473 /* ATVWebRemote.h */,
 				8929759F1CB1A5C0003D7473 /* Info.plist */,
@@ -2703,6 +2698,7 @@
 		892975C71CB1A689003D7473 /* remotetest */ = {
 			isa = PBXGroup;
 			children = (
+				89DE27951CC00E2C00C8B715 /* PineBoard.app Headers */,
 				892975C81CB1A689003D7473 /* .theos */,
 				892976081CB1A68A003D7473 /* ATVHIDSystemClient.h */,
 				892976CB1CB1A68B003D7473 /* Core */,
@@ -2713,8 +2709,6 @@
 				892977161CB1A68B003D7473 /* Makefile */,
 				892977171CB1A68B003D7473 /* Makefile.new */,
 				892977181CB1A68B003D7473 /* obj */,
-				8929771A1CB1A68B003D7473 /* pb.tgz */,
-				8929771B1CB1A68B003D7473 /* PineBoard.app */,
 				8929771C1CB1A68B003D7473 /* private-headers */,
 				892977241CB1A68B003D7473 /* RemoteTestHelper.h */,
 				892977251CB1A68B003D7473 /* RemoteTestHelper.mm */,
@@ -5239,165 +5233,6 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
-		8929806D1CB1EF8C003D7473 /* PrivateHeaders */ = {
-			isa = PBXGroup;
-			children = (
-				8929806E1CB1EF8C003D7473 /* _AppActivateInfo.h */,
-				8929806F1CB1EF8C003D7473 /* _PBAppSwitcherCollectionView.h */,
-				892980701CB1EF8C003D7473 /* _PBAppSwitcherContentView.h */,
-				892980711CB1EF8C003D7473 /* _PBAXMenuAlertController.h */,
-				892980721CB1EF8C003D7473 /* _PBTermsAndConditionsContentView.h */,
-				892980731CB1EF8C003D7473 /* _PBUnavailableBundleListLoaderCancellableToken.h */,
-				892980741CB1EF8C003D7473 /* _PBWindowManagerAppTransitionHelper.h */,
-				892980751CB1EF8C003D7473 /* _SplashView.h */,
-				892980761CB1EF8C003D7473 /* _TVSPMApplicationUpdateScenesTransactionOberver.h */,
-				892980771CB1EF8C003D7473 /* AFContextProvider-Protocol.h */,
-				892980781CB1EF8C003D7473 /* ATVHIDSystemClient.h */,
-				892980791CB1EF8C003D7473 /* AXBackBoardServer.h */,
-				8929807A1CB1EF8C003D7473 /* BSTransactionObserver-Protocol.h */,
-				8929807B1CB1EF8C003D7473 /* CDStructures.h */,
-				8929807C1CB1EF8C003D7473 /* FBApplicationTerminationAssertionServiceDelegate-Protocol.h */,
-				8929807D1CB1EF8C003D7473 /* FBApplicationUpdateScenesTransactionObserver-Protocol.h */,
-				8929807E1CB1EF8C003D7473 /* FBProcessManagerObserver-Protocol.h */,
-				8929807F1CB1EF8C003D7473 /* FBSceneManagerDelegate-Protocol.h */,
-				892980801CB1EF8C003D7473 /* FBSceneManagerObserver-Protocol.h */,
-				892980811CB1EF8C003D7473 /* FBSystemServiceDelegate-Protocol.h */,
-				892980821CB1EF8C003D7473 /* FBUIApplicationServiceDelegate-Protocol.h */,
-				892980831CB1EF8C003D7473 /* FBWorkspaceDelegate-Protocol.h */,
-				892980841CB1EF8C003D7473 /* LSApplicationWorkspaceObserverProtocol-Protocol.h */,
-				892980851CB1EF8C003D7473 /* MobileAccessoryUpdaterDelegate-Protocol.h */,
-				892980861CB1EF8C003D7473 /* NSCopying-Protocol.h */,
-				892980871CB1EF8C003D7473 /* NSObject-Protocol.h */,
-				892980881CB1EF8C003D7473 /* NSOperationQueue-PBSoftwareUpdateServiceQueue.h */,
-				892980891CB1EF8C003D7473 /* NSXPCListenerDelegate-Protocol.h */,
-				8929808A1CB1EF8C003D7473 /* PB2SVerificationOperation.h */,
-				8929808B1CB1EF8C003D7473 /* PBAccessoryUpdateOperation.h */,
-				8929808C1CB1EF8C003D7473 /* PBAccessoryUpdateService.h */,
-				8929808D1CB1EF8C003D7473 /* PBAirPlayService.h */,
-				8929808E1CB1EF8C003D7473 /* PBAppContextHostView.h */,
-				8929808F1CB1EF8C003D7473 /* PBAppDelegate.h */,
-				892980901CB1EF8C003D7473 /* PBAppDepot.h */,
-				892980911CB1EF8C003D7473 /* PBApplication-PBApplicationTesting.h */,
-				892980921CB1EF8C003D7473 /* PBApplication.h */,
-				892980931CB1EF8C003D7473 /* PBAppSoftwareUpdateOperation.h */,
-				892980941CB1EF8C003D7473 /* PBAppSwitcherCollectionViewCell.h */,
-				892980951CB1EF8C003D7473 /* PBAppSwitcherCollectionViewCellDelegate-Protocol.h */,
-				892980961CB1EF8C003D7473 /* PBAppSwitcherCollectionViewController.h */,
-				892980971CB1EF8C003D7473 /* PBAppSwitcherCollectionViewControllerDelegate-Protocol.h */,
-				892980981CB1EF8C003D7473 /* PBAppSwitcherFullscreenLayout.h */,
-				892980991CB1EF8C003D7473 /* PBAppSwitcherIconView.h */,
-				8929809A1CB1EF8C003D7473 /* PBAppSwitcherItem.h */,
-				8929809B1CB1EF8C003D7473 /* PBAppSwitcherItemObserver-Protocol.h */,
-				8929809C1CB1EF8C003D7473 /* PBAppSwitcherLayout.h */,
-				8929809D1CB1EF8C003D7473 /* PBAppSwitcherManager.h */,
-				8929809E1CB1EF8C003D7473 /* PBAppSwitcherSnapshotLoader.h */,
-				8929809F1CB1EF8C003D7473 /* PBAppSwitcherSnapshotUtilities.h */,
-				892980A01CB1EF8C003D7473 /* PBAppSwitcherViewController.h */,
-				892980A11CB1EF8C003D7473 /* PBAppTransitionContext.h */,
-				892980A21CB1EF8C003D7473 /* PBAppTransitionContextDelegate-Protocol.h */,
-				892980A31CB1EF8C003D7473 /* PBAppTransitionTransaction.h */,
-				892980A41CB1EF8C003D7473 /* PBAppTransitionViewController.h */,
-				892980A51CB1EF8C003D7473 /* PBAppUpdateOperation.h */,
-				892980A61CB1EF8C003D7473 /* PBAXShortcutHandler.h */,
-				892980A71CB1EF8C003D7473 /* PBBackgroundWindow.h */,
-				892980A81CB1EF8C003D7473 /* PBBulletinService.h */,
-				892980A91CB1EF8C003D7473 /* PBBundleLoader.h */,
-				892980AA1CB1EF8C003D7473 /* PBCancellable-Protocol.h */,
-				892980AB1CB1EF8C003D7473 /* PBCoreControlManager-Private.h */,
-				892980AC1CB1EF8C003D7473 /* PBCoreControlManager.h */,
-				892980AD1CB1EF8C003D7473 /* PBCVVVerificationOperation.h */,
-				892980AE1CB1EF8C003D7473 /* PBDataReportingService.h */,
-				892980AF1CB1EF8C003D7473 /* PBDiagnosticLogsService.h */,
-				892980B01CB1EF8C003D7473 /* PBHUDWindow.h */,
-				892980B11CB1EF8C003D7473 /* PBLanguageChangeObserverDelegate-Protocol.h */,
-				892980B21CB1EF8C003D7473 /* PBMediaRemoteObserver.h */,
-				892980B31CB1EF8C003D7473 /* PBMediaRemoteObserverDelegate-Protocol.h */,
-				892980B41CB1EF8C003D7473 /* PBNavigationController.h */,
-				892980B51CB1EF8C003D7473 /* PBOSSoftwareUpdateMonitor.h */,
-				892980B61CB1EF8C003D7473 /* PBOSSoftwareUpdateProcess.h */,
-				892980B71CB1EF8C003D7473 /* PBOSSoftwareUpdateProcessDelegate-Protocol.h */,
-				892980B81CB1EF8C003D7473 /* PBOSUpdateService.h */,
-				892980B91CB1EF8C003D7473 /* PBOSUpdateWindow.h */,
-				892980BA1CB1EF8C003D7473 /* PBProgrammingGuide.h */,
-				892980BB1CB1EF8C003D7473 /* PBRemoteBulletinViewController.h */,
-				892980BC1CB1EF8C003D7473 /* PBRemoteViewController.h */,
-				892980BD1CB1EF8C003D7473 /* PBSafeAreaWindow.h */,
-				892980BE1CB1EF8C003D7473 /* PBSAirPlayServiceInterface-Protocol.h */,
-				892980BF1CB1EF8C003D7473 /* PBSAppDepotProxyProtocol-Protocol.h */,
-				892980C01CB1EF8C003D7473 /* PBSBulletinPresenter-Protocol.h */,
-				892980C11CB1EF8C003D7473 /* PBSBulletinServiceDelegate-Protocol.h */,
-				892980C21CB1EF8C003D7473 /* PBSBulletinServiceInterface-Protocol.h */,
-				892980C31CB1EF8C003D7473 /* PBScreenSaverManager.h */,
-				892980C41CB1EF8C003D7473 /* PBSDiagnosticLogsServiceInterface-Protocol.h */,
-				892980C51CB1EF8C003D7473 /* PBSerialNumberWindow.h */,
-				892980C61CB1EF8C003D7473 /* PBServiceProviderRegistry.h */,
-				892980C71CB1EF8C003D7473 /* PBServiceProviderRegistryKeyPair.h */,
-				892980C81CB1EF8C003D7473 /* PBSimplePluginHost.h */,
-				892980C91CB1EF8C003D7473 /* PBSiriManager.h */,
-				892980CA1CB1EF8C003D7473 /* PBSiriScreenActionApplication.h */,
-				892980CB1CB1EF8C003D7473 /* PBSiriScreenActionContextProvider.h */,
-				892980CC1CB1EF8C003D7473 /* PBSiriScreenActionItem.h */,
-				892980CD1CB1EF8C003D7473 /* PBSiriScreenActionManager.h */,
-				892980CE1CB1EF8D003D7473 /* PBSoftwareUpdateService.h */,
-				892980CF1CB1EF8D003D7473 /* PBSOSUpdateServiceDelegate-Protocol.h */,
-				892980D01CB1EF8D003D7473 /* PBSOSUpdateServiceInterface-Protocol.h */,
-				892980D11CB1EF8D003D7473 /* PBSViewServiceInterface-Protocol.h */,
-				892980D21CB1EF8D003D7473 /* PBSViewServicePresenter-Protocol.h */,
-				892980D31CB1EF8D003D7473 /* PBSystemMenuViewController.h */,
-				892980D41CB1EF8D003D7473 /* PBSystemService.h */,
-				892980D51CB1EF8D003D7473 /* PBSystemServiceClientInterface-Protocol.h */,
-				892980D61CB1EF8D003D7473 /* PBSystemServiceConnection.h */,
-				892980D71CB1EF8D003D7473 /* PBSystemServiceInterface-Protocol.h */,
-				892980D81CB1EF8D003D7473 /* PBSystemServiceNowPlayingDelegate-Protocol.h */,
-				892980D91CB1EF8D003D7473 /* PBTextEntryViewController.h */,
-				892980DA1CB1EF8D003D7473 /* PBTextEntryViewControllerDelegate-Protocol.h */,
-				892980DB1CB1EF8D003D7473 /* PBThermalNoticeWindow.h */,
-				892980DC1CB1EF8D003D7473 /* PBUIPluginHost-Protocol.h */,
-				892980DD1CB1EF8D003D7473 /* PBUnavailableBundleListLoader.h */,
-				892980DE1CB1EF8D003D7473 /* PBUserNotificationBaseViewController.h */,
-				892980DF1CB1EF8D003D7473 /* PBUserNotificationHandler.h */,
-				892980E01CB1EF8D003D7473 /* PBUserNotificationSystemStateProvider.h */,
-				892980E11CB1EF8D003D7473 /* PBUserNotificationTextEntryButtonView.h */,
-				892980E21CB1EF8D003D7473 /* PBUserNotificationTextEntryViewController.h */,
-				892980E31CB1EF8D003D7473 /* PBUserNotificationViewController-Protocol.h */,
-				892980E41CB1EF8D003D7473 /* PBUserNotificationViewControllerAlert.h */,
-				892980E51CB1EF8D003D7473 /* PBUserNotificationViewControllerDelegate-Protocol.h */,
-				892980E61CB1EF8D003D7473 /* PBUserNotificationViewControllerTermsAndConditions.h */,
-				892980E71CB1EF8D003D7473 /* PBUserNotificationViewControllerTextField.h */,
-				892980E81CB1EF8D003D7473 /* PBViewControllerPresentationRequest.h */,
-				892980E91CB1EF8D003D7473 /* PBVolumeChangeObserver.h */,
-				892980EA1CB1EF8D003D7473 /* PBVPNConnection.h */,
-				892980EB1CB1EF8D003D7473 /* PBWallpaperView.h */,
-				892980EC1CB1EF8D003D7473 /* PBWallpaperWindow.h */,
-				892980ED1CB1EF8D003D7473 /* PBWindow.h */,
-				892980EE1CB1EF8D003D7473 /* PBWindowManager.h */,
-				892980EF1CB1EF8D003D7473 /* PineBoard-Structs.h */,
-				892980F01CB1EF8D003D7473 /* PineBoard.h */,
-				892980F11CB1EF8D003D7473 /* SBIconProgressViewDelegate-Protocol.h */,
-				892980F21CB1EF8D003D7473 /* SSDownloadManagerObserver-Protocol.h */,
-				892980F31CB1EF8D003D7473 /* SSPurchaseManagerDelegate-Protocol.h */,
-				892980F41CB1EF8D003D7473 /* TextEntryButtonViewDelegate-Protocol.h */,
-				892980F51CB1EF8D003D7473 /* TVSCoreControlManagerDelegate-Protocol.h */,
-				892980F61CB1EF8D003D7473 /* TVSImageLoader-Protocol.h */,
-				892980F71CB1EF8D003D7473 /* TVSPeripheralManager-B239.h */,
-				892980F81CB1EF8D003D7473 /* TVSPreferences-PineBoardAdditions.h */,
-				892980F91CB1EF8D003D7473 /* TVSProcessManager.h */,
-				892980FA1CB1EF8D003D7473 /* TVSUserNotificationDelegate-Protocol.h */,
-				892980FB1CB1EF8D003D7473 /* TVTermsAndConditionsViewDelegate-Protocol.h */,
-				892980FC1CB1EF8D003D7473 /* UIApplicationDelegate-Protocol.h */,
-				892980FD1CB1EF8D003D7473 /* UIApplicationSceneClientSettings-Protocol.h */,
-				892980FE1CB1EF8D003D7473 /* UICollectionViewDataSource-Protocol.h */,
-				892980FF1CB1EF8D003D7473 /* UICollectionViewDelegate-Protocol.h */,
-				892981001CB1EF8D003D7473 /* UIGestureRecognizerDelegate-Protocol.h */,
-				892981011CB1EF8D003D7473 /* UINavigationController-PineBoardAdditions.h */,
-				892981021CB1EF8D003D7473 /* UIScrollViewDelegate-Protocol.h */,
-				892981031CB1EF8D003D7473 /* UITextFieldDelegate-Protocol.h */,
-				892981041CB1EF8D003D7473 /* UNSystemStateProviding-Protocol.h */,
-			);
-			name = PrivateHeaders;
-			path = remotetest/PineBoard.app/PrivateHeaders;
-			sourceTree = SOURCE_ROOT;
-		};
 		8929FCCD1CB70EA2003D7473 /* AirControl */ = {
 			isa = PBXGroup;
 			children = (
@@ -5517,6 +5352,164 @@
 				8929FDC91CBC45BD003D7473 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		89DE27951CC00E2C00C8B715 /* PineBoard.app Headers */ = {
+			isa = PBXGroup;
+			children = (
+				89DE27961CC00E2C00C8B715 /* _AppActivateInfo.h */,
+				89DE27971CC00E2C00C8B715 /* _PBAppSwitcherCollectionView.h */,
+				89DE27981CC00E2C00C8B715 /* _PBAppSwitcherContentView.h */,
+				89DE27991CC00E2C00C8B715 /* _PBAXMenuAlertController.h */,
+				89DE279A1CC00E2C00C8B715 /* _PBTermsAndConditionsContentView.h */,
+				89DE279B1CC00E2C00C8B715 /* _PBUnavailableBundleListLoaderCancellableToken.h */,
+				89DE279C1CC00E2C00C8B715 /* _PBWindowManagerAppTransitionHelper.h */,
+				89DE279D1CC00E2C00C8B715 /* _SplashView.h */,
+				89DE279E1CC00E2C00C8B715 /* _TVSPMApplicationUpdateScenesTransactionOberver.h */,
+				89DE279F1CC00E2C00C8B715 /* AFContextProvider-Protocol.h */,
+				89DE27A01CC00E2C00C8B715 /* ATVHIDSystemClient.h */,
+				89DE27A11CC00E2C00C8B715 /* AXBackBoardServer.h */,
+				89DE27A21CC00E2C00C8B715 /* BSTransactionObserver-Protocol.h */,
+				89DE27A31CC00E2C00C8B715 /* CDStructures.h */,
+				89DE27A41CC00E2C00C8B715 /* FBApplicationTerminationAssertionServiceDelegate-Protocol.h */,
+				89DE27A51CC00E2C00C8B715 /* FBApplicationUpdateScenesTransactionObserver-Protocol.h */,
+				89DE27A61CC00E2C00C8B715 /* FBProcessManagerObserver-Protocol.h */,
+				89DE27A71CC00E2C00C8B715 /* FBSceneManagerDelegate-Protocol.h */,
+				89DE27A81CC00E2C00C8B715 /* FBSceneManagerObserver-Protocol.h */,
+				89DE27A91CC00E2C00C8B715 /* FBSystemServiceDelegate-Protocol.h */,
+				89DE27AA1CC00E2C00C8B715 /* FBUIApplicationServiceDelegate-Protocol.h */,
+				89DE27AB1CC00E2C00C8B715 /* FBWorkspaceDelegate-Protocol.h */,
+				89DE27AC1CC00E2C00C8B715 /* LSApplicationWorkspaceObserverProtocol-Protocol.h */,
+				89DE27AD1CC00E2C00C8B715 /* MobileAccessoryUpdaterDelegate-Protocol.h */,
+				89DE27AE1CC00E2C00C8B715 /* NSCopying-Protocol.h */,
+				89DE27AF1CC00E2C00C8B715 /* NSObject-Protocol.h */,
+				89DE27B01CC00E2C00C8B715 /* NSOperationQueue-PBSoftwareUpdateServiceQueue.h */,
+				89DE27B11CC00E2C00C8B715 /* NSXPCListenerDelegate-Protocol.h */,
+				89DE27B21CC00E2C00C8B715 /* PB2SVerificationOperation.h */,
+				89DE27B31CC00E2C00C8B715 /* PBAccessoryUpdateOperation.h */,
+				89DE27B41CC00E2C00C8B715 /* PBAccessoryUpdateService.h */,
+				89DE27B51CC00E2C00C8B715 /* PBAirPlayService.h */,
+				89DE27B61CC00E2C00C8B715 /* PBAppContextHostView.h */,
+				89DE27B71CC00E2C00C8B715 /* PBAppDelegate.h */,
+				89DE27B81CC00E2C00C8B715 /* PBAppDepot.h */,
+				89DE27B91CC00E2C00C8B715 /* PBApplication-PBApplicationTesting.h */,
+				89DE27BA1CC00E2C00C8B715 /* PBApplication.h */,
+				89DE27BB1CC00E2C00C8B715 /* PBAppSoftwareUpdateOperation.h */,
+				89DE27BC1CC00E2C00C8B715 /* PBAppSwitcherCollectionViewCell.h */,
+				89DE27BD1CC00E2C00C8B715 /* PBAppSwitcherCollectionViewCellDelegate-Protocol.h */,
+				89DE27BE1CC00E2C00C8B715 /* PBAppSwitcherCollectionViewController.h */,
+				89DE27BF1CC00E2C00C8B715 /* PBAppSwitcherCollectionViewControllerDelegate-Protocol.h */,
+				89DE27C01CC00E2C00C8B715 /* PBAppSwitcherFullscreenLayout.h */,
+				89DE27C11CC00E2C00C8B715 /* PBAppSwitcherIconView.h */,
+				89DE27C21CC00E2C00C8B715 /* PBAppSwitcherItem.h */,
+				89DE27C31CC00E2C00C8B715 /* PBAppSwitcherItemObserver-Protocol.h */,
+				89DE27C41CC00E2C00C8B715 /* PBAppSwitcherLayout.h */,
+				89DE27C51CC00E2C00C8B715 /* PBAppSwitcherManager.h */,
+				89DE27C61CC00E2C00C8B715 /* PBAppSwitcherSnapshotLoader.h */,
+				89DE27C71CC00E2C00C8B715 /* PBAppSwitcherSnapshotUtilities.h */,
+				89DE27C81CC00E2C00C8B715 /* PBAppSwitcherViewController.h */,
+				89DE27C91CC00E2C00C8B715 /* PBAppTransitionContext.h */,
+				89DE27CA1CC00E2C00C8B715 /* PBAppTransitionContextDelegate-Protocol.h */,
+				89DE27CB1CC00E2C00C8B715 /* PBAppTransitionTransaction.h */,
+				89DE27CC1CC00E2C00C8B715 /* PBAppTransitionViewController.h */,
+				89DE27CD1CC00E2C00C8B715 /* PBAppUpdateOperation.h */,
+				89DE27CE1CC00E2C00C8B715 /* PBAXShortcutHandler.h */,
+				89DE27CF1CC00E2C00C8B715 /* PBBackgroundWindow.h */,
+				89DE27D01CC00E2C00C8B715 /* PBBulletinService.h */,
+				89DE27D11CC00E2C00C8B715 /* PBBundleLoader.h */,
+				89DE27D21CC00E2C00C8B715 /* PBCancellable-Protocol.h */,
+				89DE27D31CC00E2C00C8B715 /* PBCoreControlManager-Private.h */,
+				89DE27D41CC00E2C00C8B715 /* PBCoreControlManager.h */,
+				89DE27D51CC00E2C00C8B715 /* PBCVVVerificationOperation.h */,
+				89DE27D61CC00E2C00C8B715 /* PBDataReportingService.h */,
+				89DE27D71CC00E2C00C8B715 /* PBDiagnosticLogsService.h */,
+				89DE27D81CC00E2C00C8B715 /* PBHUDWindow.h */,
+				89DE27D91CC00E2C00C8B715 /* PBLanguageChangeObserverDelegate-Protocol.h */,
+				89DE27DA1CC00E2C00C8B715 /* PBMediaRemoteObserver.h */,
+				89DE27DB1CC00E2C00C8B715 /* PBMediaRemoteObserverDelegate-Protocol.h */,
+				89DE27DC1CC00E2C00C8B715 /* PBNavigationController.h */,
+				89DE27DD1CC00E2C00C8B715 /* PBOSSoftwareUpdateMonitor.h */,
+				89DE27DE1CC00E2C00C8B715 /* PBOSSoftwareUpdateProcess.h */,
+				89DE27DF1CC00E2C00C8B715 /* PBOSSoftwareUpdateProcessDelegate-Protocol.h */,
+				89DE27E01CC00E2C00C8B715 /* PBOSUpdateService.h */,
+				89DE27E11CC00E2C00C8B715 /* PBOSUpdateWindow.h */,
+				89DE27E21CC00E2C00C8B715 /* PBProgrammingGuide.h */,
+				89DE27E31CC00E2C00C8B715 /* PBRemoteBulletinViewController.h */,
+				89DE27E41CC00E2C00C8B715 /* PBRemoteViewController.h */,
+				89DE27E51CC00E2C00C8B715 /* PBSafeAreaWindow.h */,
+				89DE27E61CC00E2C00C8B715 /* PBSAirPlayServiceInterface-Protocol.h */,
+				89DE27E71CC00E2C00C8B715 /* PBSAppDepotProxyProtocol-Protocol.h */,
+				89DE27E81CC00E2C00C8B715 /* PBSBulletinPresenter-Protocol.h */,
+				89DE27E91CC00E2C00C8B715 /* PBSBulletinServiceDelegate-Protocol.h */,
+				89DE27EA1CC00E2C00C8B715 /* PBSBulletinServiceInterface-Protocol.h */,
+				89DE27EB1CC00E2C00C8B715 /* PBScreenSaverManager.h */,
+				89DE27EC1CC00E2C00C8B715 /* PBSDiagnosticLogsServiceInterface-Protocol.h */,
+				89DE27ED1CC00E2C00C8B715 /* PBSerialNumberWindow.h */,
+				89DE27EE1CC00E2C00C8B715 /* PBServiceProviderRegistry.h */,
+				89DE27EF1CC00E2C00C8B715 /* PBServiceProviderRegistryKeyPair.h */,
+				89DE27F01CC00E2C00C8B715 /* PBSimplePluginHost.h */,
+				89DE27F11CC00E2C00C8B715 /* PBSiriManager.h */,
+				89DE27F21CC00E2C00C8B715 /* PBSiriScreenActionApplication.h */,
+				89DE27F31CC00E2C00C8B715 /* PBSiriScreenActionContextProvider.h */,
+				89DE27F41CC00E2C00C8B715 /* PBSiriScreenActionItem.h */,
+				89DE27F51CC00E2C00C8B715 /* PBSiriScreenActionManager.h */,
+				89DE27F61CC00E2C00C8B715 /* PBSoftwareUpdateService.h */,
+				89DE27F71CC00E2C00C8B715 /* PBSOSUpdateServiceDelegate-Protocol.h */,
+				89DE27F81CC00E2C00C8B715 /* PBSOSUpdateServiceInterface-Protocol.h */,
+				89DE27F91CC00E2C00C8B715 /* PBSViewServiceInterface-Protocol.h */,
+				89DE27FA1CC00E2C00C8B715 /* PBSViewServicePresenter-Protocol.h */,
+				89DE27FB1CC00E2C00C8B715 /* PBSystemMenuViewController.h */,
+				89DE27FC1CC00E2C00C8B715 /* PBSystemService.h */,
+				89DE27FD1CC00E2C00C8B715 /* PBSystemServiceClientInterface-Protocol.h */,
+				89DE27FE1CC00E2C00C8B715 /* PBSystemServiceConnection.h */,
+				89DE27FF1CC00E2C00C8B715 /* PBSystemServiceInterface-Protocol.h */,
+				89DE28001CC00E2C00C8B715 /* PBSystemServiceNowPlayingDelegate-Protocol.h */,
+				89DE28011CC00E2C00C8B715 /* PBTextEntryViewController.h */,
+				89DE28021CC00E2C00C8B715 /* PBTextEntryViewControllerDelegate-Protocol.h */,
+				89DE28031CC00E2C00C8B715 /* PBThermalNoticeWindow.h */,
+				89DE28041CC00E2C00C8B715 /* PBUIPluginHost-Protocol.h */,
+				89DE28051CC00E2C00C8B715 /* PBUnavailableBundleListLoader.h */,
+				89DE28061CC00E2C00C8B715 /* PBUserNotificationBaseViewController.h */,
+				89DE28071CC00E2C00C8B715 /* PBUserNotificationHandler.h */,
+				89DE28081CC00E2C00C8B715 /* PBUserNotificationSystemStateProvider.h */,
+				89DE28091CC00E2C00C8B715 /* PBUserNotificationTextEntryButtonView.h */,
+				89DE280A1CC00E2C00C8B715 /* PBUserNotificationTextEntryViewController.h */,
+				89DE280B1CC00E2C00C8B715 /* PBUserNotificationViewController-Protocol.h */,
+				89DE280C1CC00E2C00C8B715 /* PBUserNotificationViewControllerAlert.h */,
+				89DE280D1CC00E2C00C8B715 /* PBUserNotificationViewControllerDelegate-Protocol.h */,
+				89DE280E1CC00E2C00C8B715 /* PBUserNotificationViewControllerTermsAndConditions.h */,
+				89DE280F1CC00E2C00C8B715 /* PBUserNotificationViewControllerTextField.h */,
+				89DE28101CC00E2C00C8B715 /* PBViewControllerPresentationRequest.h */,
+				89DE28111CC00E2C00C8B715 /* PBVolumeChangeObserver.h */,
+				89DE28121CC00E2C00C8B715 /* PBVPNConnection.h */,
+				89DE28131CC00E2C00C8B715 /* PBWallpaperView.h */,
+				89DE28141CC00E2C00C8B715 /* PBWallpaperWindow.h */,
+				89DE28151CC00E2C00C8B715 /* PBWindow.h */,
+				89DE28161CC00E2C00C8B715 /* PBWindowManager.h */,
+				89DE28171CC00E2C00C8B715 /* PineBoard-Structs.h */,
+				89DE28181CC00E2C00C8B715 /* PineBoard.h */,
+				89DE28191CC00E2C00C8B715 /* SBIconProgressViewDelegate-Protocol.h */,
+				89DE281A1CC00E2C00C8B715 /* SSDownloadManagerObserver-Protocol.h */,
+				89DE281B1CC00E2C00C8B715 /* SSPurchaseManagerDelegate-Protocol.h */,
+				89DE281C1CC00E2C00C8B715 /* TextEntryButtonViewDelegate-Protocol.h */,
+				89DE281D1CC00E2C00C8B715 /* TVSCoreControlManagerDelegate-Protocol.h */,
+				89DE281E1CC00E2C00C8B715 /* TVSImageLoader-Protocol.h */,
+				89DE281F1CC00E2C00C8B715 /* TVSPeripheralManager-B239.h */,
+				89DE28201CC00E2C00C8B715 /* TVSPreferences-PineBoardAdditions.h */,
+				89DE28211CC00E2C00C8B715 /* TVSProcessManager.h */,
+				89DE28221CC00E2C00C8B715 /* TVSUserNotificationDelegate-Protocol.h */,
+				89DE28231CC00E2C00C8B715 /* TVTermsAndConditionsViewDelegate-Protocol.h */,
+				89DE28241CC00E2C00C8B715 /* UIApplicationDelegate-Protocol.h */,
+				89DE28251CC00E2C00C8B715 /* UIApplicationSceneClientSettings-Protocol.h */,
+				89DE28261CC00E2C00C8B715 /* UICollectionViewDataSource-Protocol.h */,
+				89DE28271CC00E2C00C8B715 /* UICollectionViewDelegate-Protocol.h */,
+				89DE28281CC00E2C00C8B715 /* UIGestureRecognizerDelegate-Protocol.h */,
+				89DE28291CC00E2C00C8B715 /* UINavigationController-PineBoardAdditions.h */,
+				89DE282A1CC00E2C00C8B715 /* UIScrollViewDelegate-Protocol.h */,
+				89DE282B1CC00E2C00C8B715 /* UITextFieldDelegate-Protocol.h */,
+				89DE282C1CC00E2C00C8B715 /* UNSystemStateProviding-Protocol.h */,
+			);
+			path = "PineBoard.app Headers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -6489,7 +6482,6 @@
 				89297CA01CB1A68F003D7473 /* Class.pm in Resources */,
 				89297CD11CB1A68F003D7473 /* target.pl in Resources */,
 				89297E671CB1A690003D7473 /* notification_center_widget.nic.tar in Resources */,
-				89297C861CB1A68F003D7473 /* PineBoard.app in Resources */,
 				89297CAE1CB1A68F003D7473 /* Method.pm in Resources */,
 				892980491CB1A690003D7473 /* Tweak.xm in Resources */,
 				89297E3A1CB1A68F003D7473 /* stage.mk in Resources */,
@@ -6602,7 +6594,6 @@
 				89297E3B1CB1A68F003D7473 /* subproject.mk in Resources */,
 				89297CB71CB1A68F003D7473 /* Context.pm in Resources */,
 				89297E4A1CB1A690003D7473 /* watchos.mk in Resources */,
-				89297C851CB1A68F003D7473 /* pb.tgz in Resources */,
 				89297E321CB1A68F003D7473 /* package.mk in Resources */,
 				89297C911CB1A68F003D7473 /* fakeroot.sh in Resources */,
 				89297C921CB1A68F003D7473 /* install.copyFile in Resources */,

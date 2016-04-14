@@ -564,6 +564,98 @@ static __attribute__((constructor)) void myHooksInit() {
 
 %end
 
+%hook FBSystemService
+- (void)exitAndRelaunch:(_Bool)arg1 withOptions:(unsigned long long)arg2
+{
+    %log;
+    %orig;
+}
+
+- (void)terminateApplicationGroup:(long long)arg1 forReason:(long long)arg2 andReport:(_Bool)arg3 withDescription:(id)arg4 source:(id)arg5
+{
+    %log;
+    %orig;
+}
+- (void)terminateApplication:(id)arg1 forReason:(long long)arg2 andReport:(_Bool)arg3 withDescription:(id)arg4 source:(id)arg5
+{
+    %log;
+    %orig;
+}
+- (void)_terminateProcess:(id)arg1 forReason:(long long)arg2 andReport:(_Bool)arg3 withDescription:(id)arg4
+{
+    %log;
+    %orig;
+}
+
+- (void)setPendingExit:(_Bool)arg1
+{
+    %log;
+    %orig;
+}
+- (id)systemApplicationBundleIdentifier
+{
+    %log;
+    return %orig;
+}
+- (void)prepareForExitAndRelaunch:(_Bool)arg1{
+    %log;
+    %orig;
+}
+- (void)exitAndRelaunch:(_Bool)arg1
+{
+    %log;
+    %orig;
+}
+
+- (_Bool)_isWhitelistedLaunchSuspendedApp:(id)arg1
+{
+    %log;
+    return %orig;
+}
+- (_Bool)_requiresOpenApplicationEntitlement:(id)arg1 options:(id)arg2 originalSource:(id)arg3
+{
+    %log;
+    return %orig;
+}
+- (void)_performExitTasksForRelaunch:(_Bool)arg1
+{
+    %log;
+    %orig;
+}
+
+- (void)_reallyActivateApplication:(id)arg1 options:(id)arg2 source:(id)arg3 originalSource:(id)arg4 sequenceNumber:(unsigned long long)arg5 cacheGUID:(id)arg6 ourSequenceNumber:(unsigned long long)arg7 ourCacheGUID:(id)arg8 withResult:(id)arg9
+{
+    %log;
+    %orig;
+}
+- (_Bool)_shouldPendRequestForClientSequenceNumber:(unsigned long long)arg1 clientCacheGUID:(id)arg2 ourSequenceNumber:(unsigned long long)arg3 ourCacheGUID:(id)arg4
+{
+    %log;
+    return %orig;
+}
+- (void)_logPendedActivationRequestForMismatchedClientSequenceNumber:(unsigned long long)arg1 clientCacheGUID:(id)arg2 ourSequenceNumber:(unsigned long long)arg3 ourCacheGUID:(id)arg4
+{
+    %log;
+    %orig;
+}
+- (void)_activateApplication:(id)arg1 options:(id)arg2 source:(id)arg3 originalSource:(id)arg4 withResult:(id)arg5
+{
+    %log;
+    %orig;
+}
+- (void)activateApplication:(id)arg1 options:(id)arg2 source:(id)arg3 originalSource:(id)arg4 withResult:(id)arg5
+{
+    %log;
+    %orig;
+}
+- (void)canActivateApplication:(id)arg1 source:(id)arg2 withResult:(id)arg3
+{
+    %log;
+    %orig;
+}
+
+%end
+
 %hook TVSProcessManager
 
 - (void)_openApp:(id)arg1 options:(id)arg2 origin:(id)arg3 withResult:(id)arg4 {
