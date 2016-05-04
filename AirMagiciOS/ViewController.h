@@ -19,7 +19,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *ipAddressLabel;
 @property (nonatomic, weak) IBOutlet UILabel *apiVLabel;
 @property (nonatomic, weak) IBOutlet UILabel *iosVLabel;
-
+@property (nonatomic, weak) IBOutlet UILabel *amVersion;
 
 @end
 

@@ -49,7 +49,11 @@
     NSString *ip;
     int port;
     struct sockaddr_in *addr;
-    
+    if ([[theService addresses] count] == 0)
+    {
+        NSLog(@"no addresses resolved!?!?");
+        return nil;
+    }
     addr = (struct sockaddr_in *) [[[theService addresses] objectAtIndex:0]
                                    bytes];
     ip = [NSString stringWithUTF8String:(char *) inet_ntoa(addr->sin_addr)];
@@ -324,7 +328,8 @@
         for (NSNetService *service in services)
         {
             NSDictionary *fullDict = [self stringDictionaryFromService:service];
-            [fullServices addObject:fullDict];
+            if (fullDict != nil)
+                [fullServices addObject:fullDict];
         }
         
           [self.delegate servicesFound:fullServices];

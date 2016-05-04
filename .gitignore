@@ -57,3 +57,4 @@ ignore*
 # theos / cydia
 
 com.nito.*
+.theos*

@@ -31,6 +31,14 @@ static NSString *appleTVAddress = nil;
     self.deviceController.delegate = self;
     [DEFAULTS setValue:@"atvjb.local" forKey:ATV_HOST];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    NSDictionary *bundleDict = [[NSBundle mainBundle] infoDictionary];
+    NSLog(@"infodict: %@", bundleDict);
+    NSString *version = [NSString stringWithFormat:@"%@v%@", bundleDict[@"CFBundleShortVersionString"], bundleDict[@"CFBundleVersion"]];
+    
+    self.amVersion.text = version;
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,6 +53,7 @@ static NSString *appleTVAddress = nil;
     NSInteger index = 0;
     for (NSDictionary *service in self.services)
     {
+        NSLog(@"service: %@", service);
         KxMenuItem *item = [KxMenuItem menuItem:service[@"hostname"] image:nil target:self action:@selector(menuItemAction:) index:index];
         [serviceArray addObject:item];
         index++;

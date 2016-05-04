@@ -51,7 +51,7 @@ struct rawTouch {
 
 NSUserDefaults *defaults;
 
-
+/*
 %hook AXBackBoardServer
 
 - (void)postEvent:(id)arg1 systemEvent:(_Bool)arg2
@@ -73,6 +73,7 @@ NSUserDefaults *defaults;
 #import <objc/runtime.h>
 #import "rocketbootstrap.h"
 #import "NSObject+AssociatedObjects.h"
+
 
 %hook UIScreen
 

@@ -1,0 +1,9 @@
+Architecture: iphoneos-arm
+Name: AirMagicClient
+Package: com.nito.airmagicclient
+Version: 0.1-2
+Maintainer: Kevin Bradley
+Author: Kevin Bradley
+Description: Client for AirMagic for AppleTV 4 remote control
+Section: Multimedia
+

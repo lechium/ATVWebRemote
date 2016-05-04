@@ -26,6 +26,11 @@ IOHIDEventSystemClientRef IOHIDEventSystemClientCreate(CFAllocatorRef);
 
 @end
 
+/*
+ use split string to split up characters into component array
+each character needs to be converted to HID event and then sent individually
+*/
+
 @implementation NSString (SplitString)
 
 - (NSArray *)splitString
@@ -253,8 +258,8 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
  
  */
 
-//all the navigation events go through here, when this method is called its inside
-//PineBoard.app and not the tweak itself.
+/* all the navigation events go through here, when this method is called its inside PineBoard.app and not the tweak itself.
+*/
 
 - (void)handleMessageName:(NSString *)name userInfo:(NSDictionary *)userInfo
 {
@@ -325,7 +330,6 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
             if ([self respondsToSelector:@selector(delayedRelease:)])
             {
                 [self performSelector:@selector(delayedRelease:) withObject:event afterDelay:1.0];
-                // [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(delayedRelease:) userInfo:@{@"event": event} repeats:false];
                 
             }
             
@@ -338,18 +342,6 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         
     }
     
-    
-    /*
-     id processMan = [objc_getClass("FBProcessManager") sharedInstance];
-     id fap = [processMan valueForKey:@"_foregroundAppProcess"];
-     //NSLog(@"processMan: %@ fap: %@", processMan, fap);
-     id lib = [objc_getClass("FBApplicationLibrary") sharedInstance];
-     
-     id tuyuapp = [lib installedApplicationWithBundleIdentifier:@"com.nito.tuyuTV"];
-     id allApps = [lib allInstalledApplications];
-     //NSLog(@"tuyutv: %@ allApps: %@", tuyuapp, allApps);
-     
-     */
     
 }
 
@@ -422,6 +414,13 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     NSString *stripped = [theText stringByRemovingPercentEncoding];
     //  NSLog(@"original string: %@ stripped: %@", theText, stripped);
     
+    /* 
+     right now since all the text is sent at once I cycle through
+     50 times (should be sufficient to clear all text) before entering
+     any new text. this is definitely not ideal but it works for now.
+    
+     */
+   
     
     //   if ([theText isEqualToString:@"DELETE_ALL_TEXT_NAOW"])
     // {
@@ -448,6 +447,17 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     //   return;
     //}
     
+    /* 
+     
+     finished deleting text, now to split the text up into componenents
+     and cycle through each character and sending its HID event equivalent.
+     
+     part of the process is checking to see if its an uppercase char 
+     or special char like ~!@#$%^&*()_+|}{<>:\"? to determine if we need
+     to "hold" shift while sending the necessary HID event.
+     
+     */
+    
     NSArray *split = [[stripped stringByRemovingPercentEncoding] splitString];
     
     for (NSString *item in split)
@@ -469,9 +479,12 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
                                                                  0,
                                                                  0);
         
-        //
+        //create special chracter set with special chars and all uppercase letters
         NSMutableCharacterSet *uppercaseSpecialSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"~!@#$%^&*()_+|}{<>:\"?"];
         [uppercaseSpecialSet formUnionWithCharacterSet:[NSCharacterSet uppercaseLetterCharacterSet]];
+        
+        //if its uppercase hold down shift while sending HID event.
+        
         BOOL isUppercase = [uppercaseSpecialSet characterIsMember:[item characterAtIndex:0]];
         if (isUppercase == YES)
         {
@@ -489,6 +502,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
                                                                   0,
                                                                   0);
             
+            //how we actually "hold down" shift ;)
             [processMan sendHIDEventToTopApplication:shiftDown];
             [processMan sendHIDEventToTopApplication:eventRefDown];
             [processMan sendHIDEventToTopApplication:eventRefUp];
@@ -497,6 +511,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
             
         } else {
             
+            //not an uppercase or special char, just send the event normally
             [processMan sendHIDEventToTopApplication:eventRefDown];
             [processMan sendHIDEventToTopApplication:eventRefUp];
             
@@ -571,6 +586,8 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     [self IOHIDTest:userInfo[@"text"]];
 }
 
+//none of these special commands are supported by any of the clients yet, still on TODO list.
+
 - (void)sendRebootCommand
 {
     id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
@@ -609,6 +626,9 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     
 }
 
+//was watching this to try to determine ways to get access to UITextFields and keep a reference
+//to them before figuring out how to send keyboard HID events.
+//no longer needed for now, but might be used later to better monitor events on atv for reporting
 
 - (void)appWentFrontMost:(NSNotification *)n
 {

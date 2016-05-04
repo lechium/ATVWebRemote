@@ -23,5 +23,6 @@ yet, currently only for iPhone and doesn't really have much flexibility
 regarding layout, but it delivers practically identical functionality to
 the mac client.
 
+Windows version: https://github.com/lechium/AirMagicWindows
 
 
