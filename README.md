@@ -1,4 +1,4 @@
-# ATVWebRemote
+# AirMagic
 
 This project is currently split up into 3 separate targets. 
 
