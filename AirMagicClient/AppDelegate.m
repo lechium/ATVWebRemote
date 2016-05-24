@@ -9,6 +9,31 @@
 #import "AppDelegate.h"
 #import "ATVDeviceController.h"
 
+@interface AMCWindow: NSWindow
+
+@end
+
+@implementation AMCWindow
+
+- (void)keyDown:(NSEvent *)theEvent
+{
+    unsigned short key = [theEvent keyCode];
+    if (key == 4)
+    {
+        [[NSApp delegate] sendCommand:@"selecth"];
+        return;
+    }
+    [super keyDown:theEvent];
+}
+
+
+- (void)keyUp:(NSEvent *)theEvent
+{
+    [super keyUp:theEvent];
+}
+
+
+@end
 
 
 @implementation AMCButton

@@ -1,7 +1,7 @@
 /* ATVDeviceController */
 
 #if TARGET_OS_OSX
-    //#import <Cocoa/Cocoa.h>
+    #import <Cocoa/Cocoa.h>
 #endif
 
 #import <Foundation/Foundation.h>
