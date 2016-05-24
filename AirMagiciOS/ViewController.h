@@ -20,6 +20,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *apiVLabel;
 @property (nonatomic, weak) IBOutlet UILabel *iosVLabel;
 @property (nonatomic, weak) IBOutlet UILabel *amVersion;
+@property (nonatomic, weak) IBOutlet UIButton *selectButton;
 
 @end
 

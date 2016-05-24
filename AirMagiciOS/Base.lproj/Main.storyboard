@@ -166,6 +166,7 @@
                         <outlet property="apiVLabel" destination="lx8-mr-ZV1" id="Q9B-z2-sRw"/>
                         <outlet property="iosVLabel" destination="Xtt-sc-eSt" id="6Fk-2V-nNj"/>
                         <outlet property="ipAddressLabel" destination="C0A-Me-cTa" id="VCI-6L-N5j"/>
+                        <outlet property="selectButton" destination="WL1-ec-7Je" id="tTQ-K3-whf"/>
                         <outlet property="selectedATV" destination="rF7-gH-aXb" id="q5s-Ef-G3n"/>
                     </connections>
                 </viewController>

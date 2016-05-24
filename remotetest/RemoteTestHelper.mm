@@ -516,9 +516,25 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
             [processMan sendHIDEventToTopApplication:eventRefUp];
             
         }
-        
-        
     }
+    /*
+    IOHIDEventRef returnDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                            timeStamp,
+                                                            7,
+                                                            kHIDUsage_KeyboardReturnOrEnter,
+                                                            1,
+                                                            0);
+    
+    IOHIDEventRef returnUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                          timeStamp,
+                                                          7,
+                                                          kHIDUsage_KeyboardReturnOrEnter,
+                                                          0,
+                                                          0);
+    
+    [processMan sendHIDEventToTopApplication:returnDown];
+    [processMan sendHIDEventToTopApplication:returnUp];
+     */
 }
 
 //old relics when i was hooking notifications to try and figure out how to do text entry without HIDEvents

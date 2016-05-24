@@ -15,6 +15,9 @@
 #import "KxMenu.h"
 
 @interface ViewController ()
+{
+    BOOL cancelNextAction;
+}
 
 @property (nonatomic, strong) ATVDeviceController *deviceController;
 
@@ -27,13 +30,14 @@ static NSString *appleTVAddress = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self loadGesture];
     self.deviceController = [[ATVDeviceController alloc] init];
     self.deviceController.delegate = self;
-    [DEFAULTS setValue:@"atvjb.local" forKey:ATV_HOST];
+  //  [DEFAULTS setValue:@"atvjb.local" forKey:ATV_HOST];
     // Do any additional setup after loading the view, typically from a nib.
     
     NSDictionary *bundleDict = [[NSBundle mainBundle] infoDictionary];
-    NSLog(@"infodict: %@", bundleDict);
+    //NSLog(@"infodict: %@", bundleDict);
     NSString *version = [NSString stringWithFormat:@"%@v%@", bundleDict[@"CFBundleShortVersionString"], bundleDict[@"CFBundleVersion"]];
     
     self.amVersion.text = version;
@@ -71,6 +75,24 @@ static NSString *appleTVAddress = nil;
     [self selectDeviceAtIndex:[sender index]];
 }
 
+-(void)loadGesture
+{
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self
+                                                                                           action:@selector(choose:)];
+    longPress.minimumPressDuration = 0.5;
+    [self.selectButton addGestureRecognizer:longPress];
+    //[self addGestureRecognizer:longPress];
+    
+}
+-(void)choose:(UILongPressGestureRecognizer *)longPress
+{
+    if(longPress.state == UIGestureRecognizerStateBegan)
+    {
+        [self sendNavCommand:@"remoteCommand=selecth"];
+        cancelNextAction = true;
+    }
+
+}
 - (void)selectDeviceAtIndex:(NSInteger)theIndex
 {
     NSDictionary *firstObject = self.services[theIndex];
@@ -134,6 +156,10 @@ static NSString *appleTVAddress = nil;
 
 - (IBAction)selectAction:(id)sender
 {
+    if (cancelNextAction == true) {
+        cancelNextAction = false;
+        return;
+    }
     [self sendNavCommand:@"remoteCommand=select"];
 }
 

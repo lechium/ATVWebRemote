@@ -9,6 +9,67 @@
 #import "AppDelegate.h"
 #import "ATVDeviceController.h"
 
+
+
+@implementation AMCButton
+
+- (void)performHoldCommand
+{
+    AppDelegate *delegate = [NSApp delegate];
+    [delegate sendCommand:self.holdCommand];
+}
+
+- (void)performNormalCommand
+{
+    AppDelegate *delegate = [NSApp delegate];
+    [delegate sendCommand:self.normalCommand];
+}
+
+- (BOOL)performKeyEquivalent:(NSEvent *)theEvent
+{
+    BOOL orig = [super performKeyEquivalent:theEvent];
+    if (orig == true)
+    {
+        [self performNormalCommand];
+    }
+    return orig;
+}
+
+
+
+- (void)mouseDown:(NSEvent *) event
+{
+    self.buttonType = self.tag;
+    if ([self isEnabled] == FALSE)
+    {
+        return;
+    }
+    [self highlight:YES];
+    
+    //this code below is an example of how you call different methods based on whether or not your holding down the button.
+    
+    NSEvent *newEvent = [[self window] nextEventMatchingMask:(NSLeftMouseUp | NSLeftMouseUpMask) untilDate:[NSDate dateWithTimeIntervalSinceNow:.5] inMode:NSEventTrackingRunLoopMode dequeue:YES];
+    if(newEvent != nil) {
+        NSLog(@"not holding");
+        [self performNormalCommand];
+        [self highlight:NO];
+    } else {
+        NSLog(@"holding");
+        [self performHoldCommand];
+        
+    }
+
+}
+
+- (void)mouseUp:(NSEvent *)event
+{
+    [super mouseUp:event];
+    [self highlight:NO];
+}
+@end
+
+
+
 @interface AppDelegate ()
 
 @property (nonatomic, strong) ATVDeviceController *deviceController;
@@ -23,6 +84,9 @@ static NSString *appleTVAddress = nil;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
+    
+    self.selectButton.normalCommand = @"select";
+    self.selectButton.holdCommand = @"selecth";
     deviceController = [[ATVDeviceController alloc] init];
     appleTVAddress = [DEFAULTS stringForKey:@"appleTVHost"];
     
@@ -71,6 +135,12 @@ static NSString *appleTVAddress = nil;
     }
 }
 
+- (void)sendCommand:(NSString *)theCommand
+{
+    NSString *httpCommand = [NSString stringWithFormat:@"http://%@/remoteCommand=%@", APPLE_TV_ADDRESS, theCommand];
+    [NSTask launchedTaskWithLaunchPath:@"/usr/bin/curl" arguments:[NSArray arrayWithObject:httpCommand]];
+}
+
 - (IBAction)killLowtide:(id)sender
 {
     NSString *httpCommand = [NSString stringWithFormat:@"http://%@/kf=1", APPLE_TV_ADDRESS];
@@ -79,47 +149,43 @@ static NSString *appleTVAddress = nil;
 
 - (IBAction)upAction:(id)sender
 {
-    NSString *httpCommand = [NSString stringWithFormat:@"http://%@/remoteCommand=up", APPLE_TV_ADDRESS];
-    //NSLog(@"httpCommand: %@", httpCommand);
-    [NSTask launchedTaskWithLaunchPath:@"/usr/bin/curl" arguments:[NSArray arrayWithObject:httpCommand]];
+    [self sendCommand:@"up"];
 }
 
 - (IBAction)downAction:(id)sender
 {
-    NSString *httpCommand = [NSString stringWithFormat:@"http://%@/remoteCommand=down", APPLE_TV_ADDRESS];
-    [NSTask launchedTaskWithLaunchPath:@"/usr/bin/curl" arguments:[NSArray arrayWithObject:httpCommand]];
+    [self sendCommand:@"down"];
 }
 
 
 
 - (IBAction)leftAction:(id)sender
 {
-    NSString *httpCommand = [NSString stringWithFormat:@"http://%@/remoteCommand=left", APPLE_TV_ADDRESS];
-    [NSTask launchedTaskWithLaunchPath:@"/usr/bin/curl" arguments:[NSArray arrayWithObject:httpCommand]];
+   [self sendCommand:@"left"];
 }
 
 - (IBAction)rightAction:(id)sender
 {
-    NSString *httpCommand = [NSString stringWithFormat:@"http://%@/remoteCommand=right", APPLE_TV_ADDRESS];
-    [NSTask launchedTaskWithLaunchPath:@"/usr/bin/curl" arguments:[NSArray arrayWithObject:httpCommand]];
+    [self sendCommand:@"right"];
 }
 
 - (IBAction)menuAction:(id)sender
 {
-    NSString *httpCommand = [NSString stringWithFormat:@"http://%@/remoteCommand=menu", APPLE_TV_ADDRESS];
-    [NSTask launchedTaskWithLaunchPath:@"/usr/bin/curl" arguments:[NSArray arrayWithObject:httpCommand]];
+    [self sendCommand:@"menu"];
 }
+
+
 
 - (IBAction)selectAction:(id)sender
 {
+    NSButton *theButton;
     NSString *httpCommand = [NSString stringWithFormat:@"http://%@/remoteCommand=select", APPLE_TV_ADDRESS];
     [NSTask launchedTaskWithLaunchPath:@"/usr/bin/curl" arguments:[NSArray arrayWithObject:httpCommand]];
 }
 
 - (IBAction)playAction:(id)sender
 {
-    NSString *httpCommand = [NSString stringWithFormat:@"http://%@/remoteCommand=play", APPLE_TV_ADDRESS];
-    [NSTask launchedTaskWithLaunchPath:@"/usr/bin/curl" arguments:[NSArray arrayWithObject:httpCommand]];
+    [self sendCommand:@"play"];
 }
 
 

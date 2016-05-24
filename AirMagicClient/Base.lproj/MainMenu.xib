@@ -14,6 +14,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
+                <outlet property="selectButton" destination="HuB-qS-hpZ" id="hgR-eX-eZf"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -743,7 +744,7 @@ Gw
                             <action selector="downAction:" target="Voe-Tx-rLC" id="9f0-RU-rt5"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HuB-qS-hpZ">
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HuB-qS-hpZ" customClass="AMCButton">
                         <rect key="frame" x="100" y="160" width="46" height="55"/>
                         <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="blackRecord" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="juh-O8-1Lc">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -752,9 +753,6 @@ Gw
 DQ
 </string>
                         </buttonCell>
-                        <connections>
-                            <action selector="selectAction:" target="Voe-Tx-rLC" id="UK3-1T-CpP"/>
-                        </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nWV-Yq-wiB">
                         <rect key="frame" x="174" y="160" width="46" height="55"/>

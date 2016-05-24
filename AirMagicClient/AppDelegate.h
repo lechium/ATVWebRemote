@@ -8,8 +8,18 @@
 
 #import <Cocoa/Cocoa.h>
 
+@interface AMCButton: NSButton
+
+@property (nonatomic, strong) NSString *normalCommand;
+@property (nonatomic, strong) NSString *holdCommand;
+
+@end
+
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
+@property (nonatomic, weak) IBOutlet AMCButton *selectButton;
+
+- (void)sendCommand:(NSString *)theCommand;
 
 @end
 
