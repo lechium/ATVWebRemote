@@ -146,6 +146,8 @@ static NSString *appleTVAddress = nil;
     NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
     [input setStringValue:defaultValue];
     [alert setAccessoryView:input];
+    [input becomeFirstResponder];
+    
     NSInteger button = [alert runModal];
     if (button == NSAlertDefaultReturn) {
         [input validateEditing];

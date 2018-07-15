@@ -1,8 +1,7 @@
 Package: com.nito.airmagic
 Name: AirMagic
-Depends: mobilesubstrate, com.rpetrich.rocketbootstrap
 Version: 0.0.1
-Architecture: iphoneos-arm
+Architecture: appletvos-arm64
 Description: A powerful webserver that accepts commands to control on screen navigation and text entry
 Maintainer: Kevin Bradley
 Author: Kevin Bradley

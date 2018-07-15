@@ -8,6 +8,15 @@
 #import <IOKit/hidsystem/IOHIDUsageTables.h>
 #include <dlfcn.h>
 
+@interface NSDistributedNotificationCenter : NSNotificationCenter
+
++ (id)defaultCenter;
+
+- (void)addObserver:(id)arg1 selector:(SEL)arg2 name:(id)arg3 object:(id)arg4;
+- (void)postNotificationName:(id)arg1 object:(id)arg2 userInfo:(id)arg3;
+
+@end
+
 /**
  
  There is a lot of cruft in this file from when i was investigating how to get everything working.
@@ -112,18 +121,22 @@ NSUserDefaults *defaults;
     RemoteTestHelper *rmh = [RemoteTestHelper sharedInstance];
     //[rmh setPbDelegateRef:self];
     
+    /*
     id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
     rocketbootstrap_distributedmessagingcenter_apply(center);
     [center runServerOnCurrentThread];
-    
+    */
     Method ourMessageHandler = class_getInstanceMethod(rth, @selector(handleMessageName:userInfo:));
     Method setTextHandler = class_getInstanceMethod(rth, @selector(handleTextName:userInfo:));
     Method delayedRelease = class_getInstanceMethod(rth, @selector(delayedRelease:));
     Method ioTest = class_getInstanceMethod(rth, @selector(IOHIDTest:));
     Method helperCommand = class_getInstanceMethod(rth, @selector(helperCommand:withInfo:));
+    Method navCommand = class_getInstanceMethod(rth, @selector(handleNavigationNotification:));
   //  Method details = class_getInstanceMethod(rth, @selector(systemDetails));
     
      class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
+    
+    
     
     class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
     class_addMethod(pbad, @selector(handleTextName:userInfo:), method_getImplementation(setTextHandler), method_getTypeEncoding(setTextHandler));
@@ -134,9 +147,16 @@ NSUserDefaults *defaults;
     
     class_addMethod(pbad, @selector(helperCommand:withInfo:), method_getImplementation(helperCommand), method_getTypeEncoding(helperCommand));
     
-    [center registerForMessageName:@"org.nito.test.doThings" target:self selector:@selector(handleMessageName:userInfo:)];
-    [center registerForMessageName:@"org.nito.test.setText" target:self selector:@selector(handleTextName:userInfo:)];
-    [center registerForMessageName:@"org.nito.test.helperCommand" target:self selector:@selector(helperCommand:withInfo:)];
+    class_addMethod(pbad, @selector(handleNavigationNotification:), method_getImplementation(navCommand), method_getTypeEncoding(navCommand));
+    
+    NSDistributedNotificationCenter* notificationCenter = [NSDistributedNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver:self  selector:@selector(IOHIDTest:) name:@"org.nito.test.setText" object:nil];
+    [notificationCenter addObserver:self  selector:@selector(handleNavigationNotification:) name:@"org.nito.test.doThings" object:nil];
+    
+    //[center registerForMessageName:@"org.nito.test.doThings" target:self selector:@selector(handleMessageName:userInfo:)];
+    //[center registerForMessageName:@"org.nito.test.setText" target:self selector:@selector(handleTextName:userInfo:)];
+    //[center registerForMessageName:@"org.nito.test.helperCommand" target:self selector:@selector(helperCommand:withInfo:)];
 
     //id app = [objc_getClass("PBApplication") sharedApplication];
     

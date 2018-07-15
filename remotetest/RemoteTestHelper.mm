@@ -11,8 +11,54 @@
 #import <mach/mach_time.h>
 #import <CoreGraphics/CoreGraphics.h>
 #include "InspCWrapper.m"
+#import "NSTask.h"
 
 IOHIDEventSystemClientRef IOHIDEventSystemClientCreate(CFAllocatorRef);
+
+extern "C" int BKSHIDEventSendToFocusedProcess(struct __IOHIDEvent *);
+
+@interface PBApplication: NSObject //for now, should be fine
+
+- (void)forwardHIDButtonEventWithUsagePage:(unsigned int)arg1 usage:(unsigned int)arg2 type:(unsigned long long)arg3 senderID:(unsigned long long)arg4;
++ (id)_newApplicationLibrary;    // IMP=0x000000010000b3d0
++ (id)sharedApplicationLibrary;    // IMP=0x000000010000b39c
++ (id)sharedApplication;
+- (id)FocusedProcessBinding;
++ (id)sharedApplication;
+- (id)appSwitcherWindow;
+- (void)sendEvent:(struct __IOHIDEvent *)theEvent;
+@end
+
+@interface NSDistributedNotificationCenter : NSNotificationCenter
+
++ (id)defaultCenter;
+
+- (void)addObserver:(id)arg1 selector:(SEL)arg2 name:(id)arg3 object:(id)arg4;
+- (void)postNotificationName:(id)arg1 object:(id)arg2 userInfo:(id)arg3;
+
+@end
+
+@interface PBSMutableAppState : NSObject
+-(void)setEnabled:(BOOL)arg1 ;
+-(id)initWithApplicationIdentifer:(id)arg1 ;
+@end
+
+@interface LSApplicationWorkspace : NSObject
++ (id) defaultWorkspace;
+- (void)_LSClearSchemaCaches;
+- (_Bool)_LSPrivateRebuildApplicationDatabasesForSystemApps:(_Bool)arg1 internal:(_Bool)arg2 user:(_Bool)arg3;
+
+- (BOOL) _LSPrivateSyncWithMobileInstallation;
+-(BOOL)registerApplicationDictionary:(id)arg1 withObserverNotification:(int)arg2;
+@end
+
+@interface PBAppDepot : NSObject
++ (id)sharedInstance;
+@property(retain, nonatomic) NSMutableDictionary *internalAppState;
+- (id)_addAppStateForIdentifier:(id)arg1;
+- (void)_save;
+- (void)_setNeedsNotifyAppStateDidChange;
+@end
 
 @interface UIDevice (science)
 
@@ -28,8 +74,8 @@ IOHIDEventSystemClientRef IOHIDEventSystemClientCreate(CFAllocatorRef);
 
 /*
  use split string to split up characters into component array
-each character needs to be converted to HID event and then sent individually
-*/
+ each character needs to be converted to HID event and then sent individually
+ */
 
 @implementation NSString (SplitString)
 
@@ -48,6 +94,12 @@ each character needs to be converted to HID event and then sent individually
     return array;
 }
 
+
+@end
+
+@interface ATVHIDSystemClient : NSObject
++ (id)sharedInstance;
+- (void)_processHIDEvent:(struct __IOHIDEvent *)arg1;
 
 @end
 
@@ -118,11 +170,7 @@ static char const * const kCurrentTextFieldID = "CurrentTextField";
 
 @end
 
-@interface PBApplication
-- (id)FocusedProcessBinding;
-+ (id)sharedApplication;
-- (id)appSwitcherWindow;
-@end
+
 
 //use this method to figure out which characters are being sent for text entry in HIDEvents
 
@@ -259,20 +307,124 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
  */
 
 /* all the navigation events go through here, when this method is called its inside PineBoard.app and not the tweak itself.
-*/
+ */
 
-- (void)handleMessageName:(NSString *)name userInfo:(NSDictionary *)userInfo
-{
+- (void)handleNavigationNotification:(NSNotification *)note {
     
-    //   NSLog(@"messageNAme: %@ userInfo: %@", name, userInfo);
+    NSDictionary *userInfo = [note userInfo];
+    
     if (userInfo != nil)
     {
+        
+        
         BOOL holdTouch = false;
         NSString *event = userInfo[@"event"];
         if (!_ioSystemClient)
             _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
         
+        id pbApp = [ objc_getClass("PBApplication") sharedApplication];
+        
+        NSInteger sender = 4294968875; //no idea what this is but it works?
+        
+        uint64_t abTime = mach_absolute_time();
+        AbsoluteTime timeStamp;
+        timeStamp.hi = (UInt32)(abTime >> 32);
+        timeStamp.lo = (UInt32)(abTime);
+        
+        uint16_t usage = 0;
+        uint16_t usagePage = 12;
+        if ([event isEqualToString:@"right"]) usage = 69;
+        else if ([event isEqualToString:@"left"]) usage = 68;
+        else if ([event isEqualToString:@"down"]) usage = 67;
+        else if ([event isEqualToString:@"up"]) usage = 66;
+        else if ([event isEqualToString:@"tap"]) usage = 65;
+        else if ([event isEqualToString:@"home"]) { usage = 134; holdTouch = true; usagePage = 1; }
+        //else if ([event isEqualToString:@"home"]) { usage = 96; holdTouch = true; }
+        else if ([event isEqualToString:@"vlup"]) { usage = 233; holdTouch = true; }
+        else if ([event isEqualToString:@"vldwn"]){ usage = 234; holdTouch = true; }
+        else if ([event isEqualToString:@"siri"]) usage = 4;
+        else if ([event isEqualToString:@"play"]) usage = 205;
+        else if ([event isEqualToString:@"select"]) usage = 128;
+        else if ([event isEqualToString:@"selecth"]){ usage = 128; holdTouch = true; }
+        else if ([event isEqualToString:@"menu"]){ usage = 134;  usagePage = 1; }
+        
+        IOHIDEventRef navDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                              timeStamp,
+                                                              usagePage,
+                                                              usage,
+                                                              1,
+                                                              0);
+        
+        IOHIDEventRef navUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                            timeStamp,
+                                                            usagePage,
+                                                            usage,
+                                                            0,
+                                                            0);
+        
+        if (holdTouch == true) { //emulating a press and hold
+            
+            if (usage == 134) //menu press and hold takes more events being sent to trigger for some reason
+            {
+                BKSHIDEventSendToFocusedProcess(navDown);
+                BKSHIDEventSendToFocusedProcess(navDown);
+                BKSHIDEventSendToFocusedProcess(navDown);
+                BKSHIDEventSendToFocusedProcess(navDown);
+                BKSHIDEventSendToFocusedProcess(navDown);
+                BKSHIDEventSendToFocusedProcess(navDown);
+                BKSHIDEventSendToFocusedProcess(navDown);
+                BKSHIDEventSendToFocusedProcess(navDown);
+                
+                
+            } else { //any other key press and hold
+                
+                BKSHIDEventSendToFocusedProcess(navDown);
+                BKSHIDEventSendToFocusedProcess(navDown);
+ 
+            }
+            
+            
+            if ([self respondsToSelector:@selector(delayedRelease:)])
+            {
+                [self performSelector:@selector(delayedRelease:) withObject:event afterDelay:1.0];
+                
+            }
+            
+        } else { //normal event, no press and hold
+            
+            BKSHIDEventSendToFocusedProcess(navDown);
+            BKSHIDEventSendToFocusedProcess(navUp);
+            
+        }
+        
+        
+        
+    }
+    
+}
+
+//obsolete, prune
+- (void)handleMessageName:(NSString *)name userInfo:(NSDictionary *)userInfo
+{
+    
+    NSLog(@"messageNAme: %@ userInfo: %@", name, userInfo);
+    if (userInfo != nil)
+    {
+        
+        
+        BOOL holdTouch = false;
+        NSString *event = userInfo[@"event"];
+        if (!_ioSystemClient)
+            _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
+        
+        BOOL isNewerScience = NO;
+        
         id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
+        if (processMan == nil)
+        {
+            isNewerScience = YES;
+            processMan = [objc_getClass("ATVHIDSystemClient") sharedInstance];
+        }
         uint64_t abTime = mach_absolute_time();
         AbsoluteTime timeStamp;
         timeStamp.hi = (UInt32)(abTime >> 32);
@@ -313,17 +465,40 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
             
             if (usage == 134)
             {
-                [processMan sendHIDEventToTopApplication:navDown];
-                [processMan sendHIDEventToTopApplication:navDown];
-                [processMan sendHIDEventToTopApplication:navDown];
-                [processMan sendHIDEventToTopApplication:navDown];
-                [processMan sendHIDEventToTopApplication:navDown];
-                [processMan sendHIDEventToTopApplication:navDown];
-                [processMan sendHIDEventToTopApplication:navDown];
-                [processMan sendHIDEventToTopApplication:navDown];
+                if (isNewerScience == YES)
+                {
+                    [processMan _processHIDEvent:navDown];
+                    [processMan _processHIDEvent:navDown];
+                    [processMan _processHIDEvent:navDown];
+                    [processMan _processHIDEvent:navDown];
+                    [processMan _processHIDEvent:navDown];
+                    [processMan _processHIDEvent:navDown];
+                    [processMan _processHIDEvent:navDown];
+                    [processMan _processHIDEvent:navDown];
+                    
+                    
+                    
+                } else {
+                    [processMan sendHIDEventToTopApplication:navDown];
+                    [processMan sendHIDEventToTopApplication:navDown];
+                    [processMan sendHIDEventToTopApplication:navDown];
+                    [processMan sendHIDEventToTopApplication:navDown];
+                    [processMan sendHIDEventToTopApplication:navDown];
+                    [processMan sendHIDEventToTopApplication:navDown];
+                    [processMan sendHIDEventToTopApplication:navDown];
+                    [processMan sendHIDEventToTopApplication:navDown];
+                }
+                
             } else {
-                [processMan sendHIDEventToTopApplication:navDown];
-                [processMan sendHIDEventToTopApplication:navDown];
+                
+                if (isNewerScience == YES)
+                {
+                    [processMan _processHIDEvent:navDown];
+                    [processMan _processHIDEvent:navDown];
+                } else {
+                    [processMan sendHIDEventToTopApplication:navDown];
+                    [processMan sendHIDEventToTopApplication:navDown];
+                }
             }
             
             
@@ -334,8 +509,15 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
             }
             
         } else {
-            [processMan sendHIDEventToTopApplication:navDown];
-            [processMan sendHIDEventToTopApplication:navUp];
+            
+            if (isNewerScience == YES)
+            {
+                [processMan _processHIDEvent:navDown];
+                [processMan _processHIDEvent:navUp];
+            } else {
+                [processMan sendHIDEventToTopApplication:navDown];
+                [processMan sendHIDEventToTopApplication:navUp];
+            }
         }
         
         
@@ -383,24 +565,29 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
                                                         0,
                                                         0);
     if (usage == 134) {
-        [processMan sendHIDEventToTopApplication:navUp];
-        [processMan sendHIDEventToTopApplication:navUp];
-        [processMan sendHIDEventToTopApplication:navUp];
-        [processMan sendHIDEventToTopApplication:navUp];
-        [processMan sendHIDEventToTopApplication:navUp];
-        [processMan sendHIDEventToTopApplication:navUp];
-        [processMan sendHIDEventToTopApplication:navUp];
-        [processMan sendHIDEventToTopApplication:navUp];
+        
+        BKSHIDEventSendToFocusedProcess(navUp);
+        BKSHIDEventSendToFocusedProcess(navUp);
+        BKSHIDEventSendToFocusedProcess(navUp);
+        BKSHIDEventSendToFocusedProcess(navUp);
+        BKSHIDEventSendToFocusedProcess(navUp);
+        BKSHIDEventSendToFocusedProcess(navUp);
+        BKSHIDEventSendToFocusedProcess(navUp);
+        BKSHIDEventSendToFocusedProcess(navUp);
+     
     } else {
-        [processMan sendHIDEventToTopApplication:navUp];
-        [processMan sendHIDEventToTopApplication:navUp];
+        BKSHIDEventSendToFocusedProcess(navUp);
+        BKSHIDEventSendToFocusedProcess(navUp);
     }
 }
 
 //text entry all goes through here, also being called from within PineBoard.app
 
-- (void)IOHIDTest:(NSString *)theText
+- (void)IOHIDTest:(NSNotification *)note
 {
+    
+    NSString *theText = note.userInfo[@"text"];
+    
     if (!_ioSystemClient)
         _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
     
@@ -414,16 +601,23 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     NSString *stripped = [theText stringByRemovingPercentEncoding];
     //  NSLog(@"original string: %@ stripped: %@", theText, stripped);
     
-    /* 
+    /*
      right now since all the text is sent at once I cycle through
      50 times (should be sufficient to clear all text) before entering
      any new text. this is definitely not ideal but it works for now.
-    
+     
      */
-   
+    
     
     //   if ([theText isEqualToString:@"DELETE_ALL_TEXT_NAOW"])
     // {
+    
+    id pbApp = [ objc_getClass("PBApplication") sharedApplication];
+    
+    //    IOHIDEventRef IOHIDEventCreateKeyboardEvent(CFAllocatorRef allocator, AbsoluteTime timeStamp, uint16_t usagePage, uint16_t usage, Boolean down, IOHIDEventOptionBits flags);
+    
+    NSInteger sender = 4294968875; //no idea what this is but it works?
+    
     NSInteger i = 0;
     NSInteger deleteInt = 50;
     for (i = 0; i < deleteInt; i++)
@@ -441,18 +635,23 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
                                                                kHIDUsage_KeyboardDeleteOrBackspace,
                                                                0,
                                                                0);
-        [processMan sendHIDEventToTopApplication:deleteDown];
-        [processMan sendHIDEventToTopApplication:deleteUp];
+        
+
+        BKSHIDEventSendToFocusedProcess(deleteDown);
+        BKSHIDEventSendToFocusedProcess(deleteUp);
+        //[pbApp forwardHIDButtonEventWithUsagePage:7 usage:kHIDUsage_KeyboardDeleteOrBackspace type:3 senderID:sender];
+        //[processMan sendHIDEventToTopApplication:deleteDown];
+        //[processMan sendHIDEventToTopApplication:deleteUp];
     }
     //   return;
     //}
     
-    /* 
+    /*
      
      finished deleting text, now to split the text up into componenents
      and cycle through each character and sending its HID event equivalent.
      
-     part of the process is checking to see if its an uppercase char 
+     part of the process is checking to see if its an uppercase char
      or special char like ~!@#$%^&*()_+|}{<>:\"? to determine if we need
      to "hold" shift while sending the necessary HID event.
      
@@ -503,38 +702,26 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
                                                                   0);
             
             //how we actually "hold down" shift ;)
-            [processMan sendHIDEventToTopApplication:shiftDown];
-            [processMan sendHIDEventToTopApplication:eventRefDown];
-            [processMan sendHIDEventToTopApplication:eventRefUp];
-            [processMan sendHIDEventToTopApplication:shiftUp];
+            
+            BKSHIDEventSendToFocusedProcess(shiftDown);
+            BKSHIDEventSendToFocusedProcess(eventRefDown);
+            BKSHIDEventSendToFocusedProcess(eventRefUp);
+            // [pbApp forwardHIDButtonEventWithUsagePage:7 usage:usage type:3 senderID:sender];
+            BKSHIDEventSendToFocusedProcess(shiftUp);
+            
+      
+            
             
             
         } else {
             
             //not an uppercase or special char, just send the event normally
-            [processMan sendHIDEventToTopApplication:eventRefDown];
-            [processMan sendHIDEventToTopApplication:eventRefUp];
-            
+            BKSHIDEventSendToFocusedProcess(eventRefDown);
+            BKSHIDEventSendToFocusedProcess(eventRefUp);
+            //[pbApp forwardHIDButtonEventWithUsagePage:7 usage:usage type:3 senderID:sender];
         }
     }
-    /*
-    IOHIDEventRef returnDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                            timeStamp,
-                                                            7,
-                                                            kHIDUsage_KeyboardReturnOrEnter,
-                                                            1,
-                                                            0);
-    
-    IOHIDEventRef returnUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                          timeStamp,
-                                                          7,
-                                                          kHIDUsage_KeyboardReturnOrEnter,
-                                                          0,
-                                                          0);
-    
-    [processMan sendHIDEventToTopApplication:returnDown];
-    [processMan sendHIDEventToTopApplication:returnUp];
-     */
+
 }
 
 //old relics when i was hooking notifications to try and figure out how to do text entry without HIDEvents
@@ -606,18 +793,20 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 
 - (void)sendRebootCommand
 {
-    id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
-    rocketbootstrap_distributedmessagingcenter_apply(center);
-    [center sendMessageName:@"org.nito.test.helperCommand" userInfo:@{@"command": @"reboot"}];
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.helperCommand" object:nil userInfo:@{@"command": @"reboot"}];
+    //id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+    //rocketbootstrap_distributedmessagingcenter_apply(center);
+    //[center sendMessageName:@"org.nito.test.helperCommand" userInfo:@{@"command": @"reboot"}];
 }
 
 - (void)sendRespringCommand
 {
-    id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
-    NSLog(@"#### processMan: %@", processMan);
-    id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
-    rocketbootstrap_distributedmessagingcenter_apply(center);
-    [center sendMessageName:@"org.nito.test.helperCommand" userInfo:@{@"command": @"relaunch"}];
+    //id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
+    //NSLog(@"#### processMan: %@", processMan);
+    //id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+    //rocketbootstrap_distributedmessagingcenter_apply(center);
+    //[center sendMessageName:@"org.nito.test.helperCommand" userInfo:@{@"command": @"relaunch"}];
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.helperCommand" object:nil userInfo:@{@"command": @"relaunch"}];
 }
 
 
@@ -630,16 +819,106 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         [processMan reboot];
     } else if ([theCommand isEqualToString:@"relaunch"])
     {
-        [processMan relaunch];
+        
+        NSFileManager *manager = [NSFileManager defaultManager];
+        NSString *whichKill = @"/tmp/usr/bin/killall";
+        if (![manager fileExistsAtPath:whichKill])
+        {
+            whichKill = @"/usr/bin/killall";
+        }
+        id appDepot = [objc_getClass("PBAppDepot") sharedInstance];
+        NSMutableDictionary *installedAppStates = [appDepot internalAppState];
+      //  NSLog(@"installedAppStates: %@", installedAppStates);
+        
+        NSError *error = nil;
+        if(NSArray *apps = [manager contentsOfDirectoryAtPath:@"/Applications" error:&error])
+        {   for (NSString *app in apps)
+            if ([app hasSuffix:@".app"]) {
+                
+                NSString *path = [@"/Applications" stringByAppendingPathComponent:app];
+                NSString *newPl = [path stringByAppendingPathComponent:@"Info.plist"];
+                // NSString *installPl = [path stringByAppendingPathComponent:@"Install.plist"];
+                //NSLog(@"installPl: %@", installPl);
+                //NSDictionary *install = [NSDictionary dictionaryWithContentsOfFile:installPl];
+                // NSLog(@"install: %@", installPl);
+                
+                if (NSMutableDictionary *info = [NSMutableDictionary dictionaryWithContentsOfFile:newPl]) {
+                    if (NSString *identifier = [info objectForKey:@"CFBundleIdentifier"]) {
+                        
+                        //NSLog(@"identifier: %@", identifier);
+                        
+                        id existingObject = [installedAppStates objectForKey:identifier];
+                        if (existingObject != nil)
+                        {
+                            [installedAppStates setObject:existingObject forKey:identifier];
+                            [appDepot _save];
+                        } else {
+                            
+                            NSLog(@"didnt find object for key: %@, adding!", identifier);
+                            
+                            Class PBSMASC = objc_getClass("PBSMutableAppState");
+                            id appState = [[PBSMASC alloc] initWithApplicationIdentifer:identifier];
+                            [appState setEnabled:YES];
+                            [appDepot _addAppStateForIdentifier:identifier];
+                            
+                            Class $LSApplicationWorkspace(objc_getClass("LSApplicationWorkspace"));
+                            LSApplicationWorkspace *workspace($LSApplicationWorkspace == nil ? nil : [$LSApplicationWorkspace defaultWorkspace]);
+                            
+                            if ([workspace respondsToSelector:@selector(_LSPrivateSyncWithMobileInstallation)]){
+                                
+                                [workspace _LSPrivateSyncWithMobileInstallation];
+                            } else {
+                                
+                                
+                                
+                                //NSArray *files = [manager contentsOfDirectoryAtPath:@"/var/mobile/Library/Caches/" error:&error];
+                                
+                                NSString *file = @"/var/mobile/Library/Caches/com.apple.LaunchServices-135.csstore";
+                                
+                                NSError *removeError = nil;
+                                
+                                [manager removeItemAtPath:file error:&removeError];
+                                
+                                
+                                [workspace _LSClearSchemaCaches];
+                                [workspace _LSPrivateRebuildApplicationDatabasesForSystemApps:YES internal:YES user:YES];
+                                
+                          
+                                
+                                
+                                
+                            }
+                            
+                            
+                        }
+                        
+                        
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [NSTask launchedTaskWithLaunchPath:whichKill arguments:@[@"-9", @"PineBoard", @"HeadBoard", @"lsd"]];
+            });
+            
+            
+            
+        }
+        
+        
+        
     }
 }
 
 - (void)handleRemoteEvent:(NSString *)event
 {
-     id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
-     rocketbootstrap_distributedmessagingcenter_apply(center);
-     [center sendMessageName:@"org.nito.test.doThings" userInfo:@{@"event": event}];
-    
+    //id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+    //rocketbootstrap_distributedmessagingcenter_apply(center);
+    //[center sendMessageName:@"org.nito.test.doThings" userInfo:@{@"event": event}];
+     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.doThings" object:nil userInfo:@{@"event": event}];
 }
 
 //was watching this to try to determine ways to get access to UITextFields and keep a reference
@@ -659,10 +938,10 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     //   id window = [app appSwitcherWindow];
     // id kwrvc = [[app keyWindow] rootViewController];
     // NSLog(@"sharedApplication: %@", self.frontMostAppID);
-    id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
-    rocketbootstrap_distributedmessagingcenter_apply(center);
-    [center sendMessageName:@"org.nito.test.doThings" userInfo:nil];
-    
+    //id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+    //rocketbootstrap_distributedmessagingcenter_apply(center);
+    //[center sendMessageName:@"org.nito.test.doThings" userInfo:nil];
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.doThings" object:nil userInfo:nil];
 }
 
 // Log levels: off, error, warn, info, verbose
@@ -702,6 +981,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     
     if(!success)
     {
+        NSLog(@"Error starting HTTP Server: %@", error);
         DDLogError(@"Error starting HTTP Server: %@", error);
     }
     
@@ -742,10 +1022,10 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 {
     //[self IOHIDTest:enterText];
     
-    id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
-    rocketbootstrap_distributedmessagingcenter_apply(center);
-    [center sendMessageName:@"org.nito.test.setText" userInfo:@{@"text": enterText}];
-    
+    //id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+    //rocketbootstrap_distributedmessagingcenter_apply(center);
+    //[center sendMessageName:@"org.nito.test.setText" userInfo:@{@"text": enterText}];
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.setText" object:nil userInfo:@{@"text": enterText}];
 }
 
 
