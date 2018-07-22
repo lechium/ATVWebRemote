@@ -132,11 +132,12 @@ NSUserDefaults *defaults;
     Method ioTest = class_getInstanceMethod(rth, @selector(IOHIDTest:));
     Method helperCommand = class_getInstanceMethod(rth, @selector(helperCommand:withInfo:));
     Method navCommand = class_getInstanceMethod(rth, @selector(handleNavigationNotification:));
+    Method helperCommand2 = class_getInstanceMethod(rth, @selector(handleHelperNotification:));
   //  Method details = class_getInstanceMethod(rth, @selector(systemDetails));
     
-     class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
+    class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
     
-    
+    class_addMethod(pbad, @selector(handleHelperNotification:), method_getImplementation(helperCommand2), method_getTypeEncoding(helperCommand2));
     
     class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
     class_addMethod(pbad, @selector(handleTextName:userInfo:), method_getImplementation(setTextHandler), method_getTypeEncoding(setTextHandler));
@@ -153,7 +154,7 @@ NSUserDefaults *defaults;
     
     [notificationCenter addObserver:self  selector:@selector(IOHIDTest:) name:@"org.nito.test.setText" object:nil];
     [notificationCenter addObserver:self  selector:@selector(handleNavigationNotification:) name:@"org.nito.test.doThings" object:nil];
-    
+    [notificationCenter addObserver:self  selector:@selector(handleHelperNotification:) name:@"org.nito.test.helperCommand" object:nil];
     //[center registerForMessageName:@"org.nito.test.doThings" target:self selector:@selector(handleMessageName:userInfo:)];
     //[center registerForMessageName:@"org.nito.test.setText" target:self selector:@selector(handleTextName:userInfo:)];
     //[center registerForMessageName:@"org.nito.test.helperCommand" target:self selector:@selector(helperCommand:withInfo:)];

@@ -125,7 +125,14 @@
     } else if ([pathCommand isEqualToString:@"relaunch"])
     {
         [[RemoteTestHelper sharedInstance] sendRespringCommand];
+    } else if ([pathCommand isEqualToString:@"kiosk"])
+    {
+        [[RemoteTestHelper sharedInstance] launchKioskApp];
+    } else if ([pathCommand isEqualToString:@"startScreenSaver"])
+    {
+        [[RemoteTestHelper sharedInstance] startScreensaver];
     }
+    
     
     return [self blankSuccessResponse];
     

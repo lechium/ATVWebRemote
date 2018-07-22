@@ -20,7 +20,7 @@
     unsigned short key = [theEvent keyCode];
     if (key == 4)
     {
-        [[NSApp delegate] sendCommand:@"selecth"];
+        [(AppDelegate*)[NSApp delegate] sendCommand:@"selecth"];
         return;
     }
     [super keyDown:theEvent];

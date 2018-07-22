@@ -65,5 +65,7 @@
 - (void)handleRemoteEvent:(NSString *)remoteEvent;
 - (void)sendRebootCommand;
 - (void)sendRespringCommand;
+- (void)launchKioskApp;
+- (void)startScreensaver;
 @end
 

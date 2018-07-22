@@ -13,9 +13,23 @@
 #include "InspCWrapper.m"
 #import "NSTask.h"
 
+#define DEFAULT_PORT 3073
+
 IOHIDEventSystemClientRef IOHIDEventSystemClientCreate(CFAllocatorRef);
 
 extern "C" int BKSHIDEventSendToFocusedProcess(struct __IOHIDEvent *);
+
+@interface PBSSystemService: NSObject
+
++(id)sharedInstance;
+-(void)relaunchBackboardd;
+-(void)relaunch;
+-(void)reboot;
+-(void)activateScreenSaver;
+-(void)deactivateScreenSaver;
+-(void)launchKioskApp;
+
+@end
 
 @interface PBApplication: NSObject //for now, should be fine
 
@@ -799,6 +813,22 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     //[center sendMessageName:@"org.nito.test.helperCommand" userInfo:@{@"command": @"reboot"}];
 }
 
+- (void)startScreensaver
+{
+
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.helperCommand" object:nil userInfo:@{@"command": @"activateScreenSaver"}];
+}
+
+- (void)launchKioskApp
+{
+    //id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
+    //NSLog(@"#### processMan: %@", processMan);
+    //id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+    //rocketbootstrap_distributedmessagingcenter_apply(center);
+    //[center sendMessageName:@"org.nito.test.helperCommand" userInfo:@{@"command": @"relaunch"}];
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.helperCommand" object:nil userInfo:@{@"command": @"launchKioskApp"}];
+}
+
 - (void)sendRespringCommand
 {
     //id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
@@ -806,9 +836,31 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     //id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
     //rocketbootstrap_distributedmessagingcenter_apply(center);
     //[center sendMessageName:@"org.nito.test.helperCommand" userInfo:@{@"command": @"relaunch"}];
-    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.helperCommand" object:nil userInfo:@{@"command": @"relaunch"}];
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.helperCommand" object:nil userInfo:@{@"command": @"respring"}];
 }
 
+- (void)handleHelperNotification:(NSNotification *)n {
+    
+    NSString *theCommand = [n userInfo][@"command"];
+    id processMan = [objc_getClass("PBSSystemService") sharedInstance];
+    if ([theCommand isEqualToString:@"reboot"]) {
+        [processMan reboot];
+    } else if ([theCommand isEqualToString:@"relaunch"]) {
+        [processMan relaunch];
+    }  else if ([theCommand isEqualToString:@"relaunchBackboardd"]) {
+        [processMan relaunchBackboardd];
+    } else if ([theCommand isEqualToString:@"activateScreenSaver"]) {
+        [processMan activateScreenSaver];
+    }  else if ([theCommand isEqualToString:@"launchKioskApp"]) {
+        [processMan launchKioskApp];
+    } else if ([theCommand isEqualToString:@"respring"]) {
+        //[processMan launchKioskApp];
+        
+        [NSTask launchedTaskWithLaunchPath:@"/usr/bin/uicache" arguments:@[]];
+        
+    }
+    
+}
 
 - (void)helperCommand:(NSString *)command withInfo:(NSDictionary *)info
 {
@@ -947,6 +999,67 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 // Log levels: off, error, warn, info, verbose
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
+- (NSInteger)portFromConfigFile:(NSString *)configFile {
+    
+    NSString *fileContents = [NSString stringWithContentsOfFile:configFile encoding:NSASCIIStringEncoding error:nil];
+    NSArray *lines = [fileContents componentsSeparatedByString:@"\n"];
+    
+    __block NSInteger returnPort = 3073;
+    
+    [lines enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+       
+        if ([obj containsString:@"Port"]) {
+            
+            //found the line with the port in it, now separate the line by spaces, the second space SHOULD be the port
+            
+            NSArray *portArray = [obj componentsSeparatedByString:@" "];
+            if ([portArray count] > 1)
+            {
+                returnPort = [portArray[1] integerValue];
+                *stop = TRUE;
+                //return
+            }
+            
+            
+        }
+        
+    }];
+    
+    //NSLog(@"AirMagic problem parsing file at: %@ using default port of %lu", configFile, DEFAULT_PORT);
+    return returnPort;
+}
+
+- (NSInteger)portFromConfigFiles {
+    
+    ///etc/airmagic/conf -/.airmagic/conf?
+    NSFileManager *man = [NSFileManager defaultManager];
+    NSString *etcFile = @"/etc/airmagic/conf";
+    NSString *mobileConfig = @"/var/mobile/.airmagic/conf";
+    NSString *rootConfig = @"/var/root/.airmagic/conf";
+    if (![man fileExistsAtPath:etcFile] && ![man fileExistsAtPath:mobileConfig] && ![man fileExistsAtPath:rootConfig]) {
+        
+        return DEFAULT_PORT;
+        
+    }
+    
+    if ([man fileExistsAtPath:mobileConfig]) {
+        
+        return [self portFromConfigFile:mobileConfig];
+        
+    } else if ([man fileExistsAtPath:rootConfig]) {
+        
+        return [self portFromConfigFile:rootConfig];
+    
+    } else if ([man fileExistsAtPath:etcFile]){
+    
+        return [self portFromConfigFile:etcFile];
+    }
+    
+    //we should NEVER get down here, but it cant hurt to return the port number here  too
+    
+    return DEFAULT_PORT;
+}
+
 - (void)startItUp
 {
     // Configure our logging framework.
@@ -966,7 +1079,8 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     // Normally there's no need to run our server on any specific port.
     // Technologies like Bonjour allow clients to dynamically discover the server's port at runtime.
     // However, for easy testing you may want force a certain port so you can just hit the refresh button.
-    [httpServer setPort:80];
+    NSInteger configPort = [self portFromConfigFiles];
+    [httpServer setPort:configPort];
     [httpServer setTXTRecordDictionary:[self txtRecordDictionary]];
     // Serve files from our embedded Web folder
     //	NSString *webPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Web"];

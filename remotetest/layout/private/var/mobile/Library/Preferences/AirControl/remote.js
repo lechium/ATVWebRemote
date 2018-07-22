@@ -69,7 +69,7 @@ function action() {
     $button.mousedown(function(event) {
 
         if (!$remote.hasClass('disabled')) {
-            var address = location.hostname;
+            var address = location.hostname + ":" + location.port;
             var number = $(this).data('number');
             var commandAction = "/remoteCommand=";
             switch (event.which) {
@@ -96,3 +96,4 @@ function action() {
     });
 }
 //function
+
