@@ -1,7 +1,7 @@
 Package: com.nito.airmagic
 Name: AirMagic
 Version: 1.0
-Depends: firmware (>= 8.0), cy+cpu.arm64, com.nito.tweakinject (>= 0.0.1-26)
+Depends: firmware (>= 8.0)
 Architecture: appletvos-arm64
 Description: A powerful webserver that accepts commands to control on screen navigation and text entry
 Maintainer: Kevin Bradley

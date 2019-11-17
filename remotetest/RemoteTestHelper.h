@@ -56,6 +56,7 @@
 @property (strong) id pbDelegateRef;
 @property (strong) UITextField *ctfBackup;
 
+- (void)performUserAction;
 + (id)sharedInstance;
 -(void)hookNotifications:(id)sender;
 - (void)stopWatchingNotifications;

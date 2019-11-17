@@ -108,7 +108,77 @@ NSUserDefaults *defaults;
 
 %end
 
+
 */
+
+
+%hook SpringBoard
+
+- (id)init
+{
+    %log;
+    Class pbad = NSClassFromString(@"SpringBoard");
+     
+    Class rth = NSClassFromString(@"RemoteTestHelper");
+    RemoteTestHelper *rmh = [RemoteTestHelper sharedInstance];
+    //[rmh setPbDelegateRef:self];
+    
+    /*
+    id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+    rocketbootstrap_distributedmessagingcenter_apply(center);
+    [center runServerOnCurrentThread];
+    */
+    Method ourMessageHandler = class_getInstanceMethod(rth, @selector(handleMessageName:userInfo:));
+    Method setTextHandler = class_getInstanceMethod(rth, @selector(handleTextName:userInfo:));
+    Method delayedRelease = class_getInstanceMethod(rth, @selector(delayedRelease:));
+    Method ioTest = class_getInstanceMethod(rth, @selector(IOHIDTest:));
+    Method helperCommand = class_getInstanceMethod(rth, @selector(helperCommand:withInfo:));
+    Method navCommand = class_getInstanceMethod(rth, @selector(handleNavigationNotification:));
+    Method helperCommand2 = class_getInstanceMethod(rth, @selector(handleHelperNotification:));
+  //  Method details = class_getInstanceMethod(rth, @selector(systemDetails));
+    
+    class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
+    
+    class_addMethod(pbad, @selector(handleHelperNotification:), method_getImplementation(helperCommand2), method_getTypeEncoding(helperCommand2));
+    
+    class_addMethod(pbad, @selector(handleMessageName:userInfo:), method_getImplementation(ourMessageHandler), method_getTypeEncoding(ourMessageHandler));
+    class_addMethod(pbad, @selector(handleTextName:userInfo:), method_getImplementation(setTextHandler), method_getTypeEncoding(setTextHandler));
+
+    class_addMethod(pbad, @selector(IOHIDTest:), method_getImplementation(ioTest), method_getTypeEncoding(ioTest));
+    
+    class_addMethod(pbad, @selector(delayedRelease:), method_getImplementation(delayedRelease), method_getTypeEncoding(delayedRelease));
+    
+    class_addMethod(pbad, @selector(helperCommand:withInfo:), method_getImplementation(helperCommand), method_getTypeEncoding(helperCommand));
+    
+    class_addMethod(pbad, @selector(handleNavigationNotification:), method_getImplementation(navCommand), method_getTypeEncoding(navCommand));
+    
+    NSDistributedNotificationCenter* notificationCenter = [NSDistributedNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver:self  selector:@selector(IOHIDTest:) name:@"org.nito.test.setText" object:nil];
+    [notificationCenter addObserver:self  selector:@selector(handleNavigationNotification:) name:@"org.nito.test.doThings" object:nil];
+    [notificationCenter addObserver:self  selector:@selector(handleHelperNotification:) name:@"org.nito.test.helperCommand" object:nil];
+    //[center registerForMessageName:@"org.nito.test.doThings" target:self selector:@selector(handleMessageName:userInfo:)];
+    //[center registerForMessageName:@"org.nito.test.setText" target:self selector:@selector(handleTextName:userInfo:)];
+    //[center registerForMessageName:@"org.nito.test.helperCommand" target:self selector:@selector(helperCommand:withInfo:)];
+
+    //id app = [objc_getClass("PBApplication") sharedApplication];
+    
+    //  watchObject(app);
+    return %orig;
+}
+
+- (void)applicationDidFinishLaunching:(id)arg1
+{
+	%log;
+    RemoteTestHelper *rmh = [RemoteTestHelper sharedInstance];
+    [rmh startItUp];
+    %orig;
+}
+
+
+
+%end
+
 %hook PBAppDelegate
 
 
@@ -428,12 +498,23 @@ NSUserDefaults *defaults;
  */
 
 void touch_event(void* target, void* refcon, IOHIDServiceRef service, IOHIDEventRef event) {
+
+    int type = IOHIDEventGetType(event);//IOHIDEventGetIntegerValue(event, kIOHIDEventFieldKeyboardDown);
+    /*
+     NSLog(@"###### type: %d", type);
+    float x = IOHIDEventGetFloatValue(event, kIOHIDEventFieldDigitizerX);
+    float y = IOHIDEventGetFloatValue(event, kIOHIDEventFieldDigitizerY);
+    if (type == 1){
+        NSLog(@"###### type: %d TOUCH EVENT: %@", type, event);
     
+    }
+    NSLog(@"#### touch event x: %f y: %f type: %lu", x, y, type);
+     */
     //NSLog(@"###### TOUCH EVENT: %lu", IOHIDEventGetType(event));
     int usagePage = IOHIDEventGetIntegerValue(event, kIOHIDEventFieldKeyboardUsagePage);
     int usage = IOHIDEventGetIntegerValue(event, kIOHIDEventFieldKeyboardUsage);
     int down = IOHIDEventGetIntegerValue(event, kIOHIDEventFieldKeyboardDown);
-    NSLog(@"#### touch event usagePage: %i usage: %i down: %i", usagePage, usage, down);
+    //NSLog(@"#### touch event usagePage: %i usage: %i down: %i", usagePage, usage, down);
     
 }
 
@@ -446,8 +527,8 @@ static __attribute__((constructor)) void myHooksInit() {
 	[rmh startMonitoringNotifications];
     //[rmh startItUp];
 
-    /*
-    NSLog(@"rmh: %@", rmh);
+    
+    //NSLog(@"rmh: %@", rmh);
     clientCreatePointer clientCreate;
     void *handle = dlopen(0, 9);
     *(void**)(&clientCreate) = dlsym(handle,"IOHIDEventSystemClientCreate");
@@ -455,9 +536,9 @@ static __attribute__((constructor)) void myHooksInit() {
     IOHIDEventSystemClientScheduleWithRunLoop(ioHIDEventSystem, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
     IOHIDEventSystemClientRegisterEventCallback(ioHIDEventSystem, (IOHIDEventSystemClientEventCallback)touch_event, NULL, NULL);
     ;
-    fprintf(stdout, "\n\n### PRINTF TO STD OUT\n");
-    fprintf(stderr, "\n\n### PRINTF TO STD ERR\n");
-     */
+    //fprintf(stdout, "\n\n### PRINTF TO STD OUT\n");
+    //fprintf(stderr, "\n\n### PRINTF TO STD ERR\n");
+     
   	//setMaximumRelativeLoggingDepth(5);
 	//watchClass([SSDownloadMetadata class]);
 	//watchClass(NSClassFromString(@"SSDownload"));

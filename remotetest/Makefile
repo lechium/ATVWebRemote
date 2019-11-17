@@ -1,15 +1,16 @@
 TARGET = appletv
 #TARGET = iphone:9.0
 export GO_EASY_ON_ME=1
-export SDKVERSION=10.1
+export SDKVERSION=10.2
 #THEOS_DEVICE_IP=atvjb.local
-THEOS_DEVICE_IP=etv.local
+THEOS_DEVICE_IP=guest-room.local
 
 include theos/makefiles/common.mk
 
 TWEAK_NAME = remoteTest
 remoteTest_FILES = Tweak.xm RemoteTestHelper.mm MyHTTPConnection.m NSObject+AssociatedObjects.m
-remoteTest_LDFLAGS = -F/Users/kevinbradley/Downloads/Xcode.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS.sdk/System/Library/PrivateFrameworks -undefined dynamic_lookup
+#remoteTest_LDFLAGS = -F/Users/kevinbradley/Downloads/Xcode.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/SDKs/#AppleTVOS.sdk/System/Library/PrivateFrameworks -undefined dynamic_lookup
+remoteTest_LDFLAGS = -undefined dynamic_lookup
 
 remoteTest_CXXFLAGS += -fobjc-arc
 remoteTest_CFLAGS += -fobjc-arc
@@ -41,6 +42,6 @@ remoteTest_PRIVATE_FRAMEWORKS = BackBoardServices
 include $(THEOS_MAKE_PATH)/tweak.mk
 
 after-install::
-	install.exec "/usr/bin/nitoHelper clearRespring 1 2"
+	install.exec "killall -9 PineBoard SpringBoard"
 	install.exec "syslog -w"
 	

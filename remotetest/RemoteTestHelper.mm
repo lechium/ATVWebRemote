@@ -12,6 +12,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #include "InspCWrapper.m"
 #import "NSTask.h"
+#include <IOKit/pwr_mgt/IOPMLib.h>
 
 #define DEFAULT_PORT 3073
 
@@ -323,6 +324,14 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 /* all the navigation events go through here, when this method is called its inside PineBoard.app and not the tweak itself.
  */
 
+- (void)performUserAction {
+    
+    //NSLog(@"[AirMagic] performUserAction");
+    IOPMAssertionID assertionID;
+    IOPMAssertionDeclareUserActivity(CFSTR(""), kIOPMUserActiveLocal, &assertionID);
+    
+}
+
 - (void)handleNavigationNotification:(NSNotification *)note {
     
     NSDictionary *userInfo = [note userInfo];
@@ -330,13 +339,14 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     if (userInfo != nil)
     {
         
+        [[RemoteTestHelper sharedInstance] performUserAction];
         
         BOOL holdTouch = false;
         NSString *event = userInfo[@"event"];
         if (!_ioSystemClient)
             _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
         
-        id pbApp = [ objc_getClass("PBApplication") sharedApplication];
+        //id pbApp = [ objc_getClass("PBApplication") sharedApplication];
         
         NSInteger sender = 4294968875; //no idea what this is but it works?
         
@@ -693,7 +703,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
                                                                  0);
         
         //create special chracter set with special chars and all uppercase letters
-        NSMutableCharacterSet *uppercaseSpecialSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"~!@#$%^&*()_+|}{<>:\"?"];
+        NSMutableCharacterSet *uppercaseSpecialSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"~!@#$%^&*()_+}{<>:\\\"?"];
         [uppercaseSpecialSet formUnionWithCharacterSet:[NSCharacterSet uppercaseLetterCharacterSet]];
         
         //if its uppercase hold down shift while sending HID event.

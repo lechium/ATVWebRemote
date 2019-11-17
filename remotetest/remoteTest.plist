@@ -2,10 +2,6 @@
 	Filter = {
 		Bundles = (
 			"com.apple.PineBoard",
-			"com.apple.PineBoardServices",
-			"com.apple.UIKit",
-			"com.apple.TVServices",
-			"com.apple.FrontBoard",
 		);
 	};
 }
