@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		3229C38A1E822752009E17EE /* PBReloadHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 3229C3881E822752009E17EE /* PBReloadHelper.h */; };
 		3229C38B1E822752009E17EE /* PBReloadHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3229C3891E822752009E17EE /* PBReloadHelper.m */; };
+		3279508F24155B40002299D5 /* previousSlide.png in Resources */ = {isa = PBXBuildFile; fileRef = 3279508C24155B3F002299D5 /* previousSlide.png */; };
+		3279509024155B40002299D5 /* nextSlide.png in Resources */ = {isa = PBXBuildFile; fileRef = 3279508D24155B3F002299D5 /* nextSlide.png */; };
+		3279509124155B40002299D5 /* currentSlide.png in Resources */ = {isa = PBXBuildFile; fileRef = 3279508E24155B3F002299D5 /* currentSlide.png */; };
 		8929759E1CB1A5C0003D7473 /* ATVWebRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 8929759D1CB1A5C0003D7473 /* ATVWebRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		89297B851CB1A68E003D7473 /* build_session in Resources */ = {isa = PBXBuildFile; fileRef = 892975C91CB1A689003D7473 /* build_session */; };
 		89297B861CB1A68E003D7473 /* fakeroot in Resources */ = {isa = PBXBuildFile; fileRef = 892975CA1CB1A689003D7473 /* fakeroot */; };
@@ -1225,11 +1228,14 @@
 /* Begin PBXFileReference section */
 		3229C3881E822752009E17EE /* PBReloadHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBReloadHelper.h; sourceTree = "<group>"; };
 		3229C3891E822752009E17EE /* PBReloadHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBReloadHelper.m; sourceTree = "<group>"; };
+		3279508C24155B3F002299D5 /* previousSlide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = previousSlide.png; sourceTree = SOURCE_ROOT; };
+		3279508D24155B3F002299D5 /* nextSlide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nextSlide.png; sourceTree = SOURCE_ROOT; };
+		3279508E24155B3F002299D5 /* currentSlide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = currentSlide.png; sourceTree = SOURCE_ROOT; };
 		8929759A1CB1A5C0003D7473 /* ATVWebRemote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ATVWebRemote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8929759D1CB1A5C0003D7473 /* ATVWebRemote.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ATVWebRemote.h; sourceTree = "<group>"; };
 		8929759F1CB1A5C0003D7473 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		892975C91CB1A689003D7473 /* build_session */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = build_session; sourceTree = "<group>"; };
-		892975CA1CB1A689003D7473 /* fakeroot */ = {isa = PBXFileReference; lastKnownFileType = file; path = fakeroot; sourceTree = "<group>"; };
+		892975CA1CB1A689003D7473 /* fakeroot */ = {isa = PBXFileReference; lastKnownFileType = text; path = fakeroot; sourceTree = "<group>"; };
 		892975CB1CB1A689003D7473 /* last_package */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = last_package; sourceTree = "<group>"; };
 		892975CE1CB1A689003D7473 /* .stamp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .stamp; sourceTree = "<group>"; };
 		892975D11CB1A689003D7473 /* ContextFilterLogFormatter.m.20114543.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = ContextFilterLogFormatter.m.20114543.o; sourceTree = "<group>"; };
@@ -5265,6 +5271,9 @@
 		8929FCDD1CB99EF7003D7473 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3279508E24155B3F002299D5 /* currentSlide.png */,
+				3279508D24155B3F002299D5 /* nextSlide.png */,
+				3279508C24155B3F002299D5 /* previousSlide.png */,
 				8929FDC01CBC41AD003D7473 /* airmagic.icns */,
 				8929FD5F1CBC3B8D003D7473 /* Images */,
 				8929FCDE1CB99EF7003D7473 /* main.m */,
@@ -6636,9 +6645,11 @@
 				8929FD9B1CBC3B8D003D7473 /* blackPlay.png in Resources */,
 				8929FDAF1CBC3B8D003D7473 /* whiteFFNew.png in Resources */,
 				8929FCE41CB99EF7003D7473 /* MainMenu.xib in Resources */,
+				3279509024155B40002299D5 /* nextSlide.png in Resources */,
 				8929FDBD1CBC3B8D003D7473 /* whiteUpNav.png in Resources */,
 				8929FD961CBC3B8D003D7473 /* blackLeftNav.png in Resources */,
 				8929FDA01CBC3B8D003D7473 /* blackRewind.png in Resources */,
+				3279508F24155B40002299D5 /* previousSlide.png in Resources */,
 				8929FD9A1CBC3B8D003D7473 /* blackPause.png in Resources */,
 				8929FDB71CBC3B8D003D7473 /* whitePower.png in Resources */,
 				8929FDB01CBC3B8D003D7473 /* whiteLeftNav.png in Resources */,
@@ -6648,6 +6659,7 @@
 				8929FDA11CBC3B8D003D7473 /* blackSound.png in Resources */,
 				8929FD921CBC3B8D003D7473 /* blackBlankBigThin.png in Resources */,
 				8929FD8F1CBC3B8D003D7473 /* bg.png in Resources */,
+				3279509124155B40002299D5 /* currentSlide.png in Resources */,
 				8929FDBB1CBC3B8D003D7473 /* whiteSound.png in Resources */,
 				8929FD981CBC3B8D003D7473 /* blackMenu.png in Resources */,
 				8929FDA71CBC3B8D003D7473 /* nowPlaying.png in Resources */,

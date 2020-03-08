@@ -404,7 +404,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
                 
                 BKSHIDEventSendToFocusedProcess(navDown);
                 BKSHIDEventSendToFocusedProcess(navDown);
- 
+                
             }
             
             
@@ -598,7 +598,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         BKSHIDEventSendToFocusedProcess(navUp);
         BKSHIDEventSendToFocusedProcess(navUp);
         BKSHIDEventSendToFocusedProcess(navUp);
-     
+        
     } else {
         BKSHIDEventSendToFocusedProcess(navUp);
         BKSHIDEventSendToFocusedProcess(navUp);
@@ -660,7 +660,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
                                                                0,
                                                                0);
         
-
+        
         BKSHIDEventSendToFocusedProcess(deleteDown);
         BKSHIDEventSendToFocusedProcess(deleteUp);
         //[pbApp forwardHIDButtonEventWithUsagePage:7 usage:kHIDUsage_KeyboardDeleteOrBackspace type:3 senderID:sender];
@@ -680,72 +680,73 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
      to "hold" shift while sending the necessary HID event.
      
      */
-    
-    NSArray *split = [[stripped stringByRemovingPercentEncoding] splitString];
-    
-    for (NSString *item in split)
-    {
-        //NSLog(@"item: %@", item);
-        uint32_t usage = hidUsageCodeForCharacter(item);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
-        IOHIDEventRef eventRefDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                                   timeStamp,
-                                                                   7,
-                                                                   usage,
-                                                                   1,
-                                                                   0);
+        NSArray *split = [[stripped stringByRemovingPercentEncoding] splitString];
         
-        IOHIDEventRef eventRefUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                                 timeStamp,
-                                                                 7,
-                                                                 usage,
-                                                                 0,
-                                                                 0);
-        
-        //create special chracter set with special chars and all uppercase letters
-        NSMutableCharacterSet *uppercaseSpecialSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"~!@#$%^&*()_+}{<>:\\\"?"];
-        [uppercaseSpecialSet formUnionWithCharacterSet:[NSCharacterSet uppercaseLetterCharacterSet]];
-        
-        //if its uppercase hold down shift while sending HID event.
-        
-        BOOL isUppercase = [uppercaseSpecialSet characterIsMember:[item characterAtIndex:0]];
-        if (isUppercase == YES)
+        for (NSString *item in split)
         {
-            IOHIDEventRef shiftDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                                    timeStamp,
-                                                                    7,
-                                                                    kHIDUsage_KeyboardLeftShift,
-                                                                    1,
-                                                                    0);
+            //NSLog(@"item: %@", item);
+            uint32_t usage = hidUsageCodeForCharacter(item);
             
-            IOHIDEventRef shiftUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                                  timeStamp,
-                                                                  7,
-                                                                  kHIDUsage_KeyboardLeftShift,
-                                                                  0,
-                                                                  0);
+            IOHIDEventRef eventRefDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                                       timeStamp,
+                                                                       7,
+                                                                       usage,
+                                                                       1,
+                                                                       0);
             
-            //how we actually "hold down" shift ;)
+            IOHIDEventRef eventRefUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                                     timeStamp,
+                                                                     7,
+                                                                     usage,
+                                                                     0,
+                                                                     0);
             
-            BKSHIDEventSendToFocusedProcess(shiftDown);
-            BKSHIDEventSendToFocusedProcess(eventRefDown);
-            BKSHIDEventSendToFocusedProcess(eventRefUp);
-            // [pbApp forwardHIDButtonEventWithUsagePage:7 usage:usage type:3 senderID:sender];
-            BKSHIDEventSendToFocusedProcess(shiftUp);
+            //create special chracter set with special chars and all uppercase letters
+            NSMutableCharacterSet *uppercaseSpecialSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"~!@#$%^&*()_+}{<>:\\\"?"];
+            [uppercaseSpecialSet formUnionWithCharacterSet:[NSCharacterSet uppercaseLetterCharacterSet]];
             
-      
+            //if its uppercase hold down shift while sending HID event.
             
-            
-            
-        } else {
-            
-            //not an uppercase or special char, just send the event normally
-            BKSHIDEventSendToFocusedProcess(eventRefDown);
-            BKSHIDEventSendToFocusedProcess(eventRefUp);
-            //[pbApp forwardHIDButtonEventWithUsagePage:7 usage:usage type:3 senderID:sender];
-        }
-    }
-
+            BOOL isUppercase = [uppercaseSpecialSet characterIsMember:[item characterAtIndex:0]];
+            if (isUppercase == YES)
+            {
+                IOHIDEventRef shiftDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                                        timeStamp,
+                                                                        7,
+                                                                        kHIDUsage_KeyboardLeftShift,
+                                                                        1,
+                                                                        0);
+                
+                IOHIDEventRef shiftUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                                      timeStamp,
+                                                                      7,
+                                                                      kHIDUsage_KeyboardLeftShift,
+                                                                      0,
+                                                                      0);
+                
+                //how we actually "hold down" shift ;)
+                
+                BKSHIDEventSendToFocusedProcess(shiftDown);
+                BKSHIDEventSendToFocusedProcess(eventRefDown);
+                BKSHIDEventSendToFocusedProcess(eventRefUp);
+                // [pbApp forwardHIDButtonEventWithUsagePage:7 usage:usage type:3 senderID:sender];
+                BKSHIDEventSendToFocusedProcess(shiftUp);
+                
+                
+                
+                
+                
+            } else {
+                
+                //not an uppercase or special char, just send the event normally
+                BKSHIDEventSendToFocusedProcess(eventRefDown);
+                BKSHIDEventSendToFocusedProcess(eventRefUp);
+                //[pbApp forwardHIDButtonEventWithUsagePage:7 usage:usage type:3 senderID:sender];
+            }
+        } //end of for statement
+    });
 }
 
 //old relics when i was hooking notifications to try and figure out how to do text entry without HIDEvents
@@ -825,7 +826,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 
 - (void)startScreensaver
 {
-
+    
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.helperCommand" object:nil userInfo:@{@"command": @"activateScreenSaver"}];
 }
 
@@ -890,7 +891,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         }
         id appDepot = [objc_getClass("PBAppDepot") sharedInstance];
         NSMutableDictionary *installedAppStates = [appDepot internalAppState];
-      //  NSLog(@"installedAppStates: %@", installedAppStates);
+        //  NSLog(@"installedAppStates: %@", installedAppStates);
         
         NSError *error = nil;
         if(NSArray *apps = [manager contentsOfDirectoryAtPath:@"/Applications" error:&error])
@@ -945,7 +946,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
                                 [workspace _LSClearSchemaCaches];
                                 [workspace _LSPrivateRebuildApplicationDatabasesForSystemApps:YES internal:YES user:YES];
                                 
-                          
+                                
                                 
                                 
                                 
@@ -980,7 +981,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     //id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
     //rocketbootstrap_distributedmessagingcenter_apply(center);
     //[center sendMessageName:@"org.nito.test.doThings" userInfo:@{@"event": event}];
-     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.doThings" object:nil userInfo:@{@"event": event}];
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.doThings" object:nil userInfo:@{@"event": event}];
 }
 
 //was watching this to try to determine ways to get access to UITextFields and keep a reference
@@ -1017,7 +1018,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     __block NSInteger returnPort = 3073;
     
     [lines enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-       
+        
         if ([obj containsString:@"Port"]) {
             
             //found the line with the port in it, now separate the line by spaces, the second space SHOULD be the port
@@ -1059,9 +1060,9 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     } else if ([man fileExistsAtPath:rootConfig]) {
         
         return [self portFromConfigFile:rootConfig];
-    
+        
     } else if ([man fileExistsAtPath:etcFile]){
-    
+        
         return [self portFromConfigFile:etcFile];
     }
     

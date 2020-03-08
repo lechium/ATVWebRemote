@@ -9,12 +9,12 @@
 #import "AppDelegate.h"
 #import "ATVDeviceController.h"
 
+@interface AMCPanel: NSPanel
+@end
 @interface AMCWindow: NSWindow
-
 @end
 
 @implementation AMCWindow
-
 - (void)keyDown:(NSEvent *)theEvent
 {
     unsigned short key = [theEvent keyCode];
@@ -26,13 +26,60 @@
     [super keyDown:theEvent];
 }
 
+- (void)keyUp:(NSEvent *)theEvent
+{
+    [super keyUp:theEvent];
+}
+@end
+
+@implementation AMCPanel
+- (void)keyDown:(NSEvent *)theEvent
+{
+    //124 = right
+    //123 = left
+    //36 = return
+    //126 = up
+    //125 = down
+    //53 = esc
+    unsigned short key = [theEvent keyCode];
+    switch(key){
+        case 124: //right
+            [(AppDelegate*)[NSApp delegate] sendCommand:@"right"];
+            return;
+            
+        case 123: //left
+            [(AppDelegate*)[NSApp delegate] sendCommand:@"left"];
+            return;
+        
+        case 126: //up
+            [(AppDelegate*)[NSApp delegate] sendCommand:@"up"];
+            return;
+            
+        case 125: //down
+            [(AppDelegate*)[NSApp delegate] sendCommand:@"down"];
+            return;
+            
+        case 53: //esc
+            [(AppDelegate*)[NSApp delegate] sendCommand:@"menu"];
+            return;
+            
+        case 36: //return
+            [(AppDelegate*)[NSApp delegate] sendCommand:@"play"];
+            return;
+    }
+    NSLog(@"code: %hu", key);
+    if (key == 4)
+    {
+        [(AppDelegate*)[NSApp delegate] sendCommand:@"selecth"];
+        return;
+    }
+    [super keyDown:theEvent];
+}
 
 - (void)keyUp:(NSEvent *)theEvent
 {
     [super keyUp:theEvent];
 }
-
-
 @end
 
 
@@ -99,6 +146,9 @@
 
 @property (nonatomic, strong) ATVDeviceController *deviceController;
 @property (weak) IBOutlet NSWindow *window;
+@property (nonatomic, strong) NSTimer *nowPlayingTimer;
+@property (nonatomic, strong) NSTimer *dateTimeTimer;
+@property (nonatomic, strong) NSDateFormatter *timeFormat;
 @end
 
 @implementation AppDelegate
@@ -129,11 +179,98 @@ static NSString *appleTVAddress = nil;
             [self resetServerSettings];
         }
     }
-    
+    self.window.level = NSStatusWindowLevel;
+    [self startNowPlayingTimer];
+    [self startDateTimer];
+}
+
+- (void)updateTime {
+    if (!_timeFormat) {
+        _timeFormat = [[NSDateFormatter alloc] init];
+        [_timeFormat setDateFormat:@"hh:mm:ss"];
+    }
+    self.timeLabel.stringValue = [_timeFormat stringFromDate:[ NSDate date]];
+}
+
+- (void)startDateTimer {
+    self.dateTimeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:true block:^(NSTimer * _Nonnull timer) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+           [self updateTime];
+        });
+    }];
+}
+
+- (void)startNowPlayingTimer {
+    self.nowPlayingTimer = [NSTimer scheduledTimerWithTimeInterval:5 repeats:true block:^(NSTimer * _Nonnull timer) {
+       
+        [self nowPlayingInfo:nil];
+    }];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
+}
+
+- (IBAction)nowPlayingInfo:(id)sender {
+  
+    [self fetchJSONInfoWithCompletion:^(NSDictionary *json) {
+       
+        NSLog(@"GOT IM!!!: %@", json);
+        if (json){
+              [self.keynoteWindow orderFront:nil];
+            NSString *ipBare = [self ipBare];
+            if (ipBare){
+                NSString *prev = json[@"previousSlide"];
+                NSString *next = json[@"nextSlide"];
+                NSString *currentSlide = json[@"currentSlide"];
+                NSInteger slideIndex = [json[@"slideIndex"] integerValue];
+                NSInteger slideTotal = [json[@"slideTotal"] integerValue];
+                NSString *slideString = [NSString stringWithFormat:@"Slide %lu of %lu", slideIndex, slideTotal];
+                __block BOOL refresh = true;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if ([slideString isEqualToString:self.slideLabel.stringValue]){
+                        refresh = false;
+                    }
+                    self.slideLabel.stringValue = slideString;
+                });
+                
+                if (refresh == true){
+                    if (prev){
+                        NSString *fullPath = [NSString stringWithFormat:@"http://%@:8080/%@", ipBare, prev];
+                        NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:fullPath]];
+                        NSImage *image = [[NSImage alloc] initWithData:data];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.previousImageSlide.image = image;
+                        });
+                        
+                    }
+                    if (next){
+                        NSString *fullPath = [NSString stringWithFormat:@"http://%@:8080/%@", ipBare, next];
+                        NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:fullPath]];
+                        NSImage *image = [[NSImage alloc] initWithData:data];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.nextImageSlide.image = image;
+                        });
+                    }
+                    if (currentSlide){
+                        NSString *fullPath = [NSString stringWithFormat:@"http://%@:8080/%@", ipBare, currentSlide];
+                        NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:fullPath]];
+                        NSImage *image = [[NSImage alloc] initWithData:data];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.currentImageSlide.image = image;
+                        });
+                    }
+                }
+                
+              
+                
+            }
+        } else {
+            [self.keynoteWindow close];
+        }
+     
+        
+    }];
 }
 
 - (NSString *)input: (NSString *)prompt defaultValue: (NSString *)defaultValue {
@@ -161,6 +298,8 @@ static NSString *appleTVAddress = nil;
         return nil;
     }
 }
+
+
 
 - (void)sendCommand:(NSString *)theCommand
 {
@@ -228,8 +367,50 @@ static NSString *appleTVAddress = nil;
     [NSTask	launchedTaskWithLaunchPath:@"/usr/bin/curl" arguments:[NSArray arrayWithObject:httpCommand]];
 }
 
+- (NSString *)ipBare {
+    return [[APPLE_TV_ADDRESS componentsSeparatedByString:@":"] firstObject];
+}
 
-
+- (void)fetchJSONInfoWithCompletion:(void(^)(NSDictionary *json))block {
+    NSString *ipBare = [self ipBare];
+    if (ipBare){
+        NSString *httpCommand = [NSString stringWithFormat:@"http://%@:8080/info", ipBare];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setTimeoutInterval:2];
+        [request setURL:[NSURL URLWithString:httpCommand]];
+        [request setHTTPMethod:@"GET"];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            
+            NSURLResponse *theResponse = nil;
+            NSError *theError  = nil;
+            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:&theResponse error:&theError];
+            
+            if (returnData){
+                NSError *jsonError = nil;
+                id jsonData = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingAllowFragments error:&jsonError];
+                if (jsonData){
+                    if (block){
+                        block(jsonData);
+                    }
+                } else {
+                    if (block){
+                        block(nil);
+                    }
+                }
+                
+            } else { // no return data
+                block(nil);
+            }
+        });
+        
+    } else {
+        block(nil);
+    }
+  
+   // return request;
+    
+    
+}
 
 - (BOOL)hostAvailable
 {

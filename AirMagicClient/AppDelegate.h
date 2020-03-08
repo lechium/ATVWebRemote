@@ -18,8 +18,13 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (nonatomic, weak) IBOutlet AMCButton *selectButton;
-
+@property (nonatomic, strong) IBOutlet NSWindow *keynoteWindow;
+@property (nonatomic, weak) IBOutlet NSImageView *previousImageSlide;
+@property (nonatomic, weak) IBOutlet NSImageView *nextImageSlide;
+@property (nonatomic, weak) IBOutlet NSImageView *currentImageSlide;
+@property (nonatomic, weak) IBOutlet NSTextField *slideLabel;
+@property (nonatomic, weak) IBOutlet NSTextField *timeLabel;
 - (void)sendCommand:(NSString *)theCommand;
-
+- (IBAction)nowPlayingInfo:(id)sender;
 @end
 
