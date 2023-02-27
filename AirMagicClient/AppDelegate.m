@@ -178,7 +178,7 @@ static NSString *appleTVAddress = nil;
     self.selectButton.normalCommand = @"select";
     self.selectButton.holdCommand = @"selecth";
     deviceController = [[ATVDeviceController alloc] init];
-    appleTVAddress = @"guest-room.local";//[DEFAULTS stringForKey:@"appleTVHost"];
+    appleTVAddress = [DEFAULTS stringForKey:@"appleTVHost"];
     
     if ([[appleTVAddress componentsSeparatedByString:@":"] count] < 2)
     {
@@ -228,9 +228,9 @@ static NSString *appleTVAddress = nil;
 }
 
 - (IBAction)nowPlayingInfo:(id)sender {
-  
+    
     [self fetchJSONInfoWithCompletion:^(NSDictionary *json) {
-       
+        
         //NSLog(@"GOT IM!!!: %@", json);
         if (json){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -281,13 +281,16 @@ static NSString *appleTVAddress = nil;
                     }
                 }
                 
-              
+                
                 
             }
         } else {
-            [self.keynoteWindow close];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.keynoteWindow close];
+            });
+            
         }
-     
+        
         
     }];
 }
@@ -398,13 +401,13 @@ static NSString *appleTVAddress = nil;
 }
 
 - (NSString *)ipBare {
-    return @"guest-room.local"; //[[APPLE_TV_ADDRESS componentsSeparatedByString:@":"] firstObject];
+    return [[APPLE_TV_ADDRESS componentsSeparatedByString:@":"] firstObject];
 }
 
 - (void)sendSlideshowCommand:(NSString *)command completion:(void(^)(NSDictionary *json))block {
-    NSString *ipBare = @"guest-room.local";
+    NSString *ipBare = [self ipBare];
     if (ipBare){
-        NSString *httpCommand = [NSString stringWithFormat:@"http://%@:8080/%@", ipBare, command];
+        NSString *httpCommand = [NSString stringWithFormat:@"http://%@:3073/%@", ipBare, command];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
         [request setTimeoutInterval:2];
         [request setURL:[NSURL URLWithString:httpCommand]];
