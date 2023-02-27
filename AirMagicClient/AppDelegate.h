@@ -25,6 +25,7 @@
 @property (nonatomic, weak) IBOutlet NSTextField *slideLabel;
 @property (nonatomic, weak) IBOutlet NSTextField *timeLabel;
 - (void)sendCommand:(NSString *)theCommand;
+- (void)sendSlideshowCommand:(NSString *)command;
 - (IBAction)nowPlayingInfo:(id)sender;
 @end
 

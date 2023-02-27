@@ -63,6 +63,7 @@
 - (void)startMonitoringNotifications;
 - (void)startItUp;
 - (void)enterText:(NSString *)enterText;
+- (void)appendText:(NSString *)text;
 - (void)handleRemoteEvent:(NSString *)remoteEvent;
 - (void)sendRebootCommand;
 - (void)sendRespringCommand;

@@ -371,6 +371,9 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         else if ([event isEqualToString:@"select"]) usage = 128;
         else if ([event isEqualToString:@"selecth"]){ usage = 128; holdTouch = true; }
         else if ([event isEqualToString:@"menu"]){ usage = 134;  usagePage = 1; }
+        else if ([event isEqualToString:@"share"]) usage = 521;
+        else if ([event isEqualToString:@"options"]) usage = 516;
+        else if ([event isEqualToString:@"special"]) usage = 547;
         
         IOHIDEventRef navDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
                                                               timeStamp,
@@ -427,129 +430,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     
 }
 
-//obsolete, prune
-- (void)handleMessageName:(NSString *)name userInfo:(NSDictionary *)userInfo
-{
-    
-    NSLog(@"messageNAme: %@ userInfo: %@", name, userInfo);
-    if (userInfo != nil)
-    {
-        
-        
-        BOOL holdTouch = false;
-        NSString *event = userInfo[@"event"];
-        if (!_ioSystemClient)
-            _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
-        
-        BOOL isNewerScience = NO;
-        
-        id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
-        if (processMan == nil)
-        {
-            isNewerScience = YES;
-            processMan = [objc_getClass("ATVHIDSystemClient") sharedInstance];
-        }
-        uint64_t abTime = mach_absolute_time();
-        AbsoluteTime timeStamp;
-        timeStamp.hi = (UInt32)(abTime >> 32);
-        timeStamp.lo = (UInt32)(abTime);
-        
-        uint16_t usage = 0;
-        uint16_t usagePage = 12;
-        if ([event isEqualToString:@"right"]) usage = 69;
-        else if ([event isEqualToString:@"left"]) usage = 68;
-        else if ([event isEqualToString:@"down"]) usage = 67;
-        else if ([event isEqualToString:@"up"]) usage = 66;
-        else if ([event isEqualToString:@"tap"]) usage = 65;
-        else if ([event isEqualToString:@"home"]) { usage = 134; holdTouch = true; usagePage = 1; }
-        //else if ([event isEqualToString:@"home"]) { usage = 96; holdTouch = true; }
-        else if ([event isEqualToString:@"vlup"]) { usage = 233; holdTouch = true; }
-        else if ([event isEqualToString:@"vldwn"]){ usage = 234; holdTouch = true; }
-        else if ([event isEqualToString:@"siri"]) usage = 4;
-        else if ([event isEqualToString:@"play"]) usage = 205;
-        else if ([event isEqualToString:@"select"]) usage = 128;
-        else if ([event isEqualToString:@"selecth"]){ usage = 128; holdTouch = true; }
-        else if ([event isEqualToString:@"menu"]){ usage = 134;  usagePage = 1; }
-        
-        IOHIDEventRef navDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                              timeStamp,
-                                                              usagePage,
-                                                              usage,
-                                                              1,
-                                                              0);
-        
-        IOHIDEventRef navUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                            timeStamp,
-                                                            usagePage,
-                                                            usage,
-                                                            0,
-                                                            0);
-        
-        if (holdTouch == true) {
-            
-            if (usage == 134)
-            {
-                if (isNewerScience == YES)
-                {
-                    [processMan _processHIDEvent:navDown];
-                    [processMan _processHIDEvent:navDown];
-                    [processMan _processHIDEvent:navDown];
-                    [processMan _processHIDEvent:navDown];
-                    [processMan _processHIDEvent:navDown];
-                    [processMan _processHIDEvent:navDown];
-                    [processMan _processHIDEvent:navDown];
-                    [processMan _processHIDEvent:navDown];
-                    
-                    
-                    
-                } else {
-                    [processMan sendHIDEventToTopApplication:navDown];
-                    [processMan sendHIDEventToTopApplication:navDown];
-                    [processMan sendHIDEventToTopApplication:navDown];
-                    [processMan sendHIDEventToTopApplication:navDown];
-                    [processMan sendHIDEventToTopApplication:navDown];
-                    [processMan sendHIDEventToTopApplication:navDown];
-                    [processMan sendHIDEventToTopApplication:navDown];
-                    [processMan sendHIDEventToTopApplication:navDown];
-                }
-                
-            } else {
-                
-                if (isNewerScience == YES)
-                {
-                    [processMan _processHIDEvent:navDown];
-                    [processMan _processHIDEvent:navDown];
-                } else {
-                    [processMan sendHIDEventToTopApplication:navDown];
-                    [processMan sendHIDEventToTopApplication:navDown];
-                }
-            }
-            
-            
-            if ([self respondsToSelector:@selector(delayedRelease:)])
-            {
-                [self performSelector:@selector(delayedRelease:) withObject:event afterDelay:1.0];
-                
-            }
-            
-        } else {
-            
-            if (isNewerScience == YES)
-            {
-                [processMan _processHIDEvent:navDown];
-                [processMan _processHIDEvent:navUp];
-            } else {
-                [processMan sendHIDEventToTopApplication:navDown];
-                [processMan sendHIDEventToTopApplication:navUp];
-            }
-        }
-        
-        
-        
-    }
-    
-    
-}
+
 
 //also called from Pineboard, this is to do press and hold events
 
@@ -581,6 +462,9 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     else if ([event isEqualToString:@"select"]) usage = 128;
     else if ([event isEqualToString:@"selecth"]) usage = 128;
     else if ([event isEqualToString:@"menu"]){ usage = 134;  usagePage = 1; }
+    else if ([event isEqualToString:@"share"]) usage = 521;
+    else if ([event isEqualToString:@"options"]) usage = 516;
+    else if ([event isEqualToString:@"special"]) usage = 547;
     
     IOHIDEventRef navUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
                                                         timeStamp,
@@ -611,6 +495,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 {
     
     NSString *theText = note.userInfo[@"text"];
+    BOOL clear = [note.userInfo[@"shouldClear"] boolValue];
     
     if (!_ioSystemClient)
         _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
@@ -641,31 +526,32 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     //    IOHIDEventRef IOHIDEventCreateKeyboardEvent(CFAllocatorRef allocator, AbsoluteTime timeStamp, uint16_t usagePage, uint16_t usage, Boolean down, IOHIDEventOptionBits flags);
     
     NSInteger sender = 4294968875; //no idea what this is but it works?
-    
-    NSInteger i = 0;
-    NSInteger deleteInt = 50;
-    for (i = 0; i < deleteInt; i++)
-    {
-        IOHIDEventRef deleteDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                                 timeStamp,
-                                                                 7,
-                                                                 kHIDUsage_KeyboardDeleteOrBackspace,
-                                                                 1,
-                                                                 0);
-        
-        IOHIDEventRef deleteUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                               timeStamp,
-                                                               7,
-                                                               kHIDUsage_KeyboardDeleteOrBackspace,
-                                                               0,
-                                                               0);
-        
-        
-        BKSHIDEventSendToFocusedProcess(deleteDown);
-        BKSHIDEventSendToFocusedProcess(deleteUp);
-        //[pbApp forwardHIDButtonEventWithUsagePage:7 usage:kHIDUsage_KeyboardDeleteOrBackspace type:3 senderID:sender];
-        //[processMan sendHIDEventToTopApplication:deleteDown];
-        //[processMan sendHIDEventToTopApplication:deleteUp];
+    if (clear){
+        NSInteger i = 0;
+        NSInteger deleteInt = 50;
+        for (i = 0; i < deleteInt; i++)
+        {
+            IOHIDEventRef deleteDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                                     timeStamp,
+                                                                     7,
+                                                                     kHIDUsage_KeyboardDeleteOrBackspace,
+                                                                     1,
+                                                                     0);
+            
+            IOHIDEventRef deleteUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+                                                                   timeStamp,
+                                                                   7,
+                                                                   kHIDUsage_KeyboardDeleteOrBackspace,
+                                                                   0,
+                                                                   0);
+            
+            
+            BKSHIDEventSendToFocusedProcess(deleteDown);
+            BKSHIDEventSendToFocusedProcess(deleteUp);
+            //[pbApp forwardHIDButtonEventWithUsagePage:7 usage:kHIDUsage_KeyboardDeleteOrBackspace type:3 senderID:sender];
+            //[processMan sendHIDEventToTopApplication:deleteDown];
+            //[processMan sendHIDEventToTopApplication:deleteUp];
+        }
     }
     //   return;
     //}
@@ -686,7 +572,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         
         for (NSString *item in split)
         {
-            //NSLog(@"item: %@", item);
+            NSLog(@"[DEBUG AirMagic] item: %@", item);
             uint32_t usage = hidUsageCodeForCharacter(item);
             
             IOHIDEventRef eventRefDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
@@ -1143,6 +1029,11 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 }
 
 
+- (void)appendText:(NSString *)enterText {
+
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.setText" object:nil userInfo:@{@"text": enterText, @"shouldClear": [NSNumber numberWithBool:FALSE]}];
+}
+
 - (void)enterText:(NSString *)enterText
 {
     //[self IOHIDTest:enterText];
@@ -1150,7 +1041,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     //id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
     //rocketbootstrap_distributedmessagingcenter_apply(center);
     //[center sendMessageName:@"org.nito.test.setText" userInfo:@{@"text": enterText}];
-    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.setText" object:nil userInfo:@{@"text": enterText}];
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.setText" object:nil userInfo:@{@"text": enterText, @"shouldClear": [NSNumber numberWithBool:TRUE]}];
 }
 
 

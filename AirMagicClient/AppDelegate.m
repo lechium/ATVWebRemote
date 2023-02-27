@@ -64,7 +64,22 @@
             return;
             
         case 36: //return
+            [(AppDelegate*)[NSApp delegate] sendCommand:@"select"];
+            return;
+        case 46: //m
+             [(AppDelegate*)[NSApp delegate] sendCommand:@"play"];
+             [(AppDelegate*)[NSApp delegate] sendCommand:@"play"];
+            return;
+            
+        case 35: //p
             [(AppDelegate*)[NSApp delegate] sendCommand:@"play"];
+            return;
+            
+        case 15: //r
+            [(AppDelegate*)[NSApp delegate] sendSlideshowCommand:@"refreshclient"];
+            return;
+        case 38: //j
+            [(AppDelegate*)[NSApp delegate] sendSlideshowCommand:@"json"];
             return;
     }
     NSLog(@"code: %hu", key);
@@ -163,7 +178,7 @@ static NSString *appleTVAddress = nil;
     self.selectButton.normalCommand = @"select";
     self.selectButton.holdCommand = @"selecth";
     deviceController = [[ATVDeviceController alloc] init];
-    appleTVAddress = [DEFAULTS stringForKey:@"appleTVHost"];
+    appleTVAddress = @"guest-room.local";//[DEFAULTS stringForKey:@"appleTVHost"];
     
     if ([[appleTVAddress componentsSeparatedByString:@":"] count] < 2)
     {
@@ -180,7 +195,7 @@ static NSString *appleTVAddress = nil;
         }
     }
     self.window.level = NSStatusWindowLevel;
-    [self startNowPlayingTimer];
+    //[self startNowPlayingTimer];
     [self startDateTimer];
 }
 
@@ -196,6 +211,7 @@ static NSString *appleTVAddress = nil;
     self.dateTimeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:true block:^(NSTimer * _Nonnull timer) {
         dispatch_async(dispatch_get_main_queue(), ^{
            [self updateTime];
+             [self nowPlayingInfo:nil];
         });
     }];
 }
@@ -215,9 +231,12 @@ static NSString *appleTVAddress = nil;
   
     [self fetchJSONInfoWithCompletion:^(NSDictionary *json) {
        
-        NSLog(@"GOT IM!!!: %@", json);
+        //NSLog(@"GOT IM!!!: %@", json);
         if (json){
-              [self.keynoteWindow orderFront:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.keynoteWindow makeKeyAndOrderFront:nil];
+            });
+            
             NSString *ipBare = [self ipBare];
             if (ipBare){
                 NSString *prev = json[@"previousSlide"];
@@ -229,7 +248,7 @@ static NSString *appleTVAddress = nil;
                 __block BOOL refresh = true;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if ([slideString isEqualToString:self.slideLabel.stringValue]){
-                        refresh = false;
+                        //refresh = false;
                     }
                     self.slideLabel.stringValue = slideString;
                 });
@@ -299,6 +318,17 @@ static NSString *appleTVAddress = nil;
     }
 }
 
+- (void)sendSlideshowCommand:(NSString *)command {
+    [self sendSlideshowCommand:command completion:^(NSDictionary *json) {
+       
+        //NSLog(@"return data: %@", json);
+        NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/bro.plist"];
+        [json writeToFile:path atomically:true];
+        NSLog(@"path: %@", path);
+        
+        
+    }];
+}
 
 
 - (void)sendCommand:(NSString *)theCommand
@@ -368,10 +398,50 @@ static NSString *appleTVAddress = nil;
 }
 
 - (NSString *)ipBare {
-    return [[APPLE_TV_ADDRESS componentsSeparatedByString:@":"] firstObject];
+    return @"guest-room.local"; //[[APPLE_TV_ADDRESS componentsSeparatedByString:@":"] firstObject];
+}
+
+- (void)sendSlideshowCommand:(NSString *)command completion:(void(^)(NSDictionary *json))block {
+    NSString *ipBare = @"guest-room.local";
+    if (ipBare){
+        NSString *httpCommand = [NSString stringWithFormat:@"http://%@:8080/%@", ipBare, command];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setTimeoutInterval:2];
+        [request setURL:[NSURL URLWithString:httpCommand]];
+        [request setHTTPMethod:@"GET"];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            
+            NSURLResponse *theResponse = nil;
+            NSError *theError  = nil;
+            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:&theResponse error:&theError];
+            
+            if (returnData){
+                NSError *jsonError = nil;
+                id jsonData = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingAllowFragments error:&jsonError];
+                if (jsonData){
+                    if (block){
+                        block(jsonData);
+                    }
+                } else {
+                    if (block){
+                        block(nil);
+                    }
+                }
+                
+            } else { // no return data
+                block(nil);
+            }
+        });
+        
+    } else {
+        block(nil);
+    }
 }
 
 - (void)fetchJSONInfoWithCompletion:(void(^)(NSDictionary *json))block {
+    
+    [self sendSlideshowCommand:@"info" completion:block];
+    /*
     NSString *ipBare = [self ipBare];
     if (ipBare){
         NSString *httpCommand = [NSString stringWithFormat:@"http://%@:8080/info", ipBare];
@@ -406,7 +476,7 @@ static NSString *appleTVAddress = nil;
     } else {
         block(nil);
     }
-  
+  */
    // return request;
     
     

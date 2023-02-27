@@ -14,7 +14,7 @@
 #define ATV_API  @"atvAPIVersion"
 #define ATV_OS	 @"atvOSVersion"
 #define OSV      @"atvShortVersion"
-#define APPLE_TV_ADDRESS [DEFAULTS stringForKey:ATV_HOST]
+#define APPLE_TV_ADDRESS @"guest-room.local"//[DEFAULTS stringForKey:ATV_HOST]
 #define APPLE_TV_API [DEFAULTS stringForKey:ATV_API]
 #define APPLE_TV_OS [DEFAULTS stringForKey:ATV_OS]
 #define SELECTED_VALUE [DEFAULTS stringForKey:@"selectedValue"]
