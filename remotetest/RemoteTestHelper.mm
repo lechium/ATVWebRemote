@@ -491,6 +491,12 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 
 //text entry all goes through here, also being called from within PineBoard.app
 
+- (NSString *)frontMostID {
+    id fb = [NSClassFromString(@"FBProcessManager") sharedInstance];
+    NSSet *set = [fb valueForKey:@"_lock_foregroundRunningProcesses"];
+    return set.allObjects.firstObject;
+}
+
 - (void)IOHIDTest:(NSNotification *)note
 {
     

@@ -119,6 +119,7 @@ static unsigned int numProcessors;
 		// Figure out how many processors are available.
 		// This may be used later for an optimization on uniprocessor machines.
 		
+        /*
 		host_basic_info_data_t hostInfo;
 		mach_msg_type_number_t infoCount;
 		
@@ -129,7 +130,11 @@ static unsigned int numProcessors;
 		unsigned int one    = (unsigned int)(1);
 		
 		numProcessors = MAX(result, one);
-		
+		*/
+        
+        numProcessors = MAX([NSProcessInfo processInfo].processorCount, (NSUInteger) 1);
+
+        
 		NSLogDebug(@"DDLog: numProcessors = %u", numProcessors);
 			
 		
