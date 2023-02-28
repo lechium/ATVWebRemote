@@ -196,7 +196,7 @@ static NSString *appleTVAddress = nil;
     }
     self.window.level = NSStatusWindowLevel;
     //[self startNowPlayingTimer];
-    [self startDateTimer];
+    //[self startDateTimer];
 }
 
 - (void)updateTime {
@@ -207,11 +207,11 @@ static NSString *appleTVAddress = nil;
     self.timeLabel.stringValue = [_timeFormat stringFromDate:[ NSDate date]];
 }
 
-- (void)startDateTimer {
+- (IBAction)startDateTimer:(id)sender {
     self.dateTimeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:true block:^(NSTimer * _Nonnull timer) {
         dispatch_async(dispatch_get_main_queue(), ^{
-           [self updateTime];
-             [self nowPlayingInfo:nil];
+            [self updateTime];
+            [self nowPlayingInfo:nil];
         });
     }];
 }
@@ -407,34 +407,44 @@ static NSString *appleTVAddress = nil;
 - (void)sendSlideshowCommand:(NSString *)command completion:(void(^)(NSDictionary *json))block {
     NSString *ipBare = [self ipBare];
     if (ipBare){
-        NSString *httpCommand = [NSString stringWithFormat:@"http://%@:3073/%@", ipBare, command];
+        NSString *httpCommand = [NSString stringWithFormat:@"http://%@:8080/%@", ipBare, command];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
         [request setTimeoutInterval:2];
         [request setURL:[NSURL URLWithString:httpCommand]];
         [request setHTTPMethod:@"GET"];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            
-            NSURLResponse *theResponse = nil;
-            NSError *theError  = nil;
-            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:&theResponse error:&theError];
-            
-            if (returnData){
-                NSError *jsonError = nil;
-                id jsonData = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingAllowFragments error:&jsonError];
-                if (jsonData){
-                    if (block){
-                        block(jsonData);
-                    }
-                } else {
-                    if (block){
-                        block(nil);
-                    }
-                }
+        if ([NSURLConnection canHandleRequest:request]) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 
-            } else { // no return data
-                block(nil);
-            }
-        });
+                NSURLResponse *theResponse = nil;
+                NSError *theError  = nil;
+                NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:&theResponse error:&theError];
+                
+                if (returnData){
+                    NSError *jsonError = nil;
+                    id jsonData = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingAllowFragments error:&jsonError];
+                    if (jsonData){
+                        if (block){
+                            block(jsonData);
+                        }
+                    } else {
+                        if (block){
+                            block(nil);
+                        }
+                    }
+                    
+                } else { // no return data
+                    NSLog(@"[ERROR]: %@ code: %i", theError, theError.code);
+                    if (theError.code == -1004) {
+                        [self.dateTimeTimer invalidate];
+                        self.dateTimeTimer = nil;
+                    }
+                    block(nil);
+                }
+            });
+        } else {
+            NSLog(@"cant handle request!!");
+        }
+        
         
     } else {
         block(nil);

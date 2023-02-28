@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21225" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21225"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -135,6 +135,11 @@
                             <menuItem title="Now Playing Info" keyEquivalent="i" id="iqy-iI-aO0">
                                 <connections>
                                     <action selector="nowPlayingInfo:" target="Voe-Tx-rLC" id="60e-Od-jgH"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Start Timer" keyEquivalent="t" id="dyZ-vF-Ydu">
+                                <connections>
+                                    <action selector="startDateTimer:" target="Voe-Tx-rLC" id="obH-2s-59f"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Page Setup…" keyEquivalent="P" id="qIS-W8-SiK">
@@ -695,7 +700,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="246" height="346"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="246" height="346"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -921,7 +926,7 @@ IA
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES" HUD="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="189" y="0.0" width="1536" height="1075"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
             <value key="maxSize" type="size" width="1536" height="1075"/>
             <view key="contentView" id="bcv-B4-GW8">
                 <rect key="frame" x="0.0" y="0.0" width="1536" height="1075"/>
@@ -943,7 +948,7 @@ IA
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="nextSlide" id="FxK-Ar-jch"/>
                     </imageView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KsM-qT-kfl">
-                        <rect key="frame" x="497" y="867" width="541" height="57"/>
+                        <rect key="frame" x="498" y="867" width="541" height="57"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="537" id="Yfb-pD-xxN"/>
                             <constraint firstAttribute="height" constant="57" id="f09-pB-qG6"/>
@@ -955,7 +960,7 @@ IA
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tE2-bK-JwW">
-                        <rect key="frame" x="497" y="975" width="541" height="57"/>
+                        <rect key="frame" x="498" y="975" width="541" height="57"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="537" id="9pc-dW-gMf"/>
                             <constraint firstAttribute="height" constant="57" id="mmx-vN-QRE"/>
