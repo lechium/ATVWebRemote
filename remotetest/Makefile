@@ -8,33 +8,12 @@ THEOS_DEVICE_IP=guest-room.local
 include theos/makefiles/common.mk
 
 TWEAK_NAME = remoteTest
-remoteTest_FILES = Tweak.xm RemoteTestHelper.mm MyHTTPConnection.m NSObject+AssociatedObjects.m
+remoteTest_FILES = Tweak.xm $(wildcard *.mm) $(wildcard *.m) $(wildcard core/*.m)
 #remoteTest_LDFLAGS = -F/Users/kevinbradley/Downloads/Xcode.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/SDKs/#AppleTVOS.sdk/System/Library/PrivateFrameworks -undefined dynamic_lookup
 remoteTest_LDFLAGS = -undefined dynamic_lookup
 
 remoteTest_CXXFLAGS += -fobjc-arc
-remoteTest_CFLAGS += -fobjc-arc
-remoteTest_FILES += Core/ContextFilterLogFormatter.m
-remoteTest_FILES += Core/DDAbstractDatabaseLogger.m
-remoteTest_FILES += Core/DDASLLogger.m
-remoteTest_FILES += Core/DDData.m
-remoteTest_FILES += Core/DDFileLogger.m
-remoteTest_FILES += Core/DDLog.m
-remoteTest_FILES += Core/DDNumber.m
-remoteTest_FILES += Core/DDRange.m
-remoteTest_FILES += Core/DDTTYLogger.m
-remoteTest_FILES += Core/DispatchQueueLogFormatter.m
-remoteTest_FILES += Core/GCDAsyncSocket.m
-remoteTest_FILES += Core/HTTPAsyncFileResponse.m
-remoteTest_FILES += Core/HTTPAuthenticationRequest.m
-remoteTest_FILES += Core/HTTPConnection.m
-remoteTest_FILES += Core/HTTPDataResponse.m
-remoteTest_FILES += Core/HTTPDynamicFileResponse.m
-remoteTest_FILES += Core/HTTPFileResponse.m
-remoteTest_FILES += Core/HTTPMessage.m
-remoteTest_FILES += Core/HTTPRedirectResponse.m
-remoteTest_FILES += Core/HTTPServer.m
-remoteTest_FILES += Core/WebSocket.m
+remoteTest_CFLAGS += -fobjc-arc -Wno-unused-variable -Wno-deprecated-declarations -Wno-logical-not-parentheses -Wno-unused-function -Wno-int-to-pointer-cast -Wno-unused-variable -Wno-unused-but-set-variable -Wno-format -Wno-memset-transposed-args -Wno-int-conversion
 remoteTest_LDFLAGS += -Wl,-segalign,4000
 remoteTest_LDFLAGS += -F.
 remoteTest_Frameworks += WebCore ImageIO Foundation CFNetwork AppSupport UIKit IOKit MobileCoreServices BackBoardServices
