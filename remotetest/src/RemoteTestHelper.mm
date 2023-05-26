@@ -10,7 +10,7 @@
 #include <mach/mach.h>
 #import <mach/mach_time.h>
 #import <CoreGraphics/CoreGraphics.h>
-#include "InspCWrapper.m"
+//#include "InspCWrapper.m"
 #import "NSTask.h"
 #include <IOKit/pwr_mgt/IOPMLib.h>
 #include <IOKit/IOKitLib.h>
