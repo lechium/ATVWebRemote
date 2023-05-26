@@ -13,10 +13,24 @@
 #include "InspCWrapper.m"
 #import "NSTask.h"
 #include <IOKit/pwr_mgt/IOPMLib.h>
+#include <IOKit/IOKitLib.h>
+#import "external.h"
+
 
 #define DEFAULT_PORT 3073
 
-IOHIDEventSystemClientRef IOHIDEventSystemClientCreate(CFAllocatorRef);
+static IOHIDEventSystemClientRef eventClient;
+static uint64_t multitouchDeviceID;
+
+extern "C" void IOHIDEventSetIntegerValue(IOHIDEventRef event, IOHIDEventField field, int value);
+extern "C" void IOHIDEventSetSenderID(IOHIDEventRef event, uint64_t sender);
+extern "C" void IOHIDEventSystemClientDispatchEvent(IOHIDEventSystemClientRef client, IOHIDEventRef event);
+
+extern "C" kern_return_t IOServiceGetBusyStateAndTime(io_service_t service, uint64_t *state, uint32_t *busy_state, uint64_t *accumulated_busy_time);
+
+extern "C" kern_return_t IORegistryEntryGetRegistryEntryID(io_registry_entry_t    entry, uint64_t *entryID );
+
+extern "C" IOHIDEventSystemClientRef IOHIDEventSystemClientCreate(CFAllocatorRef);
 
 extern "C" int BKSHIDEventSendToFocusedProcess(struct __IOHIDEvent *);
 
@@ -77,35 +91,35 @@ extern "C" int BKSHIDEventSendToFocusedProcess(struct __IOHIDEvent *);
 
 @interface UIDevice (science)
 
-- (NSString *)buildVersion;
+    - (NSString *)buildVersion;
 
-@end
+    @end
 
 @interface NSString (SplitString)
 
-- (NSArray *)splitString;
+    - (NSArray *)splitString;
 
-@end
+    @end
 
-/*
- use split string to split up characters into component array
- each character needs to be converted to HID event and then sent individually
- */
+    /*
+       use split string to split up characters into component array
+       each character needs to be converted to HID event and then sent individually
+     */
 
 @implementation NSString (SplitString)
 
-- (NSArray *)splitString
+    - (NSArray *)splitString
 {
     NSUInteger index = 0;
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:self.length];
-    
+
     while (index < self.length) {
         NSRange range = [self rangeOfComposedCharacterSequenceAtIndex:index];
         NSString *substring = [self substringWithRange:range];
         [array addObject:substring];
         index = range.location + range.length;
     }
-    
+
     return array;
 }
 
@@ -133,61 +147,61 @@ extern "C" int BKSHIDEventSendToFocusedProcess(struct __IOHIDEvent *);
 
 @interface UIApplication (Private)
 
-- (void)_enqueueHIDEvent:(struct __IOHIDEvent *)arg1;
+    - (void)_enqueueHIDEvent:(struct __IOHIDEvent *)arg1;
 
-@end;
+    @end;
 
 @interface UIWindow (Private)
 
-+ (id)_externalKeyWindow;
-+ (id)keyWindow;
-+ (id)allWindowsIncludingInternalWindows:(_Bool)arg1 onlyVisibleWindows:(_Bool)arg2 forScreen:(id)arg3;
-@end
+    + (id)_externalKeyWindow;
+    + (id)keyWindow;
+    + (id)allWindowsIncludingInternalWindows:(_Bool)arg1 onlyVisibleWindows:(_Bool)arg2 forScreen:(id)arg3;
+    @end
 
-@interface FBProcessManager : NSObject
+    @interface FBProcessManager : NSObject
 
-+ (id)sharedInstance;
+    + (id)sharedInstance;
 
-@end
+    @end
 
-@interface FBApplicationLibrary : NSObject
+    @interface FBApplicationLibrary : NSObject
 
-+ (id)sharedInstance;
-- (id)installedApplicationWithBundleIdentifier:(id)arg1;
-- (id)allInstalledApplications;
+    + (id)sharedInstance;
+    - (id)installedApplicationWithBundleIdentifier:(id)arg1;
+    - (id)allInstalledApplications;
 
-@end
+    @end
 
-@interface PBWindowManager: NSObject
+    @interface PBWindowManager: NSObject
 
-+ (id)sharedInstance;	// IMP=0x0000000100021de8
-+ (id)_highestPriorityWindow;
-@end
+    + (id)sharedInstance;	// IMP=0x0000000100021de8
+    + (id)_highestPriorityWindow;
+    @end
 
-@interface PBBundleLoader : NSObject
-
-
-+ (id)sharedInstance;	// IMP=0x000000010001e738
-- (id)pluginControllerForBundleIdentifier:(id)arg1;	// IMP=0x000000010001f04c
-
-@end
-
-@interface PBAppTransitionViewController
-@property(retain, nonatomic) UIView *toView;
-
-@end
-
-static char const * const kCurrentTextFieldID = "CurrentTextField";
-
-@interface PBAppDelegate
-
-+ (id)sharedApplicationDelegate;
-
-@end
+    @interface PBBundleLoader : NSObject
 
 
+    + (id)sharedInstance;	// IMP=0x000000010001e738
+    - (id)pluginControllerForBundleIdentifier:(id)arg1;	// IMP=0x000000010001f04c
 
-//use this method to figure out which characters are being sent for text entry in HIDEvents
+    @end
+
+    @interface PBAppTransitionViewController
+    @property(retain, nonatomic) UIView *toView;
+
+    @end
+
+    static char const * const kCurrentTextFieldID = "CurrentTextField";
+
+    @interface PBAppDelegate
+
+    + (id)sharedApplicationDelegate;
+
+    @end
+
+
+
+    //use this method to figure out which characters are being sent for text entry in HIDEvents
 
 static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 {
@@ -197,18 +211,18 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     if (key.length == 1) {
         // Handle alphanumeric characters and basic symbols.
         int keyCode = [key characterAtIndex:0];
-        
+
         //NSLog(@"keyCode: %i", keyCode);
-        
+
         if (97 <= keyCode && keyCode <= 122) // Handle a-z.
             return keyCode - lowercaseAlphabeticOffset;
-        
+
         if (65 <= keyCode && keyCode <= 90) // Handle A-Z.
             return keyCode - uppercaseAlphabeticOffset;
-        
+
         if (49 <= keyCode && keyCode <= 57) // Handle 1-9.
             return keyCode - numericNonZeroOffset;
-        
+
         // Handle all other cases.
         switch (keyCode) {
             case '`':
@@ -300,7 +314,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         return kHIDUsage_KeyboardLeftShift;
     if ([key isEqualToString:@"leftAlt"] || [key isEqualToString:@"rightAlt"])
         return kHIDUsage_KeyboardLeftAlt;
-    
+
     return 0;
 }
 
@@ -310,124 +324,146 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 
 
 /*
- 
- #### touch event usagePage: 12 usage: 69 = right
- #### touch event usagePage: 12 usage: 68 = left
- #### touch event usagePage: 12 usage: 67 = down
- #### touch event usagePage: 12 usage: 66 = up
- #### touch event usagePage: 12 usage: 65 = (center button / select)
- #### touch event usagePage: 12 usage: 205 = play/pause
- #### touch event usagePage: 1 usage: 134 = menu
- 
+
+#### touch event usagePage: 12 usage: 69 = right
+#### touch event usagePage: 12 usage: 68 = left
+#### touch event usagePage: 12 usage: 67 = down
+#### touch event usagePage: 12 usage: 66 = up
+#### touch event usagePage: 12 usage: 65 = (center button / select)
+#### touch event usagePage: 12 usage: 205 = play/pause
+#### touch event usagePage: 1 usage: 134 = menu
+
  */
 
 /* all the navigation events go through here, when this method is called its inside PineBoard.app and not the tweak itself.
  */
 
-- (void)performUserAction {
+
+
+void setup_hid() {
+    eventClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
+    mach_port_t masterPort;
+    IOMasterPort(MACH_PORT_NULL, &masterPort);
+    CFMutableDictionaryRef classesToMatch = IOServiceMatching("AppleMultitouchDevice");
     
+    io_iterator_t matchingServices;
+    kern_return_t kernResult = IOServiceGetMatchingServices(masterPort, classesToMatch, &matchingServices);
+    if (kernResult != KERN_SUCCESS)
+    {
+        NSLog(@"failed to find AppleMultitouchDevice service");
+        return;
+    }
+
+    io_object_t service;
+    while ((service = IOIteratorNext(matchingServices)))
+    {
+        uint64_t state = 0;
+        uint32_t integer = 0;
+        uint64_t time = 0;
+        IOServiceGetBusyStateAndTime(service, &state, &integer, &time);
+        if (state & kIOServiceRegisteredState)
+        {
+            IORegistryEntryGetRegistryEntryID(service, &multitouchDeviceID);
+        }
+    }
+
+    IOObjectRelease(service);
+    IOObjectRelease(matchingServices);
+    mach_port_deallocate(mach_task_self(), masterPort);
+    
+    NSLog(@"AppleMultitouchDevice: 0x%llx", multitouchDeviceID);
+}
+
+static void send_event(IOHIDEventRef event) {
+    IOHIDEventSetSenderID(event, multitouchDeviceID);
+    IOHIDEventSystemClientDispatchEvent(eventClient, event);
+    CFRelease(event);
+}
+
+
+- (void)performUserAction {
+
     //NSLog(@"[AirMagic] performUserAction");
     IOPMAssertionID assertionID;
     IOPMAssertionDeclareUserActivity(CFSTR(""), kIOPMUserActiveLocal, &assertionID);
-    
+
 }
 
-- (void)handleNavigationNotification:(NSNotification *)note {
-    
+- (void)handleNavigationNotification:(NSNotification*)note {
     NSDictionary *userInfo = [note userInfo];
-    
-    if (userInfo != nil)
-    {
-        
-        [[RemoteTestHelper sharedInstance] performUserAction];
-        
-        BOOL holdTouch = false;
-        NSString *event = userInfo[@"event"];
-        if (!_ioSystemClient)
-            _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
-        
-        //id pbApp = [ objc_getClass("PBApplication") sharedApplication];
-        
-        NSInteger sender = 4294968875; //no idea what this is but it works?
-        
-        uint64_t abTime = mach_absolute_time();
-        AbsoluteTime timeStamp;
-        timeStamp.hi = (UInt32)(abTime >> 32);
-        timeStamp.lo = (UInt32)(abTime);
-        
-        uint16_t usage = 0;
-        uint16_t usagePage = 12;
-        if ([event isEqualToString:@"right"]) usage = 69;
-        else if ([event isEqualToString:@"left"]) usage = 68;
-        else if ([event isEqualToString:@"down"]) usage = 67;
-        else if ([event isEqualToString:@"up"]) usage = 66;
-        else if ([event isEqualToString:@"tap"]) usage = 65;
-        else if ([event isEqualToString:@"home"]) { usage = 134; holdTouch = true; usagePage = 1; }
-        //else if ([event isEqualToString:@"home"]) { usage = 96; holdTouch = true; }
-        else if ([event isEqualToString:@"vlup"]) { usage = 233; holdTouch = true; }
-        else if ([event isEqualToString:@"vldwn"]){ usage = 234; holdTouch = true; }
-        else if ([event isEqualToString:@"siri"]) usage = 4;
-        else if ([event isEqualToString:@"play"]) usage = 205;
-        else if ([event isEqualToString:@"select"]) usage = 128;
-        else if ([event isEqualToString:@"selecth"]){ usage = 128; holdTouch = true; }
-        else if ([event isEqualToString:@"menu"]){ usage = 134;  usagePage = 1; }
-        else if ([event isEqualToString:@"share"]) usage = 521;
-        else if ([event isEqualToString:@"options"]) usage = 516;
-        else if ([event isEqualToString:@"special"]) usage = 547;
-        
-        IOHIDEventRef navDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                              timeStamp,
-                                                              usagePage,
-                                                              usage,
-                                                              1,
-                                                              0);
-        
-        IOHIDEventRef navUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                            timeStamp,
-                                                            usagePage,
-                                                            usage,
-                                                            0,
-                                                            0);
-        
-        if (holdTouch == true) { //emulating a press and hold
-            
-            if (usage == 134) //menu press and hold takes more events being sent to trigger for some reason
-            {
-                BKSHIDEventSendToFocusedProcess(navDown);
-                BKSHIDEventSendToFocusedProcess(navDown);
-                BKSHIDEventSendToFocusedProcess(navDown);
-                BKSHIDEventSendToFocusedProcess(navDown);
-                BKSHIDEventSendToFocusedProcess(navDown);
-                BKSHIDEventSendToFocusedProcess(navDown);
-                BKSHIDEventSendToFocusedProcess(navDown);
-                BKSHIDEventSendToFocusedProcess(navDown);
-                
-                
-            } else { //any other key press and hold
-                
-                BKSHIDEventSendToFocusedProcess(navDown);
-                BKSHIDEventSendToFocusedProcess(navDown);
-                
-            }
-            
-            
-            if ([self respondsToSelector:@selector(delayedRelease:)])
-            {
-                [self performSelector:@selector(delayedRelease:) withObject:event afterDelay:1.0];
-                
-            }
-            
-        } else { //normal event, no press and hold
-            
-            BKSHIDEventSendToFocusedProcess(navDown);
-            BKSHIDEventSendToFocusedProcess(navUp);
-            
-        }
-        
-        
-        
+    if (userInfo != nil) {
+        [self handleNavigationEvent:userInfo[@"event"]];
     }
-    
+}
+
+- (void)handleNavigationEvent:(NSString *)event {
+
+    [[RemoteTestHelper sharedInstance] performUserAction];
+    BOOL holdTouch = false;
+    //NSString *event = userInfo[@"event"];
+    //id pbApp = [ objc_getClass("PBApplication") sharedApplication];
+    NSInteger sender = 4294968875; //no idea what this is but it works? 
+    uint64_t abTime = mach_absolute_time();
+    AbsoluteTime timeStamp;
+    timeStamp.hi = (UInt32)(abTime >> 32);
+    timeStamp.lo = (UInt32)(abTime);
+
+    uint16_t usage = 0;
+    uint16_t usagePage = 12;
+    if ([event isEqualToString:@"right"]) usage = 69;
+    else if ([event isEqualToString:@"left"]) usage = 68;
+    else if ([event isEqualToString:@"down"]) usage = 67;
+    else if ([event isEqualToString:@"up"]) usage = 66;
+    else if ([event isEqualToString:@"tap"]) usage = 65;
+    else if ([event isEqualToString:@"home"]) { usage = 134; holdTouch = true; usagePage = 1; }
+    //else if ([event isEqualToString:@"home"]) { usage = 96; holdTouch = true; }
+    else if ([event isEqualToString:@"vlup"]) { usage = 233; holdTouch = true; }
+    else if ([event isEqualToString:@"vldwn"]){ usage = 234; holdTouch = true; }
+    else if ([event isEqualToString:@"siri"]) usage = 4;
+    else if ([event isEqualToString:@"play"]) usage = 205;
+    else if ([event isEqualToString:@"select"]) usage = 128;
+    else if ([event isEqualToString:@"selecth"]){ usage = 128; holdTouch = true; }
+    else if ([event isEqualToString:@"menu"]){ usage = 134;  usagePage = 1; }
+    else if ([event isEqualToString:@"share"]) usage = 521;
+    else if ([event isEqualToString:@"options"]) usage = 516;
+    else if ([event isEqualToString:@"special"]) usage = 547;
+
+    IOHIDEventRef navDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+            timeStamp,
+            usagePage,
+            usage,
+            1,
+            0);
+
+    IOHIDEventRef navUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
+            timeStamp,
+            usagePage,
+            usage,
+            0,
+            0);
+    if (holdTouch == true) { //emulating a press and hold
+        if (usage == 134) //menu press and hold takes more events being sent to trigger for some reason
+        {
+            send_event(navDown);
+            send_event(navDown);
+            send_event(navDown);
+            send_event(navDown);
+            send_event(navDown);
+            send_event(navDown);
+            send_event(navDown);
+            send_event(navDown);
+
+        } else { //any other key press and hold
+            send_event(navDown);
+            send_event(navDown);
+        }
+        if ([self respondsToSelector:@selector(delayedRelease:)]) {
+            [self performSelector:@selector(delayedRelease:) withObject:event afterDelay:1.0];
+        }
+    } else { //normal event, no press and hold
+        send_event(navDown);
+        send_event(navUp);
+    }
 }
 
 
@@ -436,16 +472,12 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 
 - (void)delayedRelease:(NSString *)event
 {
-    
-    if (!_ioSystemClient)
-        _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
-    
     id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
     uint64_t abTime = mach_absolute_time();
     AbsoluteTime timeStamp;
     timeStamp.hi = (UInt32)(abTime >> 32);
     timeStamp.lo = (UInt32)(abTime);
-    
+
     uint16_t usage = 0;
     uint16_t usagePage = 12;
     if ([event isEqualToString:@"right"]) usage = 69;
@@ -465,27 +497,27 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     else if ([event isEqualToString:@"share"]) usage = 521;
     else if ([event isEqualToString:@"options"]) usage = 516;
     else if ([event isEqualToString:@"special"]) usage = 547;
-    
+
     IOHIDEventRef navUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                        timeStamp,
-                                                        usagePage,
-                                                        usage,
-                                                        0,
-                                                        0);
+            timeStamp,
+            usagePage,
+            usage,
+            0,
+            0);
     if (usage == 134) {
-        
-        BKSHIDEventSendToFocusedProcess(navUp);
-        BKSHIDEventSendToFocusedProcess(navUp);
-        BKSHIDEventSendToFocusedProcess(navUp);
-        BKSHIDEventSendToFocusedProcess(navUp);
-        BKSHIDEventSendToFocusedProcess(navUp);
-        BKSHIDEventSendToFocusedProcess(navUp);
-        BKSHIDEventSendToFocusedProcess(navUp);
-        BKSHIDEventSendToFocusedProcess(navUp);
-        
+
+        send_event(navUp);
+        send_event(navUp);
+        send_event(navUp);
+        send_event(navUp);
+        send_event(navUp);
+        send_event(navUp);
+        send_event(navUp);
+        send_event(navUp);
+
     } else {
-        BKSHIDEventSendToFocusedProcess(navUp);
-        BKSHIDEventSendToFocusedProcess(navUp);
+        send_event(navUp);
+        send_event(navUp);
     }
 }
 
@@ -497,40 +529,43 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     return set.allObjects.firstObject;
 }
 
-- (void)IOHIDTest:(NSNotification *)note
-{
-    
+- (void)textNotification:(NSNotification *)note {
     NSString *theText = note.userInfo[@"text"];
     BOOL clear = [note.userInfo[@"shouldClear"] boolValue];
-    
-    if (!_ioSystemClient)
-        _ioSystemClient = IOHIDEventSystemClientCreate(kCFAllocatorDefault);
+    [self sendText:theText clear:clear];
+}
+
+- (void)IOHIDTest:(NSNotification *)note {
+    [self textNotification:note];
+}
+
+- (void)sendText:(NSString *)theText clear:(BOOL)clear {
     
     id processMan = [objc_getClass("TVSProcessManager") sharedInstance];
     uint64_t abTime = mach_absolute_time();
     AbsoluteTime timeStamp;
     timeStamp.hi = (UInt32)(abTime >> 32);
     timeStamp.lo = (UInt32)(abTime);
-    
-    
+
+
     NSString *stripped = [theText stringByRemovingPercentEncoding];
     //  NSLog(@"original string: %@ stripped: %@", theText, stripped);
-    
+
     /*
-     right now since all the text is sent at once I cycle through
-     50 times (should be sufficient to clear all text) before entering
-     any new text. this is definitely not ideal but it works for now.
-     
+       right now since all the text is sent at once I cycle through
+       50 times (should be sufficient to clear all text) before entering
+       any new text. this is definitely not ideal but it works for now.
+
      */
-    
-    
+
+
     //   if ([theText isEqualToString:@"DELETE_ALL_TEXT_NAOW"])
     // {
-    
+
     id pbApp = [ objc_getClass("PBApplication") sharedApplication];
-    
+
     //    IOHIDEventRef IOHIDEventCreateKeyboardEvent(CFAllocatorRef allocator, AbsoluteTime timeStamp, uint16_t usagePage, uint16_t usage, Boolean down, IOHIDEventOptionBits flags);
-    
+
     NSInteger sender = 4294968875; //no idea what this is but it works?
     if (clear){
         NSInteger i = 0;
@@ -538,22 +573,22 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         for (i = 0; i < deleteInt; i++)
         {
             IOHIDEventRef deleteDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                                     timeStamp,
-                                                                     7,
-                                                                     kHIDUsage_KeyboardDeleteOrBackspace,
-                                                                     1,
-                                                                     0);
-            
+                    timeStamp,
+                    7,
+                    kHIDUsage_KeyboardDeleteOrBackspace,
+                    1,
+                    0);
+
             IOHIDEventRef deleteUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                                   timeStamp,
-                                                                   7,
-                                                                   kHIDUsage_KeyboardDeleteOrBackspace,
-                                                                   0,
-                                                                   0);
-            
-            
-            BKSHIDEventSendToFocusedProcess(deleteDown);
-            BKSHIDEventSendToFocusedProcess(deleteUp);
+                    timeStamp,
+                    7,
+                    kHIDUsage_KeyboardDeleteOrBackspace,
+                    0,
+                    0);
+
+
+            send_event(deleteDown);
+            send_event(deleteUp);
             //[pbApp forwardHIDButtonEventWithUsagePage:7 usage:kHIDUsage_KeyboardDeleteOrBackspace type:3 senderID:sender];
             //[processMan sendHIDEventToTopApplication:deleteDown];
             //[processMan sendHIDEventToTopApplication:deleteUp];
@@ -561,83 +596,83 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
     }
     //   return;
     //}
-    
+
     /*
-     
-     finished deleting text, now to split the text up into componenents
-     and cycle through each character and sending its HID event equivalent.
-     
-     part of the process is checking to see if its an uppercase char
-     or special char like ~!@#$%^&*()_+|}{<>:\"? to determine if we need
-     to "hold" shift while sending the necessary HID event.
-     
+
+       finished deleting text, now to split the text up into componenents
+       and cycle through each character and sending its HID event equivalent.
+
+       part of the process is checking to see if its an uppercase char
+       or special char like ~!@#$%^&*()_+|}{<>:\"? to determine if we need
+       to "hold" shift while sending the necessary HID event.
+
      */
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-        NSArray *split = [[stripped stringByRemovingPercentEncoding] splitString];
-        
-        for (NSString *item in split)
-        {
+
+            NSArray *split = [[stripped stringByRemovingPercentEncoding] splitString];
+
+            for (NSString *item in split)
+            {
             NSLog(@"[DEBUG AirMagic] item: %@", item);
             uint32_t usage = hidUsageCodeForCharacter(item);
-            
+
             IOHIDEventRef eventRefDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                                       timeStamp,
-                                                                       7,
-                                                                       usage,
-                                                                       1,
-                                                                       0);
-            
+                    timeStamp,
+                    7,
+                    usage,
+                    1,
+                    0);
+
             IOHIDEventRef eventRefUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                                     timeStamp,
-                                                                     7,
-                                                                     usage,
-                                                                     0,
-                                                                     0);
-            
+                    timeStamp,
+                    7,
+                    usage,
+                    0,
+                    0);
+
             //create special chracter set with special chars and all uppercase letters
             NSMutableCharacterSet *uppercaseSpecialSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"~!@#$%^&*()_+}{<>:\\\"?"];
             [uppercaseSpecialSet formUnionWithCharacterSet:[NSCharacterSet uppercaseLetterCharacterSet]];
-            
+
             //if its uppercase hold down shift while sending HID event.
-            
+
             BOOL isUppercase = [uppercaseSpecialSet characterIsMember:[item characterAtIndex:0]];
             if (isUppercase == YES)
             {
                 IOHIDEventRef shiftDown = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                                        timeStamp,
-                                                                        7,
-                                                                        kHIDUsage_KeyboardLeftShift,
-                                                                        1,
-                                                                        0);
-                
+                        timeStamp,
+                        7,
+                        kHIDUsage_KeyboardLeftShift,
+                        1,
+                        0);
+
                 IOHIDEventRef shiftUp = IOHIDEventCreateKeyboardEvent(kCFAllocatorDefault,
-                                                                      timeStamp,
-                                                                      7,
-                                                                      kHIDUsage_KeyboardLeftShift,
-                                                                      0,
-                                                                      0);
-                
+                        timeStamp,
+                        7,
+                        kHIDUsage_KeyboardLeftShift,
+                        0,
+                        0);
+
                 //how we actually "hold down" shift ;)
-                
-                BKSHIDEventSendToFocusedProcess(shiftDown);
-                BKSHIDEventSendToFocusedProcess(eventRefDown);
-                BKSHIDEventSendToFocusedProcess(eventRefUp);
+
+                send_event(shiftDown);
+                send_event(eventRefDown);
+                send_event(eventRefUp);
                 // [pbApp forwardHIDButtonEventWithUsagePage:7 usage:usage type:3 senderID:sender];
-                BKSHIDEventSendToFocusedProcess(shiftUp);
-                
-                
-                
-                
-                
+                send_event(shiftUp);
+
+
+
+
+
             } else {
-                
+
                 //not an uppercase or special char, just send the event normally
-                BKSHIDEventSendToFocusedProcess(eventRefDown);
-                BKSHIDEventSendToFocusedProcess(eventRefUp);
+                send_event(eventRefDown);
+                send_event(eventRefUp);
                 //[pbApp forwardHIDButtonEventWithUsagePage:7 usage:usage type:3 senderID:sender];
             }
-        } //end of for statement
+            } //end of for statement
     });
 }
 
@@ -647,7 +682,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 {
     NSArray *blacklistNote = [NSArray arrayWithObjects:@"NSHTTPCookieManagerCookiesChangedNotification", nil];
     return blacklistNote;
-    
+
 }
 
 
@@ -672,28 +707,28 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 - (NSArray *)whiteList
 {
     return [NSArray arrayWithObjects:@"UITextFieldTextDidBeginEditingNotification", @"UITextFieldTextDidEndEditingNotification", @"SBApplicationNotificationStateChanged", nil];
-    
+
 }
 
 - (void)didBeginEditing:(NSNotification *)n
 {
-    
+
     /* NSLog(@"did begin editing: %@", n.object);
-     id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
-     rocketbootstrap_distributedmessagingcenter_apply(center);
-     NSMutableData *data = [[NSMutableData alloc] init];
-     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-     [archiver encodeObject:n.object forKey:@"object"];
-     [archiver finishEncoding];
-     [center sendMessageName:@"org.nito.test.doThings" userInfo:@{@"object": data}];
+       id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
+       rocketbootstrap_distributedmessagingcenter_apply(center);
+       NSMutableData *data = [[NSMutableData alloc] init];
+       NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+       [archiver encodeObject:n.object forKey:@"object"];
+       [archiver finishEncoding];
+       [center sendMessageName:@"org.nito.test.doThings" userInfo:@{@"object": data}];
      */
-    
+
 }
 
 - (void)didEndEditing:(NSNotification *)n
 {
     NSLog(@"didEndEditing: %@", n);
-    
+
 }
 
 - (void)doThings
@@ -718,7 +753,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 
 - (void)startScreensaver
 {
-    
+
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.helperCommand" object:nil userInfo:@{@"command": @"activateScreenSaver"}];
 }
 
@@ -743,7 +778,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 }
 
 - (void)handleHelperNotification:(NSNotification *)n {
-    
+
     NSString *theCommand = [n userInfo][@"command"];
     id processMan = [objc_getClass("PBSSystemService") sharedInstance];
     if ([theCommand isEqualToString:@"reboot"]) {
@@ -758,11 +793,11 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         [processMan launchKioskApp];
     } else if ([theCommand isEqualToString:@"respring"]) {
         //[processMan launchKioskApp];
-        
+
         [NSTask launchedTaskWithLaunchPath:@"/usr/bin/uicache" arguments:@[]];
-        
+
     }
-    
+
 }
 
 - (void)helperCommand:(NSString *)command withInfo:(NSDictionary *)info
@@ -774,7 +809,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         [processMan reboot];
     } else if ([theCommand isEqualToString:@"relaunch"])
     {
-        
+
         NSFileManager *manager = [NSFileManager defaultManager];
         NSString *whichKill = @"/tmp/usr/bin/killall";
         if (![manager fileExistsAtPath:whichKill])
@@ -784,87 +819,87 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
         id appDepot = [objc_getClass("PBAppDepot") sharedInstance];
         NSMutableDictionary *installedAppStates = [appDepot internalAppState];
         //  NSLog(@"installedAppStates: %@", installedAppStates);
-        
+
         NSError *error = nil;
         if(NSArray *apps = [manager contentsOfDirectoryAtPath:@"/Applications" error:&error])
         {   for (NSString *app in apps)
             if ([app hasSuffix:@".app"]) {
-                
+
                 NSString *path = [@"/Applications" stringByAppendingPathComponent:app];
                 NSString *newPl = [path stringByAppendingPathComponent:@"Info.plist"];
                 // NSString *installPl = [path stringByAppendingPathComponent:@"Install.plist"];
                 //NSLog(@"installPl: %@", installPl);
                 //NSDictionary *install = [NSDictionary dictionaryWithContentsOfFile:installPl];
                 // NSLog(@"install: %@", installPl);
-                
+
                 if (NSMutableDictionary *info = [NSMutableDictionary dictionaryWithContentsOfFile:newPl]) {
                     if (NSString *identifier = [info objectForKey:@"CFBundleIdentifier"]) {
-                        
+
                         //NSLog(@"identifier: %@", identifier);
-                        
+
                         id existingObject = [installedAppStates objectForKey:identifier];
                         if (existingObject != nil)
                         {
                             [installedAppStates setObject:existingObject forKey:identifier];
                             [appDepot _save];
                         } else {
-                            
+
                             NSLog(@"didnt find object for key: %@, adding!", identifier);
-                            
+
                             Class PBSMASC = objc_getClass("PBSMutableAppState");
                             id appState = [[PBSMASC alloc] initWithApplicationIdentifer:identifier];
                             [appState setEnabled:YES];
                             [appDepot _addAppStateForIdentifier:identifier];
-                            
+
                             Class $LSApplicationWorkspace(objc_getClass("LSApplicationWorkspace"));
                             LSApplicationWorkspace *workspace($LSApplicationWorkspace == nil ? nil : [$LSApplicationWorkspace defaultWorkspace]);
-                            
+
                             if ([workspace respondsToSelector:@selector(_LSPrivateSyncWithMobileInstallation)]){
-                                
+
                                 [workspace _LSPrivateSyncWithMobileInstallation];
                             } else {
-                                
-                                
-                                
+
+
+
                                 //NSArray *files = [manager contentsOfDirectoryAtPath:@"/var/mobile/Library/Caches/" error:&error];
-                                
+
                                 NSString *file = @"/var/mobile/Library/Caches/com.apple.LaunchServices-135.csstore";
-                                
+
                                 NSError *removeError = nil;
-                                
+
                                 [manager removeItemAtPath:file error:&removeError];
-                                
-                                
+
+
                                 [workspace _LSClearSchemaCaches];
                                 [workspace _LSPrivateRebuildApplicationDatabasesForSystemApps:YES internal:YES user:YES];
-                                
-                                
-                                
-                                
-                                
+
+
+
+
+
                             }
-                            
-                            
+
+
                         }
-                        
-                        
-                        
+
+
+
                     }
-                    
+
                 }
-                
+
             }
-            
+
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                [NSTask launchedTaskWithLaunchPath:whichKill arguments:@[@"-9", @"PineBoard", @"HeadBoard", @"lsd"]];
-            });
-            
-            
-            
+                    [NSTask launchedTaskWithLaunchPath:whichKill arguments:@[@"-9", @"PineBoard", @"HeadBoard", @"lsd"]];
+                    });
+
+
+
         }
-        
-        
-        
+
+
+
     }
 }
 
@@ -883,7 +918,7 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 - (void)appWentFrontMost:(NSNotification *)n
 {
     UIScreen *main = [UIScreen mainScreen];
-    
+
     id focused = [main focusedView];
     //NSLog(@"#### appWentFrontMost mainScreen focusedVIew: %@", focused);
     //  NSLog(@"frontmost: %@", n.userInfo);
@@ -903,18 +938,18 @@ static inline uint32_t hidUsageCodeForCharacter(NSString *key)
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 - (NSInteger)portFromConfigFile:(NSString *)configFile {
-    
+
     NSString *fileContents = [NSString stringWithContentsOfFile:configFile encoding:NSASCIIStringEncoding error:nil];
     NSArray *lines = [fileContents componentsSeparatedByString:@"\n"];
-    
+
     __block NSInteger returnPort = 3073;
-    
+
     [lines enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
+
         if ([obj containsString:@"Port"]) {
-            
+
             //found the line with the port in it, now separate the line by spaces, the second space SHOULD be the port
-            
+
             NSArray *portArray = [obj componentsSeparatedByString:@" "];
             if ([portArray count] > 1)
             {
@@ -922,44 +957,44 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
                 *stop = TRUE;
                 //return
             }
-            
-            
+
+
         }
-        
+
     }];
-    
+
     //NSLog(@"AirMagic problem parsing file at: %@ using default port of %lu", configFile, DEFAULT_PORT);
     return returnPort;
 }
 
 - (NSInteger)portFromConfigFiles {
-    
+
     ///etc/airmagic/conf -/.airmagic/conf?
     NSFileManager *man = [NSFileManager defaultManager];
     NSString *etcFile = @"/etc/airmagic/conf";
     NSString *mobileConfig = @"/var/mobile/.airmagic/conf";
     NSString *rootConfig = @"/var/root/.airmagic/conf";
     if (![man fileExistsAtPath:etcFile] && ![man fileExistsAtPath:mobileConfig] && ![man fileExistsAtPath:rootConfig]) {
-        
+
         return DEFAULT_PORT;
-        
+
     }
-    
+
     if ([man fileExistsAtPath:mobileConfig]) {
-        
+
         return [self portFromConfigFile:mobileConfig];
-        
+
     } else if ([man fileExistsAtPath:rootConfig]) {
-        
+
         return [self portFromConfigFile:rootConfig];
-        
+
     } else if ([man fileExistsAtPath:etcFile]){
-        
+
         return [self portFromConfigFile:etcFile];
     }
-    
+
     //we should NEVER get down here, but it cant hurt to return the port number here  too
-    
+
     return DEFAULT_PORT;
 }
 
@@ -968,17 +1003,17 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     // Configure our logging framework.
     // To keep things simple and fast, we're just going to log to the Xcode console.
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
-    
+
     // Initalize our http server
     self.httpServer = [[HTTPServer alloc] init];
-    
+
     // Tell server to use our custom MyHTTPConnection class.
     [httpServer setConnectionClass:[MyHTTPConnection class]];
-    
+
     // Tell the server to broadcast its presence via Bonjour.
     // This allows browsers such as Safari to automatically discover our service.
     [httpServer setType:@"_airmagic._tcp."];
-    
+
     // Normally there's no need to run our server on any specific port.
     // Technologies like Bonjour allow clients to dynamically discover the server's port at runtime.
     // However, for easy testing you may want force a certain port so you can just hit the refresh button.
@@ -988,20 +1023,20 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     // Serve files from our embedded Web folder
     //	NSString *webPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Web"];
     //	DDLogVerbose(@"Setting document root: %@", webPath);
-    
+
     [httpServer setDocumentRoot:[MyHTTPConnection airControlRoot]];
     //
     // Start the server (and check for problems)
     NSError *error;
     BOOL success = [httpServer start:&error];
-    
-    
+
+
     if(!success)
     {
         NSLog(@"Error starting HTTP Server: %@", error);
         DDLogError(@"Error starting HTTP Server: %@", error);
     }
-    
+    setup_hid();
     //  [self startTextFieldNotifications];
 }
 
@@ -1030,24 +1065,25 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     NSString *osBuild = [[UIDevice currentDevice] buildVersion];
     NSString *currentVersionNumber = [NSString stringWithFormat:@"%.01f", [self currentVersion]];
     return [NSDictionary dictionaryWithObjectsAndKeys:currentVersionNumber, @"apiversion", osversion, @"osversion" , osBuild, @"osbuild", nil];
-    
-    
+
+
 }
 
 
 - (void)appendText:(NSString *)enterText {
-
-    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.setText" object:nil userInfo:@{@"text": enterText, @"shouldClear": [NSNumber numberWithBool:FALSE]}];
+    [self sendText:enterText clear:FALSE];
+    //[[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.setText" object:nil userInfo:@{@"text": enterText, @"shouldClear": [NSNumber numberWithBool:FALSE]}];
 }
 
 - (void)enterText:(NSString *)enterText
 {
+    [self sendText:enterText clear:TRUE];
     //[self IOHIDTest:enterText];
-    
+
     //id center = [objc_getClass("CPDistributedMessagingCenter") centerNamed:@"org.nito.test"];
     //rocketbootstrap_distributedmessagingcenter_apply(center);
     //[center sendMessageName:@"org.nito.test.setText" userInfo:@{@"text": enterText}];
-    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.setText" object:nil userInfo:@{@"text": enterText, @"shouldClear": [NSNumber numberWithBool:TRUE]}];
+    //[[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"org.nito.test.setText" object:nil userInfo:@{@"text": enterText, @"shouldClear": [NSNumber numberWithBool:TRUE]}];
 }
 
 
@@ -1058,13 +1094,13 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     id object = [n object];
     NSString *name = [n name];
     NSDictionary *userInfo = [n userInfo];
-    
+
     if (object != nil && name != nil)
     {
         if ([[self whiteList] containsObject:name])
-            
+
         {
-            
+
             Class cls = [object superclass];
             Class cls2 = [object class];
             NSString *objectSuperName = NSStringFromClass(cls);
@@ -1072,33 +1108,33 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
             // NSLog(@"NOTIFICATION_HOOK: %@ class: %@ superclass: %@", name, objectName, objectSuperName);
             NSString *notifcationLog = [NSString stringWithFormat:@"NOTIFICATION: name: %@ object: %@ class: %@ superclass: %@", name, object, objectName, objectSuperName];
             NSLog(@"%@", notifcationLog);
-            
+
             if ([name isEqualToString:@"UITextFieldTextDidBeginEditingNotification"])
             {
                 [self didBeginEditing:n];
             }
-            
+
             if ([name isEqualToString:@"UITextFieldTextDidEndEditingNotification"])
             {
                 [self didEndEditing:n];
             }
-            
-            
-            
-            
+
+
+
+
         }
-        
+
         //LogIt(@"NOTIFICATION: name: %@", name);
     } else if (userInfo != nil)
     {
         if ([[self whiteList] containsObject:name])
-            
+
         {
-            
+
             //NSLog(@"NOTIFICATION_HOOK: %@ class: %@ superclass: %@", name, objectName, objectSuperName);
             NSString *notifcationLog = [NSString stringWithFormat:@"NOTIFICATION: name: %@ userInfo: %@", name, userInfo ];
             NSLog(@"%@", notifcationLog);
-            
+
             if ([name isEqualToString:@"SBApplicationNotificationStateChanged"])
             {
                 if ([userInfo[@"BKSApplicationStateAppIsFrontmost"] boolValue] == true)
@@ -1113,17 +1149,17 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 
 + (id)sharedInstance {
-    
+
     static dispatch_once_t onceToken;
     static RemoteTestHelper *shared;
-    
+
     dispatch_once(&onceToken, ^{
-        shared = [RemoteTestHelper new];
-        // [[NSNotificationCenter defaultCenter] addObserver:shared selector:@selector(hookNotifications:) name:nil object:nil];
-    });
-    
+            shared = [RemoteTestHelper new];
+            // [[NSNotificationCenter defaultCenter] addObserver:shared selector:@selector(hookNotifications:) name:nil object:nil];
+            });
+
     return shared;
-    
+
 }
 
 @end

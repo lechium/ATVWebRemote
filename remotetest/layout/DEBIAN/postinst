@@ -3,4 +3,6 @@
 chown mobile:mobile /private/var/mobile
 chown mobile:mobile /private/var/mobile/Library
 chown -R mobile:mobile /private/var/mobile/Library/Preferences
+launchctl unload /fs/jb/Library/LaunchDaemons/com.nito.airmagicd.plist
+launchctl load /fs/jb/Library/LaunchDaemons/com.nito.airmagicd.plist
 echo 'finish:restart'

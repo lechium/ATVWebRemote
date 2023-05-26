@@ -66,25 +66,6 @@
     return [super httpResponseForMethod:method URI:path];
 }
 
-- (void)frontMostScience
-{
-    id fmSysInfo = [ATV_VINFO sharedInstance];
-//    NSLog(@"#### FMSYSINFO: %@", fmSysInfo);
-    mach_port_t *p = (mach_port_t *)SBSSpringBoardServerPort();
-    char frontmostAppS[256];
-    memset(frontmostAppS,sizeof(frontmostAppS),0);
-    SBFrontmostApplicationDisplayIdentifier(p,frontmostAppS);
-    NSString * frontmostApp=[NSString stringWithFormat:@"%s",frontmostAppS];
-  //  NSLog(@"Frontmost app is %@",frontmostApp);
-    //get list of running apps from SpringBoard
-   // NSArray *allApplications = SBSCopyApplicationDisplayIdentifiers(p,NO, NO);
-    //for(NSString *identifier in allApplications)
-    //{
-      //  NSString *locName = SBSCopyLocalizedApplicationNameForDisplayIdentifier(identifier);
-        //NSLog(@"identifier:%@, locName:%@",identifier,locName);
-   // }
-}
-
 
 - (NSArray *)defaultReturnArray
 {
@@ -101,7 +82,6 @@
 
 - (id)processURL:(NSString *)path
 {
-   // [self frontMostScience];
     NSArray *pathCommands = [[path substringFromIndex:1] componentsSeparatedByString:@"="];
     NSString *pathCommand = [pathCommands objectAtIndex:0];
     NSString *pathValue = nil;
@@ -109,7 +89,7 @@
     {
         pathValue = [pathCommands objectAtIndex:1];
     }
-    //NSLog(@"processURL path command: %@ pathValue: %@", pathCommand, pathValue);
+    NSLog(@"[airmagicd] processURL path command: %@ pathValue: %@", pathCommand, pathValue);
     if ([pathCommand isEqualToString:@"enterText"])
     {
         [[RemoteTestHelper sharedInstance] enterText:pathValue];
@@ -118,7 +98,7 @@
         [[RemoteTestHelper sharedInstance] appendText:pathValue];
     } else if ([pathCommand isEqualToString:@"remoteCommand"])
     {
-        [[RemoteTestHelper sharedInstance] handleRemoteEvent:pathValue];
+        [[RemoteTestHelper sharedInstance] handleNavigationEvent:pathValue];
     } else if ([pathCommand isEqualToString:@"help"])
     {
         return [self failedWithMessage:[self acHelpString]];
