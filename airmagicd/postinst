@@ -1,0 +1,9 @@
+#!/bin/bash
+
+chown mobile:mobile /private/var/mobile
+chown mobile:mobile /private/var/mobile/Library
+chown -R mobile:mobile /private/var/mobile/Library/Preferences
+chown root:wheel /Library/LaunchDaemons/com.nito.airmagicd.plist
+launchctl unload /Library/LaunchDaemons/com.nito.airmagicd.plist
+launchctl load /Library/LaunchDaemons/com.nito.airmagicd.plist
+echo 'finish:restart'
